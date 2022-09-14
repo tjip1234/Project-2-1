@@ -11,30 +11,32 @@ public class Card implements Comparable<Card> {
     }
 
     public static enum Number {
-        Two,
-        Four,
-        Five,
-        Six,
-        Seven,
-        Jack,
-        Queen,
-        King,
-        Ace,
-        Three
+        Two(0),
+        Three(10),
+        Four(0),
+        Five(0),
+        Six(0),
+        Seven(0),
+        Jack(2),
+        Queen(3),
+        King(4),
+        Ace(11);
+
+        public final int scoreValue;
+
+        Number(int scoreValue) {
+            this.scoreValue = scoreValue;
+        }
     }
 
     public final Suit suit;
     public final Number number;
-
-    // The score value of this card
-    public final int value;
 
     private final int hashCode;
 
     public Card(Suit suit, Number number) {
         this.suit = suit;
         this.number = number;
-        this.value = number.ordinal() < 6 ? 0 : number.ordinal();
 
         hashCode = Objects.hash(suit, number);
     }
@@ -46,6 +48,11 @@ public class Card implements Comparable<Card> {
         if (suit != other.suit)
             return 0;
 
+        int scoreDifference = Integer.compare(number.scoreValue, other.number.scoreValue);
+        if (scoreDifference != 0)
+            return scoreDifference;
+
+        // Fallback to traditional deck ordering if value is identical
         return Integer.compare(number.ordinal(), other.number.ordinal());
     }
 
@@ -79,6 +86,6 @@ public class Card implements Comparable<Card> {
     // Allows the use of System.out.println(CARD) or similar string functions
     @Override
     public String toString() {
-        return String.format("%s of %s (%d pts)", number.toString(), suit.toString(), value);
+        return String.format("%s of %s (%d pts)", number.toString(), suit.toString(), number.scoreValue);
     }
 }

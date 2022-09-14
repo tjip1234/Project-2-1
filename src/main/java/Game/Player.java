@@ -16,7 +16,7 @@ public class Player {
     public int Score() {
         int score = 0;
         for (int i = 0; i < CollectedCards.size(); i++)
-            score += CollectedCards.get(i).value;
+            score += CollectedCards.get(i).number.scoreValue;
 
         return score;
     }
