@@ -26,6 +26,7 @@ public class Card implements Comparable<Card> {
     public final Suit suit;
     public final Number number;
 
+    // The score value of this card
     public final int value;
 
     private final int hashCode;
@@ -38,14 +39,17 @@ public class Card implements Comparable<Card> {
         hashCode = Objects.hash(suit, number);
     }
 
+    // Performs a comparison, will return 0 if both cards don't share the same suit
     @Override
     public int compareTo(Card other) {
+        // Comparisons are only valid if they are the same suit
         if (suit != other.suit)
             return 0;
 
         return Integer.compare(number.ordinal(), other.number.ordinal());
     }
 
+    // Performs a comparison, but also take briscola suit priority into account
     public int compareTo(Card other, Suit briscolaSuit) {
         var valueResult = compareTo(other);
         if (valueResult != 0)
@@ -72,18 +76,9 @@ public class Card implements Comparable<Card> {
         return hashCode;
     }
 
+    // Allows the use of System.out.println(CARD) or similar string functions
     @Override
     public String toString() {
         return String.format("%s of %s (%d pts)", number.toString(), suit.toString(), value);
-    }
-
-    public static void main(String[] args) {
-        Card card1 = new Card(Suit.Hearts, Number.Four);
-        Card card2 = new Card(Suit.Hearts, Number.Three);
-
-        System.out.println(card1);
-        System.out.println(card2);
-        if (card1.compareTo(card2) < 0)
-            System.out.printf("%s is worth more than %s", card2, card1);
     }
 }
