@@ -37,7 +37,7 @@ public class GameSession {
         players.get(currentPlayer).removeHand(card);
         Table.add(card);
         currentPlayer = (currentPlayer + 1) % players.size();
-        if (currentPlayer == startPlayer) {1
+        if (currentPlayer == startPlayer) {
             startPlayer = determineCycleWinner();
             while (!Table.isEmpty()) {
                 players.get(startPlayer).addCollectedCard(Table.remove(0));
@@ -52,7 +52,7 @@ public class GameSession {
                 for (int i = 1; i < players.size(); i++) {
                     if (players.get(i).Score() > players.get(playerWinner).Score())
                         playerWinner = i;
-                        // TODO if the score is equal
+                    // TODO if the score is equal
                 }
             }
         }
