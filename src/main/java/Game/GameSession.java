@@ -37,7 +37,7 @@ public class GameSession {
         players.get(currentPlayer).removeHand(card);
         Table.add(card);
         currentPlayer = (currentPlayer + 1) % players.size();
-        if (currentPlayer == startPlayer) {
+        if (currentPlayer == startPlayer) {1
             startPlayer = determineCycleWinner();
             while (!Table.isEmpty()) {
                 players.get(startPlayer).addCollectedCard(Table.remove(0));
@@ -51,8 +51,8 @@ public class GameSession {
                 int playerWinner = 0;
                 for (int i = 1; i < players.size(); i++) {
                     if (players.get(i).Score() > players.get(playerWinner).Score())
-                        ;
-                    playerWinner = i; // TODO if the score is equal
+                        playerWinner = i;
+                        // TODO if the score is equal
                 }
             }
         }
@@ -61,9 +61,9 @@ public class GameSession {
     private int determineCycleWinner() {
         int winner = 0;
 
-        for (Card card : Table)
-            if (card.compareTo(Table.get(winner), deck.getBriscola().suit) > 1)
-                winner = 1;
+        for (int i = 0; i < Table.size(); ++i)
+            if (Table.get(i).compareTo(Table.get(winner), deck.getBriscola().suit) >= 1)
+                winner = i;
 
         return (winner + startPlayer) % players.size();
     }
