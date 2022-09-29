@@ -38,7 +38,7 @@ public class GameSession {
         Table.add(card);
         currentPlayer = (currentPlayer + 1) % players.size();
         if (currentPlayer == startPlayer) {
-            startPlayer = determineCycleWinner();
+            currentPlayer = startPlayer = determineCycleWinner();
             while (!Table.isEmpty()) {
                 players.get(startPlayer).addCollectedCard(Table.remove(0));
             }
