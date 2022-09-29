@@ -21,7 +21,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        GameSession g = new GameSession(2);
+        GameSession g = new GameSession(6);
         g.startRound();
         int trickNumber = 0;
 
@@ -36,7 +36,11 @@ public class Main {
             for (int i = 0; i < g.players.size(); ++i) {
                 clearConsole();
                 System.out.printf("Trick #%d\n", trickNumber);
-                System.out.printf("Player #%d\n\n", g.currentPlayer);
+                System.out.printf("Player #%d\n", g.currentPlayer);
+                if (g.isTeamGame)
+                    System.out.printf("Team #%d\n", g.getTeamNumber(g.currentPlayer));
+
+                System.out.println();
 
                 if (g.Table.size() == 0)
                     System.out.println("No cards on table.");
@@ -88,6 +92,12 @@ public class Main {
             System.out.println("Current score");
             for (int i = 0; i < g.players.size(); i++) {
                 System.out.printf("Player #%d: %d\n", i, g.players.get(i).Score());
+            }
+
+            if (g.isTeamGame) {
+                System.out.println("\nTeam scores");
+                System.out.println("Team #0: " + g.getScoreForTeam(0));
+                System.out.println("Team #1: " + g.getScoreForTeam(1));
             }
 
             System.out.println("\nPress ENTER to continue.");

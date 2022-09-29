@@ -8,19 +8,42 @@ import java.util.ArrayList;
 public class GameSession {
     public ArrayList<Player> players;
     public ArrayList<Card> Table = new ArrayList<>();
-    public int currentPlayer; // TODO whatever public stuff
+    public int currentPlayer;
     int startPlayer = 0;
+
+    public final boolean isTeamGame;
 
     public Deck deck;
 
     public GameSession(int AmountOfPlayers) {
+        if (AmountOfPlayers <= 0)
+            throw new UnsupportedOperationException("Games don't work like that. Dumbass.");
+        if (AmountOfPlayers == 1)
+            throw new UnsupportedOperationException(
+                    "Trying to play this game by yourself? How sad... Go get some friends you pathetic piece of shit loser");
+
+        if (AmountOfPlayers == 5)
+            throw new UnsupportedOperationException("Briscola Chiamata is unsupported.");
+
+        if (AmountOfPlayers > 6)
+            throw new UnsupportedOperationException(
+                    "As fun as that may sound, you can't play briscola with that many players. The limit is 6.");
+
         players = new ArrayList<Player>();
         currentPlayer = 0;
-        deck = new Deck();
 
         for (int i = 0; i < AmountOfPlayers; i++) {
             players.add(new Player());
         }
+
+        isTeamGame = AmountOfPlayers != 2 && AmountOfPlayers % 2 == 0;
+
+        if (AmountOfPlayers == 3)
+            deck = new Deck(39);
+        else if (AmountOfPlayers == 6)
+            deck = new Deck(36);
+        else
+            deck = new Deck(40);
     }
 
     public void startRound() {
@@ -36,7 +59,9 @@ public class GameSession {
     public void playTurn(Card card) {
         players.get(currentPlayer).removeHand(card);
         Table.add(card);
+
         currentPlayer = (currentPlayer + 1) % players.size();
+
         if (currentPlayer == startPlayer) {
             currentPlayer = startPlayer = determineCycleWinner();
             while (!Table.isEmpty()) {
@@ -52,7 +77,6 @@ public class GameSession {
                 for (int i = 1; i < players.size(); i++) {
                     if (players.get(i).Score() > players.get(playerWinner).Score())
                         playerWinner = i;
-                    // TODO if the score is equal
                 }
             }
         }
@@ -70,5 +94,25 @@ public class GameSession {
 
     private boolean gameOver() {
         return players.get(0).getHand().isEmpty();
+    }
+
+    public Integer getScoreForTeam(int teamNumber) {
+        if (!isTeamGame)
+            return 0;
+
+        int total = 0;
+
+        for (int i = teamNumber; i < players.size(); i += 2)
+            total += players.get(i).Score();
+
+        return total;
+    }
+
+    public Player getPlayer(int playerNumber) {
+        return players.get(playerNumber % players.size());
+    }
+
+    public int getTeamNumber(int playerNumber) {
+        return playerNumber % 2;
     }
 }
