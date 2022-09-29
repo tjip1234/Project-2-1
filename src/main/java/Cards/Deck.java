@@ -9,7 +9,14 @@ public class Deck extends Stack<Card> {
 
     private Card briscola = null;
 
+    private int deckSize;
+
     public Deck() {
+        this(40);
+    }
+
+    public Deck(int deckSize) {
+        this.deckSize = deckSize;
         reshuffle();
     }
 
@@ -22,18 +29,26 @@ public class Deck extends Stack<Card> {
             for (Card.Number number : Card.Number.values())
                 cards.add(new Card(suit, number));
 
+        int cardsToRemove = 40 - deckSize;
         // Put them in the stack
-        while (!cards.isEmpty())
-            push(cards.remove(random.nextInt(cards.size())));
+        while (!cards.isEmpty()) {
+            var card = cards.remove(random.nextInt(cards.size()));
 
-        for (int i = 0; i < size(); i++)
-            System.out.println(get(i));
+            // We don't add this card.
+            if (card.number == Card.Number.Two && cardsToRemove > 0) {
+                cardsToRemove--;
+                continue;
+            }
+
+            push(card);
+        }
 
         // Find the briscola ahead of time, and add it to the bottom of the stack
-        add(briscola = pop());
+        add(0, briscola = pop());
     }
 
     public Card getBriscola() {
         return briscola;
     }
+
 }
