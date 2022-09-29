@@ -100,8 +100,16 @@ public class Main {
                 System.out.println("Team #1: " + g.getScoreForTeam(1));
             }
 
+            if (g.players.get(0).getHand().size() == 0) {
+                System.out.println("\nGAME OVER!");
+                System.out.println("\nPress ENTER to continue.");
+                scanner.nextLine();
+                break;
+            }
             System.out.println("\nPress ENTER to continue.");
             scanner.nextLine();
         }
+        scanner.close();
+
     }
 }
