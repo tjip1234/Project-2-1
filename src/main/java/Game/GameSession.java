@@ -92,8 +92,8 @@ public class GameSession {
         return (winner + startPlayer) % players.size();
     }
 
-    private boolean gameOver() {
-        return players.get(0).getHand().isEmpty();
+    public boolean gameOver() {
+        return players.get(currentPlayer).getHand().isEmpty();
     }
 
     public Integer getScoreForTeam(int teamNumber) {

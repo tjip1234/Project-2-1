@@ -3,113 +3,70 @@ package org.example;
 import Cards.Card;
 import Cards.Deck;
 import Game.GameSession;
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Scanner;
 
-public class Main {
-    public final static void clearConsole() {
-        try {
-            final String os = System.getProperty("os.name");
-            if (os.contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                Runtime.getRuntime().exec("clear");
-            }
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
+public class Main extends Application {
+    public void start(Stage stage) throws IOException {
+        GameSession g = new GameSession(2);
+        Text score1 = new Text(20, 20, "Player 1: " + g.players.get(0).Score());
+        Text score2 = new Text(420, 20, "Player 2: " + g.players.get(1).Score());
+        Text suit = new Text(220, 20, "Briscola: " + g.deck.getBriscola().suit);
+        Rectangle rect1 = new Rectangle(30, 250, 120, 200);
+        Rectangle rect2 = new Rectangle(180, 250, 120, 200);
+        Rectangle rect3 = new Rectangle(330, 250, 120, 200);
+        ImageView iv1;
+        ImageView iv2;
+        ImageView iv3;
+        g.startRound();
+       // while (true) {
+            iv1 = new ImageView((g.players.get(g.currentPlayer).getHand().get(0).getImage(true)));
+            iv1.setX(30);
+            iv1.setY(250);
+            iv1.setFitHeight(200);
+            iv1.setFitWidth(120);
+            iv1.setPreserveRatio(true);
+            iv2 = new ImageView((g.players.get(g.currentPlayer).getHand().get(1).getImage(true)));
+            iv2.setX(180);
+            iv2.setY(250);
+            iv2.setFitHeight(200);
+            iv2.setFitWidth(120);
+            iv2.setPreserveRatio(true);
+            iv3 = new ImageView((g.players.get(g.currentPlayer).getHand().get(2).getImage(true)));
+            iv3.setX(330);
+            iv3.setY(250);
+            iv3.setFitHeight(200);
+            iv3.setFitWidth(120);
+            iv3.setPreserveRatio(true);
+           /* Scanner n = new Scanner(System.in);
+            System.out.println("Current Player:" + g.currentPlayer);
+            int choice = n.nextInt();
+            g.playTurn(g.players.get(g.currentPlayer).getHand().get(choice));
+            System.out.println("");
+
+            System.out.println(g.players.get(0).Score());
+            System.out.println(g.players.get(1).Score()); */
+            Group root = new Group(rect1, rect2, rect3, score1, score2, suit, iv1, iv2, iv3);
+            Scene scene = new Scene(root, Color.GREEN);
+            stage.setTitle("Briscola");
+            stage.setScene(scene);
+            stage.setHeight(500);
+            stage.setWidth(500);
+            stage.show();
+      //  }
     }
 
     public static void main(String[] args) {
-        GameSession g = new GameSession(6);
-        g.startRound();
-        int trickNumber = 0;
-
-        Scanner scanner = new Scanner(System.in);
-
-        clearConsole();
-        System.out.printf("Player #%d is up next! \n Press ENTER to continue", g.currentPlayer);
-        scanner.nextLine();
-
-        while (true) {
-            trickNumber++;
-            for (int i = 0; i < g.players.size(); ++i) {
-                clearConsole();
-                System.out.printf("Trick #%d\n", trickNumber);
-                System.out.printf("Player #%d\n", g.currentPlayer);
-                if (g.isTeamGame)
-                    System.out.printf("Team #%d\n", g.getTeamNumber(g.currentPlayer));
-
-                System.out.println();
-
-                if (g.Table.size() == 0)
-                    System.out.println("No cards on table.");
-                else {
-                    System.out.println("Cards on table:");
-                    int value = 0;
-                    for (var card : g.Table) {
-                        System.out.println(card);
-                        value += card.number.scoreValue;
-                    }
-                    System.out.printf("\nCards on table is worth %d points\n", value);
-                }
-
-                System.out.printf("\nBriscola: %s\n", g.deck.getBriscola());
-
-                System.out.printf("\nPlayer #%d cards:\n", g.currentPlayer);
-                int cardNumber = 0;
-                for (Card card : g.players.get(g.currentPlayer).getHand()) {
-                    System.out.printf("%d. %s\n", cardNumber++, card);
-                }
-
-                int choice = 0;
-                while (true) {
-                    try {
-                        System.out.print("\nMake a choice: ");
-                        choice = Integer.parseInt(scanner.nextLine());
-                        if (choice >= 0 && choice < g.players.get(g.currentPlayer).getHand().size())
-                            break;
-                    } catch (Exception e) {
-
-                    }
-
-                    System.out.println("Invalid input, try again.");
-                }
-
-                g.playTurn(g.players.get(g.currentPlayer).getHand().get(choice));
-
-                if (i != g.players.size() - 1) {
-                    clearConsole();
-                    System.out.printf("Player #%d is up next! \n Press ENTER to continue", g.currentPlayer);
-                    scanner.nextLine();
-                }
-            }
-
-            clearConsole();
-            System.out.println("Trick over!");
-            System.out.printf("Player #%d wins! They will start the next trick.\n\n", g.currentPlayer);
-
-            System.out.println("Current score");
-            for (int i = 0; i < g.players.size(); i++) {
-                System.out.printf("Player #%d: %d\n", i, g.players.get(i).Score());
-            }
-
-            if (g.isTeamGame) {
-                System.out.println("\nTeam scores");
-                System.out.println("Team #0: " + g.getScoreForTeam(0));
-                System.out.println("Team #1: " + g.getScoreForTeam(1));
-            }
-
-            if (g.players.get(0).getHand().size() == 0) {
-                System.out.println("\nGAME OVER!");
-                System.out.println("\nPress ENTER to continue.");
-                scanner.nextLine();
-                break;
-            }
-            System.out.println("\nPress ENTER to continue.");
-            scanner.nextLine();
-        }
-        scanner.close();
-
+        launch();
     }
 }

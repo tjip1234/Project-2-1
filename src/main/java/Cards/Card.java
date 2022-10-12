@@ -1,5 +1,9 @@
 package Cards;
 
+import javafx.scene.image.Image;
+
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.util.Objects;
 
 public class Card implements Comparable<Card> {
@@ -31,6 +35,8 @@ public class Card implements Comparable<Card> {
 
     public final Suit suit;
     public final Number number;
+    private final Image front;
+    private final Image reverse;
 
     private final int hashCode;
 
@@ -39,6 +45,10 @@ public class Card implements Comparable<Card> {
         this.number = number;
 
         hashCode = Objects.hash(suit, number);
+
+        String userHome = System.getProperty("user.dir");;
+        this.front = new Image(userHome+"\\PNG-cards-1.3/"+number+"_of_"+suit+".png");
+        this.reverse = new Image(userHome+"/PNG-cards-1.3/CardBack1.JPG");
     }
 
     // Performs a comparison, will return 0 if both cards don't share the same suit
@@ -82,10 +92,15 @@ public class Card implements Comparable<Card> {
     public int hashCode() {
         return hashCode;
     }
-
-    // Allows the use of System.out.println(CARD) or similar string functions
     @Override
     public String toString() {
         return String.format("%s of %s (%d pts)", number.toString(), suit.toString(), number.scoreValue);
+    }
+    public Image getImage(boolean isFront) throws FileNotFoundException, MalformedURLException {
+        if(isFront){
+        return this.front;
+        }
+        return this.reverse;
+
     }
 }
