@@ -28,11 +28,12 @@ public class Card implements Comparable<Card> {
 
         public final int scoreValue;
 
+
         Number(int scoreValue) {
             this.scoreValue = scoreValue;
         }
     }
-
+    public static String skin = "CardBack1";
     public final Suit suit;
     public final Number number;
     private final Image front;
@@ -40,18 +41,28 @@ public class Card implements Comparable<Card> {
 
     private final int hashCode;
 
+    /**
+     * Constructor for a card
+     * @param suit of the card
+     * @param number of the card
+     */
     public Card(Suit suit, Number number) {
         this.suit = suit;
         this.number = number;
 
         hashCode = Objects.hash(suit, number);
 
-        String userHome = System.getProperty("user.dir");;
+        String userHome = System.getProperty("user.dir");
         this.front = new Image(userHome+"\\PNG-cards-1.3/"+number+"_of_"+suit+".png");
-        this.reverse = new Image(userHome+"/PNG-cards-1.3/CardBack1.JPG");
+        this.reverse = new Image(userHome+"/PNG-cards-1.3/Reverses/"+Card.skin+".JPG", 90, 150, false, false);
+
     }
 
-    // Performs a comparison, will return 0 if both cards don't share the same suit
+    /**
+     * Performs a comparison, will return 0 if both cards don't share the same suit
+     * @param other card to be compared
+     * @return which card won
+     */
     @Override
     public int compareTo(Card other) {
         // Comparisons are only valid if they are the same suit

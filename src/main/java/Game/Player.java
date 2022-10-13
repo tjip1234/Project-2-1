@@ -1,7 +1,10 @@
 package Game;
 
 import Cards.Card;
+import com.example.project_2.HelloApplication;
 
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class Player {
@@ -21,8 +24,13 @@ public class Player {
         return score;
     }
 
-    public void addHand(Card card) {
+    public void addHand(Card card, int whichPlayer) {
         Hand.add(card);
+        try {
+            HelloApplication.gameUI.drawAnimation(whichPlayer);
+        } catch (NullPointerException a) {
+            //e.printStackTrace();
+        }
     }
 
     public ArrayList<Card> getHand() {

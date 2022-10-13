@@ -2,7 +2,10 @@ package Game;
 
 import Cards.Card;
 import Cards.Deck;
+import com.example.project_2.HelloApplication;
 
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class GameSession {
@@ -51,12 +54,12 @@ public class GameSession {
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < players.size(); i++) {
-                players.get((i + startPlayer) % players.size()).addHand(deck.pop());
+                players.get((i + startPlayer) % players.size()).addHand(deck.pop(),(i + startPlayer) % players.size());
             }
         }
     }
 
-    public void playTurn(Card card) {
+    public void playTurn(Card card) throws MalformedURLException, FileNotFoundException {
         players.get(currentPlayer).removeHand(card);
         Table.add(card);
 
@@ -69,9 +72,10 @@ public class GameSession {
             }
             if (!deck.isEmpty()) {
                 for (int i = 0; i < players.size(); i++) {
-                    players.get((i + startPlayer) % players.size()).addHand(deck.pop());
+                    players.get((i + startPlayer) % players.size()).addHand(deck.pop(), (i + startPlayer) % players.size());
                 }
             }
+            HelloApplication.resetVisibility();
             if (gameOver()) {
                 int playerWinner = 0;
                 for (int i = 1; i < players.size(); i++) {
