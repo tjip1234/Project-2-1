@@ -1,2 +1,2 @@
 # Project-2-1
-fuck you guys
+To Run the project pull it and just type gradle run 
