@@ -485,8 +485,9 @@ public class HelloApplication extends Application {
         Card.Suit briscsuit = g.deck.getBriscola().suit;
         System.out.println(briscsuit + " " + cardNumber);
         String userHome = System.getProperty("user.dir");
-        ;
-        Image imageForFile = new Image(userHome + "\\PNG-cards-1.3/" + cardNumber + "_of_" + briscsuit + ".png");
+        /* Depricated method
+        Image imageForFile = new Image(userHome + "../PNG-cards-1.3/" + cardNumber + "_of_" + briscsuit + ".png");
+        */
         Text suit = new Text(750, 510, "Briscola: " + g.deck.getBriscola().suit);
         //adds card to UI deck display
         deck.add(0, new ImageView(g.deck.get(0).getImage(true)));

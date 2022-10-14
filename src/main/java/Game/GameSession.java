@@ -20,10 +20,10 @@ public class GameSession {
 
     public GameSession(int AmountOfPlayers) {
         if (AmountOfPlayers <= 0)
-            throw new UnsupportedOperationException("Games don't work like that. Dumbass.");
+            throw new UnsupportedOperationException("Games don't work like that. Dumbss.");
         if (AmountOfPlayers == 1)
             throw new UnsupportedOperationException(
-                    "Trying to play this game by yourself? How sad... Go get some friends you pathetic piece of shit loser");
+                    "Trying to play this game by yourself? How sad... Go get some friends");
 
         if (AmountOfPlayers == 5)
             throw new UnsupportedOperationException("Briscola Chiamata is unsupported.");
