@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3cb919d9-4513-467c-8673-82dc35665e7b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/unnamed.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/unnamed.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PNG-cards-1.3/CardBack1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PNG-cards-1.3/Shortest_path_with_direct_weights.svg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Cards/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Cards/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/GameSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/GameSession.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Game/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Game/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/project_2/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/project_2/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +65,7 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../Libraries/javafx-sdk-19/src.zip" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15722656" />
     <property name="project.structure.side.proportion" value="0.15109573" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />

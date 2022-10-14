@@ -200,6 +200,91 @@ public class HelloApplication extends Application {
 
 
     }
+    public void handlers(int whichCard){
+        player = g.currentPlayer;
+        try {
+            iv[6][0].setImage(g.players.get(player).getHand().get(whichCard).getImage(true));
+        } catch (FileNotFoundException | MalformedURLException e) {
+            //e.printStackTrace();
+        }
+        iv[6][0].setVisible(true);
+
+        try {
+            g.playTurn(g.players.get(player).getHand().get(whichCard));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < 3; i++) {
+            try {
+                iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
+                iv[player][i].setVisible(true);
+
+            } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
+
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            try {
+
+                iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
+            } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
+                //e.printStackTrace();
+                iv[player][i].setVisible(false);
+                rects[i].setVisible(false);
+
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            try {
+                iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
+                iv[g.currentPlayer][i].setVisible(true);
+
+            } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
+
+
+            }
+        }
+        for (int i = g.deck.size() + 2; i < deck.size(); i++) {
+            if (g.deck.isEmpty()) {
+                deck.get(i).setVisible(false);
+            }
+
+            if (!deck.get(i).isVisible()) {
+                break;
+            }
+            deck.get(i).setVisible(false);
+
+        }
+        iv[6][0].setVisible(!g.Table.isEmpty());
+        boolean isGameOver = true;
+        for (int i = 0; i < ammountOfPLayers; i++) {
+            if(!g.getPlayer(i).getHand().isEmpty()){
+                isGameOver = true;
+                break;
+            }
+            isGameOver = false;
+
+        }
+        if(!isGameOver){
+            gameOver(stage);
+        }
+
+        currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
+        if (!g.isTeamGame) {
+            score1.setText("Player 1: " + g.players.get(0).Score());
+            score2.setText("Player 2: " + g.players.get(1).Score());
+        } else {
+            score1.setText("Team 1: " + g.getScoreForTeam(0));
+            score2.setText("Team 2: " + g.getScoreForTeam(1));
+
+
+        }
+    }
+
+
 
     /**
      * Starts the main game
@@ -215,87 +300,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 0) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(0).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(0));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(0);
                 }
             }
         };
@@ -304,86 +309,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 0) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(1).getImage(false));
-
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(1));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(1);
                 }
             }
         };
@@ -392,87 +318,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 0) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(2).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(2));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-                            if (i == 0) {
-                                gameOver(stage);
-                            }
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(2);
                 }
             }
         };
@@ -481,85 +327,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 1) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(0).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(0));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(0);
                 }
             }
         };
@@ -568,85 +336,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 1) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(1).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(1));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(1);
                 }
             }
         };
@@ -655,87 +345,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 1) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(2).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(2));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-                            if (i == 0) {
-                                gameOver(stage);
-                            }
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(2);
                 }
             }
         };
@@ -744,85 +354,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 2) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(0).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(0));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(0);
                 }
             }
         };
@@ -831,85 +363,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 2) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(1).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(1));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(1);
                 }
             }
         };
@@ -918,88 +372,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 2) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(2).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(2));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-                            if (i == 0) {
-                                gameOver(stage);
-                            }
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(2);
                 }
             }
         };
@@ -1008,85 +381,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 5) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(0).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(0));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-                            if (i == 0) {
-                                gameOver(stage);
-                            }
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(0);
                 }
             }
         };
@@ -1095,85 +390,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 5) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(1).getImage(false));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(1));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(1);
                 }
             }
         };
@@ -1182,87 +399,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 5) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(2).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(2));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-                            if (i == 0) {
-                                gameOver(stage);
-                            }
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(2);
                 }
             }
         };
@@ -1271,85 +408,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 3) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(0).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(0));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(0);
                 }
             }
         };
@@ -1358,85 +417,7 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 3) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(1).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
-
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(1));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
+                    handlers(1);
                 }
             }
         };
@@ -1445,87 +426,8 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 3) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(2).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
+                    handlers(2);
 
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(2));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-                            if (i == 0) {
-                                gameOver(stage);
-                            }
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
                 }
             }
         };
@@ -1534,85 +436,8 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 4) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(0).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
+                    handlers(0);
 
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(0));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
                 }
             }
         };
@@ -1621,85 +446,8 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 4) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(1).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
+                    handlers(1);
 
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(1));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
                 }
             }
         };
@@ -1708,88 +456,8 @@ public class HelloApplication extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent event) {
                 if (g.currentPlayer == 4) {
-                    player = g.currentPlayer;
-                    try {
-                        iv[6][0].setImage(g.players.get(player).getHand().get(2).getImage(true));
-                    } catch (FileNotFoundException | MalformedURLException e) {
-                        //e.printStackTrace();
-                    }
-                    iv[6][0].setVisible(true);
+                    handlers(2);
 
-                    try {
-                        g.playTurn(g.players.get(player).getHand().get(2));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
-                            iv[player][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-                        }
-                    }
-
-
-                    for (int i = 0; i < 3; i++) {
-                        try {
-
-                            iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                            //e.printStackTrace();
-                            iv[player][i].setVisible(false);
-                            rects[i].setVisible(false);
-
-                        }
-                    }
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
-                            iv[g.currentPlayer][i].setVisible(true);
-
-                        } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-
-                        }
-                    }
-                    for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-                        if (g.deck.isEmpty()) {
-                            deck.get(i).setVisible(false);
-                        }
-
-                        if (!deck.get(i).isVisible()) {
-                            break;
-                        }
-                        deck.get(i).setVisible(false);
-
-                    }
-                    iv[6][0].setVisible(!g.Table.isEmpty());
-                    boolean isGameOver = true;
-                    for (int i = 0; i < ammountOfPLayers; i++) {
-                            if(!g.getPlayer(i).getHand().isEmpty()){
-                                isGameOver = true;
-                                break;
-                            }
-                            isGameOver = false;
-
-                    }
-                    if(!isGameOver){
-                        gameOver(stage);
-                    }
-                    currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
-                    if (!g.isTeamGame) {
-                        score1.setText("Player 1: " + g.players.get(0).Score());
-                        score2.setText("Player 2: " + g.players.get(1).Score());
-                    } else {
-                        score1.setText("Team 1: " + g.getScoreForTeam(0));
-                        score2.setText("Team 2: " + g.getScoreForTeam(1));
-
-
-                    }
                 }
             }
         };
@@ -2200,6 +868,7 @@ public class HelloApplication extends Application {
                 animation.setByY((deck.get(deck.size() - 1).getY() - iv[g.currentPlayer][i].getY()));
 
                 animation.setDuration(Duration.millis(1000));
+
                 animation.play();
 
             }
