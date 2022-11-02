@@ -31,7 +31,7 @@ public class Player {
     }
 
     public ArrayList<Card> getHand() {
-        return Hand;
+        return (ArrayList<Card>) Hand.clone();
     }
 
     public void removeHand(Card card) {
