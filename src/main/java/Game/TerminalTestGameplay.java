@@ -63,7 +63,7 @@ public class TerminalTestGameplay {
                     try {
                         System.out.print("\nMake a choice: ");
                         choice = Integer.parseInt(scanner.nextLine());
-                        if (choice >= 0 && choice < g.players[g.currentPlayer]).getHand().size())
+                        if (choice >= 0 && choice < g.players[g.currentPlayer].getHand().size())
                             break;
                     } catch (Exception e) {
 
@@ -72,7 +72,11 @@ public class TerminalTestGameplay {
                     System.out.println("Invalid input, try again.");
                 }
 
-                g.playTurn(g.players[g.currentPlayer].getHand().get(choice));
+                try {
+                    g.playTurn(g.players[g.currentPlayer].getHand().get(choice));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 if (i != g.players.length - 1) {
                     clearConsole();

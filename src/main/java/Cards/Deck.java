@@ -1,6 +1,7 @@
 package Cards;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Stack;
 
@@ -10,6 +11,8 @@ public class Deck extends Stack<Card> {
     private Card briscola = null;
 
     private int deckSize;
+
+    private HashSet<Card> cardsInSession = new HashSet<>();
 
     public Deck() {
         this(40);
@@ -49,6 +52,10 @@ public class Deck extends Stack<Card> {
 
     public Card getBriscola() {
         return briscola;
+    }
+
+    public HashSet<Card> getSessionCards() {
+        return ((HashSet<Card>) cardsInSession.clone());
     }
 
 }

@@ -9,12 +9,15 @@ import com.example.project_2.HelloApplication;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class GameSession {
     public Player[] players;
     public ArrayList<Card> Table = new ArrayList<>();
     public int currentPlayer;
     int startPlayer = 0;
+
+    private HashSet<Card> playedCards = new HashSet<>();
 
     public final boolean isTeamGame;
 
@@ -61,6 +64,7 @@ public class GameSession {
     public void playTurn(Card card) throws MalformedURLException, FileNotFoundException {
         players[currentPlayer].removeHand(card);
         Table.add(card);
+        playedCards.add(card);
 
         currentPlayer = (currentPlayer + 1) % players.length;
 
@@ -133,9 +137,11 @@ public class GameSession {
             return;
 
         try {
-            playTurn(playerBot.MakeDecision(Table, deck.getBriscola()));
+            playerBot.playedCards = (HashSet<Card>)playedCards.clone();
+            playTurn(playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
         } catch (Exception e) {
             // Do nothing for now
         }
     }
+
 }
