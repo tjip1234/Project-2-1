@@ -2,14 +2,11 @@ package Game;
 
 import Cards.Card;
 import com.example.project_2.HelloApplication;
-
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 public class Player {
-    ArrayList<Card> Hand;
-    ArrayList<Card> CollectedCards;
+    private ArrayList<Card> Hand;
+    private ArrayList<Card> CollectedCards;
 
     public Player() {
         Hand = new ArrayList<>();
@@ -29,7 +26,7 @@ public class Player {
         try {
             HelloApplication.gameUI.drawAnimation(whichPlayer);
         } catch (NullPointerException a) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 

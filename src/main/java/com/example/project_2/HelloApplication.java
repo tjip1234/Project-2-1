@@ -2,6 +2,7 @@ package com.example.project_2;
 
 import Cards.Card;
 import Game.GameSession;
+import Game.Player;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -38,14 +39,14 @@ public class HelloApplication extends Application {
     private EventHandler<javafx.scene.input.MouseEvent> eh1;
     private EventHandler<javafx.scene.input.MouseEvent> eh2;
     private EventHandler<javafx.scene.input.MouseEvent> eh3;
-    private Rectangle[] rects = {new Rectangle(30, 250, 120, 200), new Rectangle(180, 250, 120, 200), new Rectangle(330, 250, 120, 200)};
+    private Rectangle[] rects = { new Rectangle(30, 250, 120, 200), new Rectangle(180, 250, 120, 200),
+            new Rectangle(330, 250, 120, 200) };
     private Text score1 = new Text();
     private Text score2 = new Text();
     private Text currrentPlayer = new Text("Current player: ");
     private int ammountOfPLayers = 2;
     public static HelloApplication gameUI;
     private int player = 0;
-
 
     /**
      * Start function it defines ui and takes care of displaying menu etc
@@ -74,26 +75,25 @@ public class HelloApplication extends Application {
         menuRoot.getChildren().add(subtitle);
 
         exit.setPrefSize(200, 50);
-        exit.setLayoutY(400); //150
-        exit.setLayoutX(650); //170
+        exit.setLayoutY(400); // 150
+        exit.setLayoutX(650); // 170
         play_match.setPrefSize(200, 50);
-        play_match.setLayoutY(400); //50
-        play_match.setLayoutX(50); //170
+        play_match.setLayoutY(400); // 50
+        play_match.setLayoutX(50); // 170
         Button bMenu = new Button("Settings");
         bMenu.setPrefSize(200, 50);
-        bMenu.setLayoutY(400); //100
-        bMenu.setLayoutX(350); //170
+        bMenu.setLayoutY(400); // 100
+        bMenu.setLayoutX(350); // 170
         menuRoot.getChildren().add(bMenu);
-
 
         menuRoot.getChildren().add(exit);
         Color background = Color.rgb(60, 124, 83);
-        Scene MainScene = new Scene(menuRoot, 900, 1000, background); //w:540, h:280
+        Scene MainScene = new Scene(menuRoot, 900, 1000, background); // w:540, h:280
 
         Stage menuWindow = new Stage();
         menuWindow.setTitle("Main Menu");
         menuWindow.setScene(MainScene);
-        //Starts the game from menu
+        // Starts the game from menu
         EventHandler<ActionEvent> startGameFromMenu = new EventHandler<>() {
             public void handle(ActionEvent e) {
                 try {
@@ -115,7 +115,7 @@ public class HelloApplication extends Application {
 
         play_match.setOnAction(startGameFromMenu);
 
-        //Opens settings
+        // Opens settings
         EventHandler<ActionEvent> settingsEvent = new EventHandler<>() {
             public void handle(ActionEvent e) {
                 ComboBox<String> howManyPlayers = new ComboBox<String>();
@@ -131,7 +131,6 @@ public class HelloApplication extends Application {
                 howManyPlayers.getItems().add("4");
                 howManyPlayers.getItems().add("6");
 
-
                 Button save_and_exit = new Button("Save and exit");
 
                 Group settingsRoot = new Group();
@@ -146,13 +145,10 @@ public class HelloApplication extends Application {
                 save_and_exit.setLayoutY(50);
                 save_and_exit.setLayoutX(150);
 
-
                 settingsRoot.getChildren().add(skin);
                 settingsRoot.getChildren().add(save_and_exit);
 
-
                 Color background = Color.rgb(60, 124, 83);
-
 
                 Scene settingScene = new Scene(settingsRoot, 540, 280, background);
 
@@ -162,20 +158,20 @@ public class HelloApplication extends Application {
 
                 menu.setTitle("Setting");
                 menu.setScene(settingScene);
-                //Closes the settings
+                // Closes the settings
                 EventHandler<ActionEvent> event2 = new EventHandler<>() {
                     public void handle(ActionEvent e) {
                         menu.close();
 
                     }
                 };
-                //Allows the choice of the ammount of players
+                // Allows the choice of the ammount of players
                 EventHandler<ActionEvent> howManyPlayersEvent = new EventHandler<>() {
                     public void handle(ActionEvent e) {
                         ammountOfPLayers = Integer.parseInt(howManyPlayers.getValue());
                     }
                 };
-                //Allows card reverse choice
+                // Allows card reverse choice
                 EventHandler<ActionEvent> skinChoice = new EventHandler<>() {
                     public void handle(ActionEvent e) {
                         Card.skin = skin.getValue();
@@ -192,25 +188,24 @@ public class HelloApplication extends Application {
 
         bMenu.setOnAction(settingsEvent);
 
-
         // Set position of second window, related to primary window.
         menuWindow.setX(200);
         menuWindow.setY(100);
         menuWindow.show();
 
-
     }
-    public void handlers(int whichCard){
+
+    public void handlers(int whichCard) {
         player = g.currentPlayer;
         try {
-            iv[6][0].setImage(g.players.get(player).getHand().get(whichCard).getImage(true));
+            iv[6][0].setImage(g.players[player].getHand().get(whichCard).getImage(true));
         } catch (FileNotFoundException | MalformedURLException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
         iv[6][0].setVisible(true);
 
         try {
-            g.playTurn(g.players.get(player).getHand().get(whichCard));
+            g.playTurn(g.players[player].getHand().get(whichCard));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -219,7 +214,7 @@ public class HelloApplication extends Application {
 
         for (int i = 0; i < 3; i++) {
             try {
-                iv[player][i].setImage((g.players.get(player).getHand().get(i).getImage(false)));
+                iv[player][i].setImage((g.players[player].getHand().get(i).getImage(false)));
                 iv[player][i].setVisible(true);
 
             } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
@@ -229,9 +224,9 @@ public class HelloApplication extends Application {
         for (int i = 0; i < 3; i++) {
             try {
 
-                iv[player][i].setImage(g.players.get(player).getHand().get(i).getImage(false));
+                iv[player][i].setImage(g.players[player].getHand().get(i).getImage(false));
             } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                //e.printStackTrace();
+                // e.printStackTrace();
                 iv[player][i].setVisible(false);
                 rects[i].setVisible(false);
 
@@ -239,11 +234,10 @@ public class HelloApplication extends Application {
         }
         for (int i = 0; i < 3; i++) {
             try {
-                iv[g.currentPlayer][i].setImage((g.players.get(g.currentPlayer).getHand().get(i).getImage(true)));
+                iv[g.currentPlayer][i].setImage((g.players[g.currentPlayer].getHand().get(i).getImage(true)));
                 iv[g.currentPlayer][i].setVisible(true);
 
             } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
 
             }
         }
@@ -261,30 +255,27 @@ public class HelloApplication extends Application {
         iv[6][0].setVisible(!g.Table.isEmpty());
         boolean isGameOver = true;
         for (int i = 0; i < ammountOfPLayers; i++) {
-            if(!g.getPlayer(i).getHand().isEmpty()){
+            if (!g.getPlayer(i).getHand().isEmpty()) {
                 isGameOver = true;
                 break;
             }
             isGameOver = false;
 
         }
-        if(!isGameOver){
+        if (!isGameOver) {
             gameOver(stage);
         }
 
         currrentPlayer.setText("Current player: " + (g.currentPlayer + 1));
         if (!g.isTeamGame) {
-            score1.setText("Player 1: " + g.players.get(0).Score());
-            score2.setText("Player 2: " + g.players.get(1).Score());
+            score1.setText("Player 1: " + g.players[0].Score());
+            score2.setText("Player 2: " + g.players[1].Score());
         } else {
             score1.setText("Team 1: " + g.getScoreForTeam(0));
             score2.setText("Team 2: " + g.getScoreForTeam(1));
 
-
         }
     }
-
-
 
     /**
      * Starts the main game
@@ -294,7 +285,7 @@ public class HelloApplication extends Application {
      * @throws FileNotFoundException if card tried to display doesn't exist
      */
     private void initGame(Stage stage) throws MalformedURLException, FileNotFoundException {
-        //Here are a lot of handlers for every players card on hand
+        // Here are a lot of handlers for every players card on hand
 
         EventHandler<javafx.scene.input.MouseEvent> playFirstCardFirstPlayer = new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
@@ -462,14 +453,20 @@ public class HelloApplication extends Application {
             }
         };
 
-        //Create new game session and init texts
-        g = new GameSession(ammountOfPLayers);
-        score1 = new Text(20, 20, "Player 1: " + g.players.get(0).Score());
+        // Create new game session and init texts
+
+        // ALL HUMANS FOR NOW
+        Player[] players = new Player[ammountOfPLayers];
+        for (int i = 0; i < ammountOfPLayers; ++i)
+            players[i] = new Player();
+
+        g = new GameSession(players);
+        score1 = new Text(20, 20, "Player 1: " + g.players[0].Score());
         score1.setFill(Color.WHITE);
         score1.setStrokeWidth(1);
         score1.setStroke(Color.BLACK);
         score1.setFont(Font.font("verdana", FontWeight.BOLD, 13));
-        score2 = new Text(990, 20, "Player 2: " + g.players.get(1).Score());
+        score2 = new Text(990, 20, "Player 2: " + g.players[1].Score());
         score2.setFill(Color.WHITE);
         score2.setStrokeWidth(1);
         score2.setStroke(Color.BLACK);
@@ -485,11 +482,13 @@ public class HelloApplication extends Application {
         Card.Suit briscsuit = g.deck.getBriscola().suit;
         System.out.println(briscsuit + " " + cardNumber);
         String userHome = System.getProperty("user.dir");
-        /* Depricated method
-        Image imageForFile = new Image(userHome + "../PNG-cards-1.3/" + cardNumber + "_of_" + briscsuit + ".png");
-        */
+        /*
+         * Depricated method
+         * Image imageForFile = new Image(userHome + "../PNG-cards-1.3/" + cardNumber +
+         * "_of_" + briscsuit + ".png");
+         */
         Text suit = new Text(750, 510, "Briscola: " + g.deck.getBriscola().suit);
-        //adds card to UI deck display
+        // adds card to UI deck display
         deck.add(0, new ImageView(g.deck.get(0).getImage(true)));
         deck.get(0).setFitWidth(90);
         deck.get(0).setFitHeight(150);
@@ -499,9 +498,8 @@ public class HelloApplication extends Application {
         deck.get(0).setPreserveRatio(true);
 
         deck.get(0).setVisible(true);
-        //Fills the ui deck to be displayed
+        // Fills the ui deck to be displayed
         for (int i = 1; i < g.deck.size(); i++) {
-
 
             deck.add(i, new ImageView(g.deck.get(i).getImage(false)));
             deck.get(i).setFitWidth(90);
@@ -514,50 +512,49 @@ public class HelloApplication extends Application {
 
             deck.get(i).setVisible(true);
         }
-        //Sets location of all the players cards and adds event handlers
+        // Sets location of all the players cards and adds event handlers
 
-
-        iv[6][0] = new ImageView(g.players.get(g.currentPlayer).getHand().get(0).getImage(false));
+        iv[6][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
         iv[6][0].setX(440);
         iv[6][0].setY(260);
         iv[6][0].setFitWidth(90);
         iv[6][0].setFitHeight(150);
         iv[6][0].setPreserveRatio(true);
         iv[6][0].setVisible(false);
-        iv[0][0] = new ImageView(g.players.get(g.currentPlayer).getHand().get(0).getImage(true));
+        iv[0][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(true));
         iv[0][0].setX(400);
         iv[0][0].setY(450);
         iv[0][0].setFitHeight(150);
         iv[0][0].setFitWidth(90);
         iv[0][0].setPreserveRatio(true);
-        iv[0][1] = new ImageView(g.players.get(g.currentPlayer).getHand().get(1).getImage(true));
+        iv[0][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(true));
         iv[0][1].setX(500);
         iv[0][1].setY(450);
         iv[0][1].setFitHeight(150);
         iv[0][1].setFitWidth(90);
         iv[0][1].setPreserveRatio(true);
-        iv[0][2] = new ImageView(g.players.get(g.currentPlayer).getHand().get(2).getImage(true));
+        iv[0][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(true));
         iv[0][2].setX(600);
         iv[0][2].setY(450);
         iv[0][2].setFitHeight(150);
         iv[0][2].setFitWidth(90);
         iv[0][2].setPreserveRatio(true);
-        iv[1][0] = new ImageView(g.players.get(g.currentPlayer).getHand().get(2).getImage(false));
+        iv[1][0] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
         iv[1][0].setY(50);
         iv[1][0].setRotate(180);
         iv[1][0].setFitWidth(90);
         iv[1][0].setFitHeight(150);
-        iv[1][1] = new ImageView(g.players.get(g.currentPlayer).getHand().get(2).getImage(false));
+        iv[1][1] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
         iv[1][1].setY(50);
         iv[1][1].setRotate(180);
         iv[1][1].setFitWidth(90);
         iv[1][1].setFitHeight(150);
-        iv[1][2] = new ImageView(g.players.get(g.currentPlayer).getHand().get(2).getImage(false));
+        iv[1][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
         iv[1][2].setY(50);
         iv[1][2].setRotate(180);
         iv[1][2].setFitWidth(90);
         iv[1][2].setFitHeight(150);
-        iv[1][0] = new ImageView(g.players.get(g.currentPlayer).getHand().get(0).getImage(false));
+        iv[1][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
         iv[1][0].setX(80);
         iv[1][0].setY(50);
         iv[1][0].setRotate(-180);
@@ -565,7 +562,7 @@ public class HelloApplication extends Application {
         iv[1][0].setFitWidth(90);
         iv[1][0].setPreserveRatio(true);
         iv[1][0].setVisible(true);
-        iv[2][0] = new ImageView(g.players.get(g.currentPlayer).getHand().get(0).getImage(false));
+        iv[2][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
         iv[2][0].setX(80);
         iv[2][0].setY(150);
         iv[2][0].setRotate(-90);
@@ -573,7 +570,7 @@ public class HelloApplication extends Application {
         iv[2][0].setFitWidth(90);
         iv[2][0].setPreserveRatio(true);
         iv[2][0].setVisible(false);
-        iv[2][1] = new ImageView(g.players.get(g.currentPlayer).getHand().get(1).getImage(false));
+        iv[2][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(false));
         iv[2][1].setX(80);
         iv[2][1].setY(250);
         iv[2][1].setRotate(-90);
@@ -581,7 +578,7 @@ public class HelloApplication extends Application {
         iv[2][1].setFitWidth(90);
         iv[2][1].setPreserveRatio(true);
         iv[2][1].setVisible(false);
-        iv[2][2] = new ImageView(g.players.get(g.currentPlayer).getHand().get(2).getImage(false));
+        iv[2][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
         iv[2][2].setX(80);
         iv[2][2].setY(350);
         iv[2][2].setRotate(-90);
@@ -589,7 +586,7 @@ public class HelloApplication extends Application {
         iv[2][2].setFitWidth(90);
         iv[2][2].setPreserveRatio(true);
         iv[2][2].setVisible(false);
-        iv[3][0] = new ImageView(g.players.get(g.currentPlayer).getHand().get(0).getImage(false));
+        iv[3][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
         iv[3][0].setX(920);
         iv[3][0].setY(150);
         iv[3][0].setRotate(90);
@@ -597,7 +594,7 @@ public class HelloApplication extends Application {
         iv[3][0].setFitWidth(90);
         iv[3][0].setPreserveRatio(true);
         iv[3][0].setVisible(false);
-        iv[3][1] = new ImageView(g.players.get(g.currentPlayer).getHand().get(1).getImage(false));
+        iv[3][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(false));
         iv[3][1].setX(920);
         iv[3][1].setY(250);
         iv[3][1].setRotate(90);
@@ -605,7 +602,7 @@ public class HelloApplication extends Application {
         iv[3][1].setFitWidth(90);
         iv[3][1].setPreserveRatio(true);
         iv[3][1].setVisible(false);
-        iv[3][2] = new ImageView(g.players.get(g.currentPlayer).getHand().get(2).getImage(false));
+        iv[3][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
         iv[3][2].setX(920);
         iv[3][2].setY(350);
         iv[3][2].setRotate(90);
@@ -613,7 +610,7 @@ public class HelloApplication extends Application {
         iv[3][2].setFitWidth(90);
         iv[3][2].setPreserveRatio(true);
         iv[3][2].setVisible(false);
-        iv[4][0] = new ImageView(g.players.get(g.currentPlayer).getHand().get(0).getImage(false));
+        iv[4][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
         iv[4][0].setX(80);
         iv[4][0].setY(350);
         iv[4][0].setRotate(-110);
@@ -621,7 +618,7 @@ public class HelloApplication extends Application {
         iv[4][0].setFitWidth(90);
         iv[4][0].setPreserveRatio(true);
         iv[4][0].setVisible(false);
-        iv[4][1] = new ImageView(g.players.get(g.currentPlayer).getHand().get(1).getImage(false));
+        iv[4][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(false));
         iv[4][1].setX(80);
         iv[4][1].setY(400);
         iv[4][1].setRotate(-90);
@@ -629,7 +626,7 @@ public class HelloApplication extends Application {
         iv[4][1].setFitWidth(90);
         iv[4][1].setPreserveRatio(true);
         iv[4][1].setVisible(false);
-        iv[4][2] = new ImageView(g.players.get(g.currentPlayer).getHand().get(2).getImage(false));
+        iv[4][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
         iv[4][2].setX(80);
         iv[4][2].setY(450);
         iv[4][2].setRotate(-70);
@@ -637,7 +634,7 @@ public class HelloApplication extends Application {
         iv[4][2].setFitWidth(90);
         iv[4][2].setPreserveRatio(true);
         iv[4][2].setVisible(false);
-        iv[5][0] = new ImageView(g.players.get(g.currentPlayer).getHand().get(0).getImage(false));
+        iv[5][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
         iv[5][0].setX(920);
         iv[5][0].setY(350);
         iv[5][0].setRotate(110);
@@ -645,7 +642,7 @@ public class HelloApplication extends Application {
         iv[5][0].setFitWidth(90);
         iv[5][0].setPreserveRatio(true);
         iv[5][0].setVisible(false);
-        iv[5][1] = new ImageView(g.players.get(g.currentPlayer).getHand().get(1).getImage(false));
+        iv[5][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(false));
         iv[5][1].setX(920);
         iv[5][1].setY(400);
         iv[5][1].setRotate(90);
@@ -653,7 +650,7 @@ public class HelloApplication extends Application {
         iv[5][1].setFitWidth(90);
         iv[5][1].setPreserveRatio(true);
         iv[5][1].setVisible(false);
-        iv[5][2] = new ImageView(g.players.get(g.currentPlayer).getHand().get(2).getImage(false));
+        iv[5][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
         iv[5][2].setX(920);
         iv[5][2].setY(450);
         iv[5][2].setRotate(70);
@@ -716,21 +713,22 @@ public class HelloApplication extends Application {
         for (int j = 0; j < 2; j++) {
             System.out.println("Player Number: " + j);
             System.out.println("");
-            for (int i = 0; i < g.players.get(j).getHand().size(); i++) {
-                System.out.println(g.players.get(j).getHand().get(i));
+            for (int i = 0; i < g.players[j].getHand().size(); i++) {
+                System.out.println(g.players[j].getHand().get(i));
             }
             System.out.println("");
         }
-           /* Scanner n = new Scanner(System.in);
-            System.out.println("Current Player:" + g.currentPlayer);
-            int choice = n.nextInt();
-            g.playTurn(g.players.get(g.currentPlayer).getHand().get(choice));
-            System.out.println("");
-
-            System.out.println(g.players.get(0).Score());
-            System.out.println(g.players.get(1).Score()); */
+        /*
+         * Scanner n = new Scanner(System.in);
+         * System.out.println("Current Player:" + g.currentPlayer);
+         * int choice = n.nextInt();
+         * g.playTurn(g.players[g.currentPlayer].getHand().get(choice));
+         * System.out.println("");
+         *
+         * System.out.println(g.players.get(0).Score());
+         * System.out.println(g.players.get(1).Score());
+         */
         Group root = new Group(score1, score2, suit, iv[6][0], currrentPlayer);
-
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 6; j++) {
@@ -768,7 +766,7 @@ public class HelloApplication extends Application {
 
         root2.getChildren().add(b);
         int whichPlayerWon = 1;
-        if (g.players.get(0).Score() < g.players.get(1).Score()) {
+        if (g.players[0].Score() < g.players[1].Score()) {
             whichPlayerWon = 2;
         }
         Text gameOver = new Text("Game over");
@@ -786,7 +784,7 @@ public class HelloApplication extends Application {
         whoWon.setX(160);
         whoWon.setY(120);
 
-        Text score = new Text("Score: " + g.players.get(whichPlayerWon-1).Score());
+        Text score = new Text("Score: " + g.players[whichPlayerWon - 1].Score());
         score.setX(165);
         score.setY(140);
         b2.setLayoutX(205);
@@ -826,7 +824,6 @@ public class HelloApplication extends Application {
 
         b.setOnAction(event);
 
-
         // Set position of second window, related to primary window.
         newWindow.setX(0);
         newWindow.setY(0);
@@ -848,7 +845,8 @@ public class HelloApplication extends Application {
     }
 
     /**
-     * This method is used when restarting the game to reset all the parameters to original form
+     * This method is used when restarting the game to reset all the parameters to
+     * original form
      *
      * @param stage
      */
@@ -857,7 +855,6 @@ public class HelloApplication extends Application {
         g = null;
         iv = new ImageView[7][3];
         deck.clear();
-
 
     }
 
@@ -880,15 +877,17 @@ public class HelloApplication extends Application {
         int currentPlayer = HelloApplication.gameUI.g.currentPlayer;
         for (int j = 0; j < gameUI.ammountOfPLayers; j++) {
             for (int i = 0; i < 3; i++) {
-                if(gameUI.g.getPlayer(j).getHand().size()<=i){
+                if (gameUI.g.getPlayer(j).getHand().size() <= i) {
                     gameUI.iv[j][i].setVisible(false);
                     continue;
                 }
                 HelloApplication.gameUI.iv[j][i].setVisible(true);
                 if (j != currentPlayer) {
-                    HelloApplication.gameUI.iv[j][i].setImage(HelloApplication.gameUI.g.players.get(j).getHand().get(i).getImage(false));
+                    HelloApplication.gameUI.iv[j][i]
+                            .setImage(HelloApplication.gameUI.g.players[j].getHand().get(i).getImage(false));
                 } else {
-                    HelloApplication.gameUI.iv[j][i].setImage(HelloApplication.gameUI.g.players.get(j).getHand().get(i).getImage(true));
+                    HelloApplication.gameUI.iv[j][i]
+                            .setImage(HelloApplication.gameUI.g.players[j].getHand().get(i).getImage(true));
                 }
             }
         }
