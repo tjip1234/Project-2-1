@@ -2,6 +2,8 @@ package Game;
 
 import Cards.Card;
 import Cards.Deck;
+import Game.Bots.Bot;
+
 import com.example.project_2.HelloApplication;
 
 import java.io.FileNotFoundException;
@@ -116,5 +118,24 @@ public class GameSession {
 
     public int getTeamNumber(int playerNumber) {
         return playerNumber % 2;
+    }
+
+    public boolean isBot(int playerNumber) {
+        return (players[playerNumber] instanceof Bot);
+    }
+
+    public boolean isCurrentPlayerABot() {
+        return players[currentPlayer] instanceof Bot;
+    }
+
+    public void botPlayTurn() {
+        if (!(players[currentPlayer] instanceof Bot playerBot))
+            return;
+
+        try {
+            playTurn(playerBot.MakeDecision(Table, deck.getBriscola()));
+        } catch (Exception e) {
+            // Do nothing for now
+        }
     }
 }

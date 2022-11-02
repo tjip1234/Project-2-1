@@ -1,5 +1,7 @@
 package Game.Bots;
 
+import java.util.ArrayList;
+
 import Cards.Card;
 import Game.Player;
 
@@ -8,5 +10,5 @@ import Game.Player;
 // May contain fields for self use.
 public abstract class Bot extends Player {
     /// Makes a choosing a card based on the current situation
-    public abstract Card MakeDecision(Card currentTopValue, Card Briscola);
+    public abstract Card MakeDecision(ArrayList<Card> cardsOnTable, Card Briscola);
 }
