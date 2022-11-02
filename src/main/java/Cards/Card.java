@@ -36,8 +36,8 @@ public class Card implements Comparable<Card> {
     public static String skin = "CardBack1";
     public final Suit suit;
     public final Number number;
-    private final Image front;
-    private final Image reverse;
+    private Image front;
+    private Image reverse;
 
     private final int hashCode;
 
@@ -53,8 +53,8 @@ public class Card implements Comparable<Card> {
         hashCode = Objects.hash(suit, number);
 
         String userHome = System.getProperty("user.dir");
-        this.front = new Image("file:PNG-cards-1.3/"+number+"_of_"+suit+".png");
-        this.reverse = new Image("file:PNG-cards-1.3/Reverses/"+Card.skin+".JPG", 90, 150, false, false);
+        //this.front = new Image("file:PNG-cards-1.3/"+number+"_of_"+suit+".png");
+        //this.reverse = new Image("file:PNG-cards-1.3/Reverses/"+Card.skin+".JPG", 90, 150, false, false);
 
     }
 

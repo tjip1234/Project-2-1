@@ -138,7 +138,7 @@ public class GameSession {
 
         try {
             playerBot.playedCards = (HashSet<Card>)playedCards.clone();
-            playTurn(playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
+            playTurn(playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit)));
         } catch (Exception e) {
             // Do nothing for now
         }
