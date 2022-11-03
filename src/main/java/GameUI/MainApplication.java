@@ -1,6 +1,6 @@
 package GameUI;
 
-import Cards.Card;
+import Game.Cards.Card;
 import Game.GameSession;
 import Game.Player;
 import javafx.animation.TranslateTransition;

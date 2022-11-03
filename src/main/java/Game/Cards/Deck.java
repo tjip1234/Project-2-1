@@ -1,12 +1,14 @@
-package Cards;
+package Game.Cards;
+
+import Game.Utils.SeededRandom;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Stack;
 
-public class Deck extends Stack<Card> {
-    private static final Random random = new Random();
+public class Deck extends Stack<Card> implements Cloneable {
+    private final SeededRandom random = new SeededRandom();
 
     private Card briscola = null;
 
@@ -58,4 +60,18 @@ public class Deck extends Stack<Card> {
         return ((HashSet<Card>) cardsInSession.clone());
     }
 
+    @Override
+    public Deck clone() {
+        Deck clone = (Deck) super.clone();
+        clone.random.setState(random.getState());
+        clone.briscola = briscola;
+        clone.cardsInSession.addAll(cardsInSession);
+        clone.clear();
+        for(int i = 0; i < size(); ++i){
+            clone.add(i, get(i));
+        }
+
+        clone.deckSize = deckSize;
+        return clone;
+    }
 }

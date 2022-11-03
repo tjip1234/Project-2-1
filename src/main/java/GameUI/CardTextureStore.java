@@ -1,6 +1,6 @@
 package GameUI;
 
-import Cards.Card;
+import Game.Cards.Card;
 import javafx.scene.image.Image;
 
 import java.util.HashMap;

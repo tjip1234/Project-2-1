@@ -1,4 +1,4 @@
-package Cards;
+package Game.Cards;
 
 import java.util.Objects;
 

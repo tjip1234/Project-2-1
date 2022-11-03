@@ -1,15 +1,15 @@
 package Game;
 
-import Cards.Card;
-import Cards.Deck;
+import Game.Cards.Card;
+import Game.Cards.Deck;
 import Game.Bots.Bot;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
-public class GameSession {
+public class GameSession implements Cloneable{
     public Player[] players;
     public ArrayList<Card> Table = new ArrayList<>();
     public int currentPlayer;
@@ -24,6 +24,11 @@ public class GameSession {
     public Deck deck;
 
     public GameSession(Player... players) {
+
+        for (var player:players) {
+            if(player instanceof Bot bot)
+                bot.simulationSession = this::clone;
+        }
         if (players.length == 0)
             throw new UnsupportedOperationException("Games don't work like that. Dumbss.");
         if (players.length == 1)
@@ -158,4 +163,40 @@ public class GameSession {
         }
     }
 
+    public void simulate(){
+        if(Arrays.stream(players).anyMatch(p -> !(p instanceof Bot)))
+            throw new UnsupportedOperationException("All players must be bots");
+
+        while(!gameOver()){
+            botPlayTurn();
+        }
+    }
+
+    public void simulate(int depth){
+        if(Arrays.stream(players).anyMatch(p -> !(p instanceof Bot)))
+            throw new UnsupportedOperationException("All players must be bots");
+
+        int i = 0;
+        while(!gameOver() && (i++ < depth )){
+            botPlayTurn();
+        }
+    }
+
+    @Override
+    public GameSession clone() {
+            var clonePlayers = new Player[players.length];
+            for(int i = 0 ; i < players.length;++i){
+                clonePlayers[i] = players[i].clone();
+            }
+
+            GameSession clone = new GameSession(clonePlayers);
+
+            clone.deck = deck.clone();
+            clone.currentPlayer = currentPlayer;
+            clone.startPlayer = startPlayer;
+            clone.playedCards.addAll(playedCards);
+            clone.Table.addAll(Table);
+            return clone;
+
+    }
 }
