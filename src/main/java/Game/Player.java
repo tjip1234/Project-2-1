@@ -25,8 +25,8 @@ public class Player {
         Hand.add(card);
         try {
             HelloApplication.gameUI.drawAnimation(whichPlayer);
-        } catch (NullPointerException a) {
-            // e.printStackTrace();
+        } catch (Exception e) {
+            //e.printStackTrace();
         }
     }
 

@@ -53,9 +53,14 @@ public class Card implements Comparable<Card> {
         hashCode = Objects.hash(suit, number);
 
         String userHome = System.getProperty("user.dir");
-        //this.front = new Image("file:PNG-cards-1.3/"+number+"_of_"+suit+".png");
-        //this.reverse = new Image("file:PNG-cards-1.3/Reverses/"+Card.skin+".JPG", 90, 150, false, false);
 
+        try {
+            this.front = new Image("file:PNG-cards-1.3/"+number+"_of_"+suit+".png");
+            this.reverse = new Image("file:PNG-cards-1.3/Reverses/"+Card.skin+".JPG", 90, 150, false, false);
+        }
+        catch (Exception e){
+            // Temporarily do nothing
+        }
     }
 
     /**
@@ -109,9 +114,8 @@ public class Card implements Comparable<Card> {
     }
     public Image getImage(boolean isFront) throws FileNotFoundException, MalformedURLException {
         if(isFront){
-        return this.front;
+            return this.front;
         }
         return this.reverse;
-
     }
 }

@@ -79,7 +79,12 @@ public class GameSession {
                             (i + startPlayer) % players.length);
                 }
             }
-            HelloApplication.resetVisibility();
+            try {
+                HelloApplication.resetVisibility();
+            }
+            catch(Exception e){
+                // Temporary do nothing
+            }
             if (gameOver()) {
                 int playerWinner = 0;
                 for (int i = 1; i < players.length; i++) {
@@ -138,9 +143,11 @@ public class GameSession {
 
         try {
             playerBot.playedCards = (HashSet<Card>)playedCards.clone();
-            playTurn(playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit)));
+            Card playedCard;
+            playTurn(playedCard=playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit)));
+            System.out.printf("Bot played %s\n", playedCard);
         } catch (Exception e) {
-            // Do nothing for now
+            e.printStackTrace();
         }
     }
 
