@@ -1,18 +1,18 @@
 package Game.Bots;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import Cards.Card;
 import Cards.Card.Suit;
 import Game.Player;
+
+import java.util.List;
+import java.util.Set;
 
 // Used by gamesession to determine the choice.
 // MakeDecision() must be implemented
 // May contain fields for self use.
 public abstract class Bot extends Player {
-    public HashSet<Card> playedCards;
+    public Set<Card> playedCards;
 
     /// Makes a choosing a card based on the current situation
-    public abstract Card MakeDecision(ArrayList<Card> cardsOnTable, Suit Briscola);
+    public abstract Card MakeDecision(List<Card> cardsOnTable, Suit Briscola);
 }

@@ -3,6 +3,8 @@ package Game;
 import Cards.Card;
 import com.example.project_2.HelloApplication;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Player {
     private ArrayList<Card> Hand;
@@ -30,8 +32,8 @@ public class Player {
         }
     }
 
-    public ArrayList<Card> getHand() {
-        return (ArrayList<Card>) Hand.clone();
+    public List<Card> getHand() {
+        return Collections.unmodifiableList(Hand);
     }
 
     public void removeHand(Card card) {

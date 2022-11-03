@@ -9,6 +9,7 @@ import com.example.project_2.HelloApplication;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class GameSession {
@@ -24,7 +25,7 @@ public class GameSession {
     public Deck deck;
 
     public GameSession(Player... players) {
-        if (players.length <= 0)
+        if (players.length == 0)
             throw new UnsupportedOperationException("Games don't work like that. Dumbss.");
         if (players.length == 1)
             throw new UnsupportedOperationException(
@@ -142,9 +143,9 @@ public class GameSession {
             return;
 
         try {
-            playerBot.playedCards = (HashSet<Card>)playedCards.clone();
+            playerBot.playedCards = Collections.unmodifiableSet(playedCards);
             Card playedCard;
-            playTurn(playedCard=playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit)));
+            playTurn(playedCard=playerBot.MakeDecision(Collections.unmodifiableList(Table), (deck.getBriscola().suit)));
             System.out.printf("Bot played %s\n", playedCard);
         } catch (Exception e) {
             e.printStackTrace();

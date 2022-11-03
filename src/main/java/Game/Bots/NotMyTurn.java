@@ -4,23 +4,26 @@ import Cards.Card;
 import Cards.Deck;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotMyTurn {
-    public static Card MakeDecision(ArrayList<Card> cardsOnTable, Card.Suit Briscola, Deck currentcards,ArrayList<Card> hand) {
-        cardsOnTable.sort(null);
+    public static Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola, Deck currentcards, List<Card> hand) {
+        // We are using streams because the parameters are unmodifiable for safety reasons
+        // This applies below as well.
+        var sortedCards = cardsOnTable.stream().sorted();
+
         ArrayList<Card> winnables = new ArrayList<Card>();
         for (Card card : hand) {
             if ( card.compareTo(cardsOnTable.get(cardsOnTable.size()-1), Briscola) > 0)
                 winnables.add(card);
         }
-        switch (winnables.size()){
-            case 0:
-                hand.sort(null);
-                return hand.get(0);
-            default:
-                winnables.sort(null);
-                return winnables.get(0);
+        if (winnables.size() == 0) {
+            // Get the card with the minimum value in our hand
+            return hand.stream().min(Card::compareTo).get();
         }
+
+        // Get the lowest valued card we can use to potentially win this match.
+        return winnables.stream().min(Card::compareTo).get();
     }
 
 }
