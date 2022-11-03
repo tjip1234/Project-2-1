@@ -57,7 +57,7 @@ public class GameSession {
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < players.length; i++) {
-                players[(i + startPlayer) % players.length].addHand(deck.pop(), (i + startPlayer) % players.length);
+                players[(i + startPlayer) % players.length].addHand(deck.pop());
             }
         }
     }
@@ -76,8 +76,7 @@ public class GameSession {
             }
             if (!deck.isEmpty()) {
                 for (int i = 0; i < players.length; i++) {
-                    players[(i + startPlayer) % players.length].addHand(deck.pop(),
-                            (i + startPlayer) % players.length);
+                    players[(i + startPlayer) % players.length].addHand(deck.pop());
                 }
             }
             try {

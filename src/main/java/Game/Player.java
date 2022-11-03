@@ -1,7 +1,6 @@
 package Game;
 
 import Cards.Card;
-import GameUI.MainApplication;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,13 +22,8 @@ public class Player {
         return score;
     }
 
-    public void addHand(Card card, int whichPlayer) {
+    public void addHand(Card card) {
         Hand.add(card);
-        try {
-            MainApplication.gameUI.drawAnimation(whichPlayer);
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
     }
 
     public List<Card> getHand() {
