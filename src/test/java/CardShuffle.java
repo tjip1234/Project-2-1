@@ -2,7 +2,7 @@
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import Cards.Deck;
+import Game.Cards.Deck;
 import org.junit.jupiter.api.Test;
 
 public class CardShuffle {

@@ -1,7 +1,7 @@
 package Game.Bots;
 
-import Cards.Card;
-import Cards.Deck;
+import Game.Cards.Card;
+import Game.Cards.Deck;
 
 import java.util.ArrayList;
 import java.util.List;
