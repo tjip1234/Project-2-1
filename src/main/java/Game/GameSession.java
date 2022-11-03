@@ -74,7 +74,7 @@ public class GameSession {
         }
     }
 
-    public void playTurn(Card card) throws MalformedURLException, FileNotFoundException {
+    public void playTurn(Card card){
         players[currentPlayer].removeHand(card);
         Table.add(card);
         playedCards.add(card);

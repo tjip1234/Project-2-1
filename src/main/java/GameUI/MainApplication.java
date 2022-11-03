@@ -42,6 +42,8 @@ public class MainApplication extends Application {
     public static MainApplication gameUI;
     private int player = 0;
 
+    private CardTextureStore.CardSkin currentSkin = CardTextureStore.CardSkin.CardBack1;
+
     /**
      * Start function it defines ui and takes care of displaying menu etc
      *
@@ -114,11 +116,10 @@ public class MainApplication extends Application {
             public void handle(ActionEvent e) {
                 ComboBox<String> howManyPlayers = new ComboBox<String>();
 
-                ComboBox<String> skin = new ComboBox<String>();
-                skin.getItems().add("CardBack1");
-                skin.getItems().add("PizzaSkin");
-
+                ComboBox<CardTextureStore.CardSkin> skin = new ComboBox<CardTextureStore.CardSkin>();
                 skin.setPromptText("Choose the skin");
+                skin.getItems().add(CardTextureStore.CardSkin.CardBack1);
+                skin.getItems().add(CardTextureStore.CardSkin.Pizza);
 
                 howManyPlayers.setPromptText("Choose the amount of players");
                 howManyPlayers.getItems().add("2");
@@ -168,7 +169,7 @@ public class MainApplication extends Application {
                 // Allows card reverse choice
                 EventHandler<ActionEvent> skinChoice = new EventHandler<>() {
                     public void handle(ActionEvent e) {
-                        Card.skin = skin.getValue();
+                        currentSkin = skin.getValue();
                     }
                 };
                 skin.setOnAction(skinChoice);
@@ -191,48 +192,26 @@ public class MainApplication extends Application {
 
     public void handlers(int whichCard) {
         player = g.currentPlayer;
-        try {
-            iv[6][0].setImage(g.players[player].getHand().get(whichCard).getImage(true));
-        } catch (FileNotFoundException | MalformedURLException e) {
-            // e.printStackTrace();
-        }
+        iv[6][0].setImage(CardTextureStore.getCardTextures(currentSkin, g.players[player].getHand().get(whichCard)).front());
         iv[6][0].setVisible(true);
 
-        try {
-            g.playTurn(g.players[player].getHand().get(whichCard));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        g.playTurn(g.players[player].getHand().get(whichCard));
 
         for (int i = 0; i < 3; i++) {
             try {
-                iv[player][i].setImage((g.players[player].getHand().get(i).getImage(false)));
+                iv[player][i].setImage(CardTextureStore.getCardTextures(currentSkin, g.players[player].getHand().get(i)).back());
                 iv[player][i].setVisible(true);
-
-            } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
-            }
-        }
-        for (int i = 0; i < 3; i++) {
-            try {
-
-                iv[player][i].setImage(g.players[player].getHand().get(i).getImage(false));
-            } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException e) {
-                // e.printStackTrace();
+            } catch ( IndexOutOfBoundsException ignored) {
                 iv[player][i].setVisible(false);
                 rects[i].setVisible(false);
-
             }
         }
+
         for (int i = 0; i < 3; i++) {
             try {
-                iv[g.currentPlayer][i].setImage((g.players[g.currentPlayer].getHand().get(i).getImage(true)));
+                iv[g.currentPlayer][i].setImage(CardTextureStore.getCardTextures(currentSkin,g.players[g.currentPlayer].getHand().get(i)).front());
                 iv[g.currentPlayer][i].setVisible(true);
-
-            } catch (FileNotFoundException | IndexOutOfBoundsException | MalformedURLException ignored) {
-
+            } catch (IndexOutOfBoundsException ignored) {
             }
         }
         for (int i = g.deck.size() + 2; i < deck.size(); i++) {
@@ -458,7 +437,7 @@ public class MainApplication extends Application {
 
         g.addNextPlayerCallback(()->{
             try{
-                MainApplication.resetVisibility();
+                resetVisibility();
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -493,7 +472,7 @@ public class MainApplication extends Application {
          */
         Text suit = new Text(750, 510, "Briscola: " + g.deck.getBriscola().suit);
         // adds card to UI deck display
-        deck.add(0, new ImageView(g.deck.get(0).getImage(true)));
+        deck.add(0, new ImageView(CardTextureStore.getCardTextures(currentSkin, g.deck.get(0)).front()));
         deck.get(0).setFitWidth(90);
         deck.get(0).setFitHeight(150);
         deck.get(0).setX(751);
@@ -505,7 +484,7 @@ public class MainApplication extends Application {
         // Fills the ui deck to be displayed
         for (int i = 1; i < g.deck.size(); i++) {
 
-            deck.add(i, new ImageView(g.deck.get(i).getImage(false)));
+            deck.add(i, new ImageView(CardTextureStore.getCardTextures(currentSkin,g.deck.get(i)).back()));
             deck.get(i).setFitWidth(90);
             deck.get(i).setFitHeight(150);
 
@@ -518,47 +497,49 @@ public class MainApplication extends Application {
         }
         // Sets location of all the players cards and adds event handlers
 
-        iv[6][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
+        var backTexture = CardTextureStore.getCardTextures(currentSkin, g.players[g.currentPlayer].getHand().get(0)).back();
+
+        iv[6][0] = new ImageView(backTexture);
         iv[6][0].setX(440);
         iv[6][0].setY(260);
         iv[6][0].setFitWidth(90);
         iv[6][0].setFitHeight(150);
         iv[6][0].setPreserveRatio(true);
         iv[6][0].setVisible(false);
-        iv[0][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(true));
+        iv[0][0] = new ImageView(backTexture);
         iv[0][0].setX(400);
         iv[0][0].setY(450);
         iv[0][0].setFitHeight(150);
         iv[0][0].setFitWidth(90);
         iv[0][0].setPreserveRatio(true);
-        iv[0][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(true));
+        iv[0][1] = new ImageView(backTexture);
         iv[0][1].setX(500);
         iv[0][1].setY(450);
         iv[0][1].setFitHeight(150);
         iv[0][1].setFitWidth(90);
         iv[0][1].setPreserveRatio(true);
-        iv[0][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(true));
+        iv[0][2] = new ImageView(backTexture);
         iv[0][2].setX(600);
         iv[0][2].setY(450);
         iv[0][2].setFitHeight(150);
         iv[0][2].setFitWidth(90);
         iv[0][2].setPreserveRatio(true);
-        iv[1][0] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
+        iv[1][0] = new ImageView(backTexture);
         iv[1][0].setY(50);
         iv[1][0].setRotate(180);
         iv[1][0].setFitWidth(90);
         iv[1][0].setFitHeight(150);
-        iv[1][1] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
+        iv[1][1] = new ImageView(backTexture);
         iv[1][1].setY(50);
         iv[1][1].setRotate(180);
         iv[1][1].setFitWidth(90);
         iv[1][1].setFitHeight(150);
-        iv[1][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
+        iv[1][2] = new ImageView(backTexture);
         iv[1][2].setY(50);
         iv[1][2].setRotate(180);
         iv[1][2].setFitWidth(90);
         iv[1][2].setFitHeight(150);
-        iv[1][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
+        iv[1][0] = new ImageView(backTexture);
         iv[1][0].setX(80);
         iv[1][0].setY(50);
         iv[1][0].setRotate(-180);
@@ -566,7 +547,7 @@ public class MainApplication extends Application {
         iv[1][0].setFitWidth(90);
         iv[1][0].setPreserveRatio(true);
         iv[1][0].setVisible(true);
-        iv[2][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
+        iv[2][0] = new ImageView(backTexture);
         iv[2][0].setX(80);
         iv[2][0].setY(150);
         iv[2][0].setRotate(-90);
@@ -574,7 +555,7 @@ public class MainApplication extends Application {
         iv[2][0].setFitWidth(90);
         iv[2][0].setPreserveRatio(true);
         iv[2][0].setVisible(false);
-        iv[2][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(false));
+        iv[2][1] = new ImageView(backTexture);
         iv[2][1].setX(80);
         iv[2][1].setY(250);
         iv[2][1].setRotate(-90);
@@ -582,7 +563,7 @@ public class MainApplication extends Application {
         iv[2][1].setFitWidth(90);
         iv[2][1].setPreserveRatio(true);
         iv[2][1].setVisible(false);
-        iv[2][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
+        iv[2][2] = new ImageView(backTexture);
         iv[2][2].setX(80);
         iv[2][2].setY(350);
         iv[2][2].setRotate(-90);
@@ -590,7 +571,7 @@ public class MainApplication extends Application {
         iv[2][2].setFitWidth(90);
         iv[2][2].setPreserveRatio(true);
         iv[2][2].setVisible(false);
-        iv[3][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
+        iv[3][0] = new ImageView(backTexture);
         iv[3][0].setX(920);
         iv[3][0].setY(150);
         iv[3][0].setRotate(90);
@@ -598,7 +579,7 @@ public class MainApplication extends Application {
         iv[3][0].setFitWidth(90);
         iv[3][0].setPreserveRatio(true);
         iv[3][0].setVisible(false);
-        iv[3][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(false));
+        iv[3][1] = new ImageView(backTexture);
         iv[3][1].setX(920);
         iv[3][1].setY(250);
         iv[3][1].setRotate(90);
@@ -606,7 +587,7 @@ public class MainApplication extends Application {
         iv[3][1].setFitWidth(90);
         iv[3][1].setPreserveRatio(true);
         iv[3][1].setVisible(false);
-        iv[3][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
+        iv[3][2] = new ImageView(backTexture);
         iv[3][2].setX(920);
         iv[3][2].setY(350);
         iv[3][2].setRotate(90);
@@ -614,7 +595,7 @@ public class MainApplication extends Application {
         iv[3][2].setFitWidth(90);
         iv[3][2].setPreserveRatio(true);
         iv[3][2].setVisible(false);
-        iv[4][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
+        iv[4][0] = new ImageView(backTexture);
         iv[4][0].setX(80);
         iv[4][0].setY(350);
         iv[4][0].setRotate(-110);
@@ -622,7 +603,7 @@ public class MainApplication extends Application {
         iv[4][0].setFitWidth(90);
         iv[4][0].setPreserveRatio(true);
         iv[4][0].setVisible(false);
-        iv[4][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(false));
+        iv[4][1] = new ImageView(backTexture);
         iv[4][1].setX(80);
         iv[4][1].setY(400);
         iv[4][1].setRotate(-90);
@@ -630,7 +611,7 @@ public class MainApplication extends Application {
         iv[4][1].setFitWidth(90);
         iv[4][1].setPreserveRatio(true);
         iv[4][1].setVisible(false);
-        iv[4][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
+        iv[4][2] = new ImageView(backTexture);
         iv[4][2].setX(80);
         iv[4][2].setY(450);
         iv[4][2].setRotate(-70);
@@ -638,7 +619,7 @@ public class MainApplication extends Application {
         iv[4][2].setFitWidth(90);
         iv[4][2].setPreserveRatio(true);
         iv[4][2].setVisible(false);
-        iv[5][0] = new ImageView(g.players[g.currentPlayer].getHand().get(0).getImage(false));
+        iv[5][0] = new ImageView(backTexture);
         iv[5][0].setX(920);
         iv[5][0].setY(350);
         iv[5][0].setRotate(110);
@@ -646,7 +627,7 @@ public class MainApplication extends Application {
         iv[5][0].setFitWidth(90);
         iv[5][0].setPreserveRatio(true);
         iv[5][0].setVisible(false);
-        iv[5][1] = new ImageView(g.players[g.currentPlayer].getHand().get(1).getImage(false));
+        iv[5][1] = new ImageView(backTexture);
         iv[5][1].setX(920);
         iv[5][1].setY(400);
         iv[5][1].setRotate(90);
@@ -654,7 +635,7 @@ public class MainApplication extends Application {
         iv[5][1].setFitWidth(90);
         iv[5][1].setPreserveRatio(true);
         iv[5][1].setVisible(false);
-        iv[5][2] = new ImageView(g.players[g.currentPlayer].getHand().get(2).getImage(false));
+        iv[5][2] = new ImageView(backTexture);
         iv[5][2].setX(920);
         iv[5][2].setY(450);
         iv[5][2].setRotate(70);
@@ -877,21 +858,19 @@ public class MainApplication extends Application {
         }
     }
 
-    public static void resetVisibility() throws MalformedURLException, FileNotFoundException {
-        int currentPlayer = MainApplication.gameUI.g.currentPlayer;
-        for (int j = 0; j < gameUI.ammountOfPLayers; j++) {
+    public void resetVisibility() {
+        int currentPlayer = g.currentPlayer;
+        for (int j = 0; j < ammountOfPLayers; j++) {
             for (int i = 0; i < 3; i++) {
-                if (gameUI.g.getPlayer(j).getHand().size() <= i) {
-                    gameUI.iv[j][i].setVisible(false);
+                if (g.getPlayer(j).getHand().size() <= i) {
+                    iv[j][i].setVisible(false);
                     continue;
                 }
-                MainApplication.gameUI.iv[j][i].setVisible(true);
+                iv[j][i].setVisible(true);
                 if (j != currentPlayer) {
-                    MainApplication.gameUI.iv[j][i]
-                            .setImage(MainApplication.gameUI.g.players[j].getHand().get(i).getImage(false));
+                    iv[j][i].setImage(CardTextureStore.getCardTextures(currentSkin, g.players[j].getHand().get(i)).back());
                 } else {
-                    MainApplication.gameUI.iv[j][i]
-                            .setImage(MainApplication.gameUI.g.players[j].getHand().get(i).getImage(true));
+                    iv[j][i].setImage(CardTextureStore.getCardTextures(currentSkin, g.players[j].getHand().get(i)).front());
                 }
             }
         }
