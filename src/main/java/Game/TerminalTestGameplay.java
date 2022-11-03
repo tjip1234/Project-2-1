@@ -32,7 +32,7 @@ public class TerminalTestGameplay {
         System.out.printf("Player #%d is up next! \n Press ENTER to continue", g.currentPlayer);
         //scanner.nextLine();
 
-        while (true) {
+        while (g.players[0].getHand().size() > 0) {
             trickNumber++;
             for (int i = 0; i < g.players.length; ++i) {
                 clearConsole();
@@ -76,7 +76,7 @@ public class TerminalTestGameplay {
                     try {
                         g.playTurn(g.players[g.currentPlayer].getHand().get(choice));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                     }
                 }
                 else{
