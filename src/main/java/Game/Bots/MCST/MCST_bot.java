@@ -14,6 +14,7 @@ public class MCST_bot extends Bot {
         board.setFieldCards(cardsOnTable);
         board.setHand(this.getHand());
         board.setPlayedCards(new ArrayList<>(this.playedCards));
-        return MCST.findCardToPlay(board,1);
+
+        return new MCST(500).findCardToPlay(board,1);
     }
 }

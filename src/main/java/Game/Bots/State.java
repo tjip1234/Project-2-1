@@ -21,13 +21,12 @@ public class State {
         this.board = new Board(board);
     }
 
-    //TODO are we taking in to account rounds properly?
+    //TODO are we taking into account rounds properly?
     public List<State> getAllPossibleStates() {
         List<State> allPossibleStates = new ArrayList<>();
         //Play one of your 3 cards
         if(player == OPPONENT){
-            //TODO Should be hand size I think, not 3
-            for(int handIndex = 0; handIndex<3;handIndex++){
+            for(int handIndex = 0; handIndex<this.board.getHand().size();handIndex++){
                 State newState = new State(this.board);
                 newState.getBoard().playTurn(this.player,this.board.getCard(handIndex));
                 newState.setPlayer(this.player);
@@ -37,7 +36,6 @@ public class State {
         //Opponent plays one of the cards that are possible in the remainder deck
         //40 minus cardsPlayer.size() possible
         else if(player == BOT){
-            //TODO get Stack
             List<Card> cardsLeft = board.getPossibleCards();
             for (Card card : cardsLeft) {
                 State newState = new State(this.board);

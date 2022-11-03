@@ -9,12 +9,12 @@ import Game.Bots.Tree;
 import java.util.List;
 
 public class MCST {
-    static int iterationCount = 500;
-    final int WINNER_REWARD = 10;
+    int iterationCount;
+    public MCST(int iterationCount){
+        this.iterationCount = iterationCount;
+    }
 
-
-
-    public static Card findCardToPlay(Board board, int player){
+    public Card findCardToPlay(Board board, int player){
         Tree tree = new Tree();
         Node rootNode = tree.getRootNode();
         rootNode.getState().setBoard(board);
@@ -29,8 +29,7 @@ public class MCST {
             }
 
             //Extension
-            //TODO check if terminal node is reached aka game is finished
-            if(true){
+            if(!currentNode.getState().getBoard().checkFinished()){
                 List<State> possibleStates = currentNode.getState().getAllPossibleStates();
                 for (State possibleState : possibleStates) {
                     Node newNode = new Node();
@@ -59,18 +58,30 @@ public class MCST {
             iterationCount--;
         }
 
-        Node winningNode = null; //TODO get the highest scoring child
+        Node winningNode = getWinningNode(rootNode);
         tree.setRootNode(winningNode);
         int size  = winningNode.getState().getBoard().getPlayedCards().size();
         return winningNode.getState().getBoard().getPlayedCards().get(size-1);
     }
 
-    //TODO return an int which tells the score of a randomly played game from this state
-    private static int randomPlay(Node node){
+    private Node getWinningNode(Node rootNode){
+        Node highestValueNode = null;
+        for (Node node : rootNode.getListOfChildren()){
+            if(highestValueNode==null){
+                highestValueNode = node;
+            }else if(node.getState().getScoreForState()>highestValueNode.getState().getScoreForState()){
+                highestValueNode = node;
+            }
+        }
+        return highestValueNode;
+    }
+
+    private int randomPlay(Node node){
+        //TODO return an int which tells the score of a randomly played game starting at this node
        return 0;
     }
 
-    static int getOpponent(int player){
+    private int getOpponent(int player){
         return (player%3)+1;
     }
 

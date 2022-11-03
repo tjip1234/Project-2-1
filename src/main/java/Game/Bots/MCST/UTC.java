@@ -9,6 +9,7 @@ public class UTC {
         int totalVisitAmount = currentNode.getState().getVisitCountForState();
         Node maxValueNode = null;
         double maxValue  = 0;
+
         for(int i = 0; i<currentNode.getListOfChildren().size(); i++){
             Node currentChild = currentNode.getListOfChildren().get(i);
             int visitAmount = currentChild.getState().getVisitCountForState();
