@@ -1,8 +1,7 @@
-module com.example.project_2 {
+module GameUI {
     requires javafx.controls;
     requires javafx.fxml;
 
-
-    opens com.example.project_2 to javafx.fxml;
-    exports com.example.project_2;
+    opens GameUI to javafx.fxml;
+    exports GameUI;
 }

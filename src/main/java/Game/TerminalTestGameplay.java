@@ -3,6 +3,7 @@ package Game;
 import Cards.Card;
 import Cards.Deck;
 import Game.Bots.RL_bot;
+import Game.Bots.RandomBot;
 import Game.GameSession;
 
 import java.util.Scanner;

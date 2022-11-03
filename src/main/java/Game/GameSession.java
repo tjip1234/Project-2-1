@@ -4,7 +4,7 @@ import Cards.Card;
 import Cards.Deck;
 import Game.Bots.Bot;
 
-import com.example.project_2.HelloApplication;
+import GameUI.MainApplication;
 
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
@@ -81,7 +81,7 @@ public class GameSession {
                 }
             }
             try {
-                HelloApplication.resetVisibility();
+                MainApplication.resetVisibility();
             }
             catch(Exception e){
                 // Temporary do nothing

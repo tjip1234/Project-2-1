@@ -1,4 +1,4 @@
-package com.example.project_2;
+package GameUI;
 
 import Cards.Card;
 import Game.GameSession;
@@ -7,17 +7,11 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -30,7 +24,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
-public class HelloApplication extends Application {
+public class MainApplication extends Application {
     private GameSession g = null;
     private ImageView[][] iv = new ImageView[7][3];
 
@@ -45,7 +39,7 @@ public class HelloApplication extends Application {
     private Text score2 = new Text();
     private Text currrentPlayer = new Text("Current player: ");
     private int ammountOfPLayers = 2;
-    public static HelloApplication gameUI;
+    public static MainApplication gameUI;
     private int player = 0;
 
     /**
@@ -874,20 +868,20 @@ public class HelloApplication extends Application {
     }
 
     public static void resetVisibility() throws MalformedURLException, FileNotFoundException {
-        int currentPlayer = HelloApplication.gameUI.g.currentPlayer;
+        int currentPlayer = MainApplication.gameUI.g.currentPlayer;
         for (int j = 0; j < gameUI.ammountOfPLayers; j++) {
             for (int i = 0; i < 3; i++) {
                 if (gameUI.g.getPlayer(j).getHand().size() <= i) {
                     gameUI.iv[j][i].setVisible(false);
                     continue;
                 }
-                HelloApplication.gameUI.iv[j][i].setVisible(true);
+                MainApplication.gameUI.iv[j][i].setVisible(true);
                 if (j != currentPlayer) {
-                    HelloApplication.gameUI.iv[j][i]
-                            .setImage(HelloApplication.gameUI.g.players[j].getHand().get(i).getImage(false));
+                    MainApplication.gameUI.iv[j][i]
+                            .setImage(MainApplication.gameUI.g.players[j].getHand().get(i).getImage(false));
                 } else {
-                    HelloApplication.gameUI.iv[j][i]
-                            .setImage(HelloApplication.gameUI.g.players[j].getHand().get(i).getImage(true));
+                    MainApplication.gameUI.iv[j][i]
+                            .setImage(MainApplication.gameUI.g.players[j].getHand().get(i).getImage(true));
                 }
             }
         }
