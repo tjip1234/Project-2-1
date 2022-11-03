@@ -3,9 +3,6 @@ package Game;
 import Cards.Card;
 import Cards.Deck;
 import Game.Bots.Bot;
-
-import GameUI.MainApplication;
-
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -18,7 +15,9 @@ public class GameSession {
     public int currentPlayer;
     int startPlayer = 0;
 
-    private HashSet<Card> playedCards = new HashSet<>();
+    private final ArrayList<Runnable> onNextPlayer = new ArrayList<>();
+
+    private final HashSet<Card> playedCards = new HashSet<>();
 
     public final boolean isTeamGame;
 
@@ -52,8 +51,21 @@ public class GameSession {
             deck = new Deck(40);
     }
 
+    public void addNextPlayerCallback(Runnable callback){
+        if(callback == null)
+            return;
+        onNextPlayer.add(callback);
+    }
+
+    private void executeNextPlayerCallback(){
+        for (var runnable : onNextPlayer){
+            runnable.run();;
+        }
+    }
+
     public void startRound() {
         deck.reshuffle();
+        playedCards.clear();
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < players.length; i++) {
@@ -79,12 +91,7 @@ public class GameSession {
                     players[(i + startPlayer) % players.length].addHand(deck.pop());
                 }
             }
-            try {
-                MainApplication.resetVisibility();
-            }
-            catch(Exception e){
-                // Temporary do nothing
-            }
+            executeNextPlayerCallback();
             if (gameOver()) {
                 int playerWinner = 0;
                 for (int i = 1; i < players.length; i++) {

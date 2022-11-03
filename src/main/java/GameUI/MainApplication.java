@@ -455,6 +455,16 @@ public class MainApplication extends Application {
             players[i] = new Player();
 
         g = new GameSession(players);
+
+        g.addNextPlayerCallback(()->{
+            try{
+                MainApplication.resetVisibility();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+
         score1 = new Text(20, 20, "Player 1: " + g.players[0].Score());
         score1.setFill(Color.WHITE);
         score1.setStrokeWidth(1);
