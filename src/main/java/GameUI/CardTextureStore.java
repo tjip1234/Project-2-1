@@ -2,6 +2,7 @@ package GameUI;
 
 import Game.Cards.Card;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.HashMap;
 
@@ -16,26 +17,20 @@ public class CardTextureStore {
         }
     }
 
-    public static record CardTextures(Image front, Image back){}
+    private static HashMap<Card, Image> frontTextures = new HashMap<>();
+    private static HashMap<CardSkin, Image> backTextures = new HashMap<>();
 
-    private static  HashMap<CardSkin, HashMap<Card, CardTextures>> textures = new HashMap<>();
+    public static Image getFrontTexture(Card card){
+        if(!frontTextures.containsKey(card))
+            frontTextures.put(card, new Image(String.format("file:PNG-cards-1.3/%s_of_%s.png", card.number, card.suit)));
 
-
-    static{
-        for(var value : CardSkin.values())
-            textures.put(value, new HashMap<>());
+        return frontTextures.get(card);
     }
 
-    public static CardTextures getCardTextures(CardSkin skin, Card card){
-        if(!textures.get(skin).containsKey(card)){
-            var front = new Image(String.format("file:PNG-cards-1.3/%s_of_%s.png", card.number, card.suit));
-            var back = new Image(String.format("file:PNG-cards-1.3/Reverses/%s.JPG", skin.nameValue), 90, 150, false, false);
+    public static Image getBackTexture(CardSkin cardSkin){
+        if(!backTextures.containsKey(cardSkin))
+            backTextures.put(cardSkin, new Image(String.format("file:PNG-cards-1.3/Reverses/%s.JPG", cardSkin.nameValue), 90, 150, false, false));
 
-            textures.get(skin).put(card, new CardTextures(front, back));
-        }
-
-        return textures.get(skin).get(card);
+        return backTextures.get(cardSkin);
     }
-
-
 }

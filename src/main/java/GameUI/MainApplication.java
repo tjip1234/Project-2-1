@@ -192,14 +192,14 @@ public class MainApplication extends Application {
 
     public void handlers(int whichCard) {
         player = g.currentPlayer;
-        iv[6][0].setImage(CardTextureStore.getCardTextures(currentSkin, g.players[player].getHand().get(whichCard)).front());
+        iv[6][0].setImage(CardTextureStore.getFrontTexture(g.players[player].getHand().get(whichCard)));
         iv[6][0].setVisible(true);
 
         g.playTurn(g.players[player].getHand().get(whichCard));
 
         for (int i = 0; i < 3; i++) {
             try {
-                iv[player][i].setImage(CardTextureStore.getCardTextures(currentSkin, g.players[player].getHand().get(i)).back());
+                iv[player][i].setImage(CardTextureStore.getBackTexture(currentSkin));
                 iv[player][i].setVisible(true);
             } catch ( IndexOutOfBoundsException ignored) {
                 iv[player][i].setVisible(false);
@@ -209,7 +209,7 @@ public class MainApplication extends Application {
 
         for (int i = 0; i < 3; i++) {
             try {
-                iv[g.currentPlayer][i].setImage(CardTextureStore.getCardTextures(currentSkin,g.players[g.currentPlayer].getHand().get(i)).front());
+                iv[g.currentPlayer][i].setImage(CardTextureStore.getFrontTexture(g.players[g.currentPlayer].getHand().get(i)));
                 iv[g.currentPlayer][i].setVisible(true);
             } catch (IndexOutOfBoundsException ignored) {
             }
@@ -472,7 +472,7 @@ public class MainApplication extends Application {
          */
         Text suit = new Text(750, 510, "Briscola: " + g.deck.getBriscola().suit);
         // adds card to UI deck display
-        deck.add(0, new ImageView(CardTextureStore.getCardTextures(currentSkin, g.deck.get(0)).front()));
+        deck.add(0, new ImageView(CardTextureStore.getFrontTexture(g.deck.get(0))));
         deck.get(0).setFitWidth(90);
         deck.get(0).setFitHeight(150);
         deck.get(0).setX(751);
@@ -484,7 +484,7 @@ public class MainApplication extends Application {
         // Fills the ui deck to be displayed
         for (int i = 1; i < g.deck.size(); i++) {
 
-            deck.add(i, new ImageView(CardTextureStore.getCardTextures(currentSkin,g.deck.get(i)).back()));
+            deck.add(i, new ImageView(CardTextureStore.getBackTexture(currentSkin)));
             deck.get(i).setFitWidth(90);
             deck.get(i).setFitHeight(150);
 
@@ -497,7 +497,7 @@ public class MainApplication extends Application {
         }
         // Sets location of all the players cards and adds event handlers
 
-        var backTexture = CardTextureStore.getCardTextures(currentSkin, g.players[g.currentPlayer].getHand().get(0)).back();
+        var backTexture = CardTextureStore.getBackTexture(currentSkin);
 
         iv[6][0] = new ImageView(backTexture);
         iv[6][0].setX(440);
@@ -506,19 +506,19 @@ public class MainApplication extends Application {
         iv[6][0].setFitHeight(150);
         iv[6][0].setPreserveRatio(true);
         iv[6][0].setVisible(false);
-        iv[0][0] = new ImageView(backTexture);
+        iv[0][0] = new ImageView(CardTextureStore.getFrontTexture(g.players[g.currentPlayer].getHand().get(0)));
         iv[0][0].setX(400);
         iv[0][0].setY(450);
         iv[0][0].setFitHeight(150);
         iv[0][0].setFitWidth(90);
         iv[0][0].setPreserveRatio(true);
-        iv[0][1] = new ImageView(backTexture);
+        iv[0][1] = new ImageView(CardTextureStore.getFrontTexture(g.players[g.currentPlayer].getHand().get(1)));
         iv[0][1].setX(500);
         iv[0][1].setY(450);
         iv[0][1].setFitHeight(150);
         iv[0][1].setFitWidth(90);
         iv[0][1].setPreserveRatio(true);
-        iv[0][2] = new ImageView(backTexture);
+        iv[0][2] = new ImageView(CardTextureStore.getFrontTexture(g.players[g.currentPlayer].getHand().get(2)));
         iv[0][2].setX(600);
         iv[0][2].setY(450);
         iv[0][2].setFitHeight(150);
@@ -868,9 +868,9 @@ public class MainApplication extends Application {
                 }
                 iv[j][i].setVisible(true);
                 if (j != currentPlayer) {
-                    iv[j][i].setImage(CardTextureStore.getCardTextures(currentSkin, g.players[j].getHand().get(i)).back());
+                    iv[j][i].setImage(CardTextureStore.getBackTexture(currentSkin));
                 } else {
-                    iv[j][i].setImage(CardTextureStore.getCardTextures(currentSkin, g.players[j].getHand().get(i)).front());
+                    iv[j][i].setImage(CardTextureStore.getFrontTexture(g.players[j].getHand().get(i)));
                 }
             }
         }
