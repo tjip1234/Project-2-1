@@ -177,7 +177,7 @@ public class GameSession implements Cloneable{
             throw new UnsupportedOperationException("All players must be bots");
 
         int i = 0;
-        while(!gameOver() && (i++ < depth )){
+        while(!gameOver() && (i++ < depth)){
             botPlayTurn();
         }
     }
