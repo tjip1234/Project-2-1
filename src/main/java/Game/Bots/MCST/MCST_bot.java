@@ -1,8 +1,8 @@
 package Game.Bots.MCST;
 
-import Cards.Card;
 import Game.Bots.Board;
 import Game.Bots.Bot;
+import Game.Cards.Card;
 
 import java.util.ArrayList;
 import java.util.List;

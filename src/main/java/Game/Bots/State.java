@@ -1,6 +1,8 @@
 package Game.Bots;
 
-import Cards.Card;
+
+import Game.Cards.Card;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class State {
             }
         }
         //Opponent plays one of the cards that are possible in the remainder deck
-        //40 minus cardsPlayer.size() possible
+        //40 minus cardsPlayer.size() possible but is this accurate? or do we simulate the 3 cards and then choose best solution?
         else if(player == BOT){
             List<Card> cardsLeft = board.getPossibleCards();
             for (Card card : cardsLeft) {
