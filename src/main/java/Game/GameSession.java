@@ -4,10 +4,7 @@ import Game.Cards.Card;
 import Game.Cards.Deck;
 import Game.Bots.Bot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 public class GameSession implements Cloneable{
     public Player[] players;
@@ -97,6 +94,7 @@ public class GameSession implements Cloneable{
                 }
             }
             executeNextPlayerCallback();
+            //Why?
             if (gameOver()) {
                 int playerWinner = 0;
                 for (int i = 1; i < players.length; i++) {
@@ -118,7 +116,7 @@ public class GameSession implements Cloneable{
     }
 
     public boolean gameOver() {
-        return players[currentPlayer].getHand().isEmpty();
+        return playedCards.containsAll(deck.getSessionCards());
     }
 
     public Integer getScoreForTeam(int teamNumber) {
@@ -154,10 +152,10 @@ public class GameSession implements Cloneable{
             return;
 
         try {
-            playerBot.playedCards = Collections.unmodifiableSet(playedCards);
-            Card playedCard;
-            playTurn(playedCard=playerBot.MakeDecision(Collections.unmodifiableList(Table), (deck.getBriscola().suit)));
-            System.out.printf("Bot played %s\n", playedCard);
+            playerBot.playedCards = (HashSet<Card>)playedCards.clone();
+            Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
+            System.out.println(uhm);
+            playTurn(uhm);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -197,6 +195,7 @@ public class GameSession implements Cloneable{
             clone.playedCards.addAll(playedCards);
             clone.Table.addAll(Table);
             return clone;
-
     }
+    public Set<Card> getPlayedCards() {return Collections.unmodifiableSet(playedCards);}
+
 }
