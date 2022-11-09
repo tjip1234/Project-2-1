@@ -47,6 +47,7 @@ public class State {
                 var remainingCards = new HashSet<Card>();
                 remainingCards.addAll(board.deck.getSessionCards());
                 remainingCards.removeAll(board.getPlayedCards());
+                remainingCards.removeAll(board.players[rootPlayerNumber].getHand());
 
                 for (Card card : remainingCards) {
                     GameSession tmp = board.clone();

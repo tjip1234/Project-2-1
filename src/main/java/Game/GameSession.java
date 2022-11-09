@@ -116,7 +116,10 @@ public class GameSession implements Cloneable{
     }
 
     public boolean gameOver() {
-        return playedCards.containsAll(deck.getSessionCards());
+        int sum = 0;
+        for(var p : players)
+            sum+= p.CollectedCards.size();
+        return sum == deck.getSessionCards().size();
     }
 
     public Integer getScoreForTeam(int teamNumber) {
@@ -154,7 +157,7 @@ public class GameSession implements Cloneable{
         try {
             playerBot.playedCards = (HashSet<Card>)playedCards.clone();
             Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
-            System.out.println(uhm);
+            //System.out.println(uhm);
             playTurn(uhm);
         } catch (Exception e) {
             e.printStackTrace();

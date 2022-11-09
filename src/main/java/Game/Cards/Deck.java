@@ -46,6 +46,7 @@ public class Deck extends Stack<Card> implements Cloneable {
             }
 
             push(card);
+            cardsInSession.add(card);
         }
 
         // Find the briscola ahead of time, and add it to the bottom of the stack
