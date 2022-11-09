@@ -23,7 +23,7 @@ public class TerminalTestGameplay {
     }
 
     public static void main(String[] args) {
-        GameSession g = new GameSession(new MCST_bot(), new RL_bot());
+        GameSession g = new GameSession(new MCST_bot(), new RL_bot() );
         g.startRound();
         int trickNumber = 0;
 

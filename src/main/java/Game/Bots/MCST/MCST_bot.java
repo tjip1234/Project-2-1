@@ -14,7 +14,7 @@ import java.util.Stack;
 public class MCST_bot extends Bot {
     @Override
     public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) {
-        return findCardToPlay(simulationSession.get(), 500);
+        return findCardToPlay(simulationSession.get(), 1000);
     }
 
     public Card findCardToPlay(GameSession board, int iterationCount){
@@ -51,7 +51,7 @@ public class MCST_bot extends Bot {
             //TODO draw
             while(true){
                 if(stateToExplore.peek().getBoard().gameOver()){
-                    if(stateToExplore.peek().getBoard().currentPlayer== board.currentPlayer){
+                    if(stateToExplore.peek().getBoard().getWinnerChickenDinner() == board.currentPlayer){
                         State finalStateToExplore = stateToExplore.peek();
                         if(Arrays.stream(stateToExplore.peek().getBoard().players).filter(
                                 c->c.Score()== finalStateToExplore.getBoard().players[board.currentPlayer].Score()).count()>1){

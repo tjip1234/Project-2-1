@@ -11,6 +11,7 @@ public class GameSession implements Cloneable{
     public ArrayList<Card> Table = new ArrayList<>();
     public int currentPlayer;
     int startPlayer = 0;
+    int winnerChickenDinner = 0;
 
     private final ArrayList<Runnable> onNextPlayer = new ArrayList<>();
 
@@ -120,6 +121,18 @@ public class GameSession implements Cloneable{
         for(var p : players)
             sum+= p.CollectedCards.size();
         return sum == deck.getSessionCards().size();
+    }
+
+    public int getWinnerChickenDinner() {
+        int currentMaxScore = 0;
+        int maxScorePlayerIndex = 0;
+        for(int i = 0;i<players.length;i++){
+            if(players[i].Score() > currentMaxScore){
+                currentMaxScore = players[i].Score();
+                maxScorePlayerIndex = i;
+            }
+        }
+        return maxScorePlayerIndex;
     }
 
     public Integer getScoreForTeam(int teamNumber) {

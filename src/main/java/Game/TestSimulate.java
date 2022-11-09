@@ -11,7 +11,7 @@ public class TestSimulate {
             var game = new GameSession(new MCST_bot(), new RL_bot());
             game.startRound();
             game.simulate();
-            if(game.startPlayer==0){
+            if(game.getWinnerChickenDinner()==0){
                 wins++;
             }
         }
