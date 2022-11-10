@@ -6,7 +6,7 @@ import Game.Bots.Bot;
 
 import java.util.*;
 
-public class GameSession implements Cloneable{
+public class GameSession implements Cloneable {
     public Player[] players;
     public ArrayList<Card> Table = new ArrayList<>();
     public int currentPlayer;
@@ -23,8 +23,8 @@ public class GameSession implements Cloneable{
 
     public GameSession(Player... players) {
 
-        for (var player:players) {
-            if(player instanceof Bot bot)
+        for (var player : players) {
+            if (player instanceof Bot bot)
                 bot.simulationSession = this::clone;
         }
         if (players.length == 0)
@@ -54,15 +54,16 @@ public class GameSession implements Cloneable{
             deck = new Deck(40);
     }
 
-    public void addNextPlayerCallback(Runnable callback){
-        if(callback == null)
+    public void addNextPlayerCallback(Runnable callback) {
+        if (callback == null)
             return;
         onNextPlayer.add(callback);
     }
 
-    private void executeNextPlayerCallback(){
-        for (var runnable : onNextPlayer){
-            runnable.run();;
+    private void executeNextPlayerCallback() {
+        for (var runnable : onNextPlayer) {
+            runnable.run();
+            ;
         }
     }
 
@@ -77,7 +78,7 @@ public class GameSession implements Cloneable{
         }
     }
 
-    public void playTurn(Card card){
+    public void playTurn(Card card) {
         players[currentPlayer].removeHand(card);
         Table.add(card);
         playedCards.add(card);
@@ -95,7 +96,7 @@ public class GameSession implements Cloneable{
                 }
             }
             executeNextPlayerCallback();
-            //Why?
+            // Why?
             if (gameOver()) {
                 int playerWinner = 0;
                 for (int i = 1; i < players.length; i++) {
@@ -118,16 +119,16 @@ public class GameSession implements Cloneable{
 
     public boolean gameOver() {
         int sum = 0;
-        for(var p : players)
-            sum+= p.CollectedCards.size();
+        for (var p : players)
+            sum += p.CollectedCards.size();
         return sum == deck.getSessionCards().size();
     }
 
     public int getWinnerChickenDinner() {
         int currentMaxScore = 0;
         int maxScorePlayerIndex = 0;
-        for(int i = 0;i<players.length;i++){
-            if(players[i].Score() > currentMaxScore){
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].Score() > currentMaxScore) {
                 currentMaxScore = players[i].Score();
                 maxScorePlayerIndex = i;
             }
@@ -168,50 +169,54 @@ public class GameSession implements Cloneable{
             return;
 
         try {
-            playerBot.playedCards = (HashSet<Card>)playedCards.clone();
-            Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
-            //System.out.println(uhm);
-            playTurn(uhm);
+            playerBot.playedCards = Collections.unmodifiableSet(playedCards);
+            Card playedCard;
+            playTurn(playedCard = playerBot.MakeDecision(Collections.unmodifiableList(Table),
+                    (deck.getBriscola().suit)));
+            System.out.printf("Bot played %s\n", playedCard);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void simulate(){
-        if(Arrays.stream(players).anyMatch(p -> !(p instanceof Bot)))
+    public void simulate() {
+        if (Arrays.stream(players).anyMatch(p -> !(p instanceof Bot)))
             throw new UnsupportedOperationException("All players must be bots");
 
-        while(!gameOver()){
+        while (!gameOver()) {
             botPlayTurn();
         }
     }
 
-    public void simulate(int depth){
-        if(Arrays.stream(players).anyMatch(p -> !(p instanceof Bot)))
+    public void simulate(int depth) {
+        if (Arrays.stream(players).anyMatch(p -> !(p instanceof Bot)))
             throw new UnsupportedOperationException("All players must be bots");
 
         int i = 0;
-        while(!gameOver() && (i++ < depth)){
+        while (!gameOver() && (i++ < depth)) {
             botPlayTurn();
         }
     }
 
     @Override
     public GameSession clone() {
-            var clonePlayers = new Player[players.length];
-            for(int i = 0 ; i < players.length;++i){
-                clonePlayers[i] = players[i].clone();
-            }
+        var clonePlayers = new Player[players.length];
+        for (int i = 0; i < players.length; ++i) {
+            clonePlayers[i] = players[i].clone();
+        }
 
-            GameSession clone = new GameSession(clonePlayers);
+        GameSession clone = new GameSession(clonePlayers);
 
-            clone.deck = deck.clone();
-            clone.currentPlayer = currentPlayer;
-            clone.startPlayer = startPlayer;
-            clone.playedCards.addAll(playedCards);
-            clone.Table.addAll(Table);
-            return clone;
+        clone.deck = deck.clone();
+        clone.currentPlayer = currentPlayer;
+        clone.startPlayer = startPlayer;
+        clone.playedCards.addAll(playedCards);
+        clone.Table.addAll(Table);
+        return clone;
     }
-    public Set<Card> getPlayedCards() {return Collections.unmodifiableSet(playedCards);}
+
+    public Set<Card> getPlayedCards() {
+        return Collections.unmodifiableSet(playedCards);
+    }
 
 }

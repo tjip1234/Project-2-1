@@ -1,11 +1,13 @@
 package Game;
 
-
 import Game.Bots.MCST.MCST_bot;
+import Game.Bots.GreedyBot;
 import Game.Bots.RL_bot;
 import Game.Bots.RandomBot;
+
 import Game.Cards.Card;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class TerminalTestGameplay {
@@ -23,7 +25,7 @@ public class TerminalTestGameplay {
     }
 
     public static void main(String[] args) {
-        GameSession g = new GameSession(new MCST_bot(), new RL_bot() );
+        GameSession g = new GameSession(new MCST_bot(), new RL_bot());
         g.startRound();
         int trickNumber = 0;
 
@@ -31,7 +33,7 @@ public class TerminalTestGameplay {
 
         clearConsole();
         System.out.printf("Player #%d is up next! \n Press ENTER to continue", g.currentPlayer);
-        //scanner.nextLine();
+        // scanner.nextLine();
 
         while (g.players[0].getHand().size() > 0) {
             trickNumber++;
@@ -77,16 +79,15 @@ public class TerminalTestGameplay {
                     try {
                         g.playTurn(g.players[g.currentPlayer].getHand().get(choice));
                     } catch (Exception e) {
-                        //e.printStackTrace();
+                        // e.printStackTrace();
                     }
-                }
-                else{
+                } else {
                     g.botPlayTurn();
                 }
                 if (i != g.players.length - 1) {
                     clearConsole();
                     System.out.printf("Player #%d is up next! \n Press ENTER to continue", g.currentPlayer);
-                    //scanner.nextLine();
+                    // scanner.nextLine();
                 }
             }
 
@@ -100,7 +101,7 @@ public class TerminalTestGameplay {
             }
 
             System.out.println("\nPress ENTER to continue.");
-            //scanner.nextLine();
+            // scanner.nextLine();
         }
         System.out.println("\nPress ENTER to continue.");
     }
