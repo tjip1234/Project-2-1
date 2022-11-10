@@ -1,6 +1,6 @@
 package Game.Bots.MCST;
 
-import Game.Bots.Node;
+import Game.Bots.Trees.Node;
 
 public class UTC {
     //root of 2 based on theory I think ;)

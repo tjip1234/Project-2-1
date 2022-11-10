@@ -1,15 +1,20 @@
-package Game.Bots;
+package Game.Bots.Trees;
+
+import Game.Bots.MCST.State;
+import Game.GameSession;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Node {
     private State state;
+    private static final Random random = new Random();
     private Node parentNode;
     private List<Node> listOfChildren;
 
-    public Node() {
-        this.state = new State();
+    public Node(State state) {
+        this.state = state;
         listOfChildren = new ArrayList<>();
     }
 
@@ -39,6 +44,7 @@ public class Node {
 
     //TODO get random child Node
     public Node getRandomChildNode() {
-        return null;
+        int randomChild = random.nextInt(0, getListOfChildren().size());
+        return getListOfChildren().get(randomChild);
     }
 }

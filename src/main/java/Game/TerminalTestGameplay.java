@@ -1,7 +1,10 @@
 package Game;
 
-import Game.Cards.Card;
+
+import Game.Bots.MCST.MCST_bot;
 import Game.Bots.RL_bot;
+import Game.Bots.RandomBot;
+import Game.Cards.Card;
 
 import java.util.Scanner;
 
@@ -20,7 +23,7 @@ public class TerminalTestGameplay {
     }
 
     public static void main(String[] args) {
-        GameSession g = new GameSession(new RL_bot(), new RL_bot());
+        GameSession g = new GameSession(new MCST_bot(), new RL_bot() );
         g.startRound();
         int trickNumber = 0;
 
@@ -99,5 +102,6 @@ public class TerminalTestGameplay {
             System.out.println("\nPress ENTER to continue.");
             //scanner.nextLine();
         }
+        System.out.println("\nPress ENTER to continue.");
     }
 }
