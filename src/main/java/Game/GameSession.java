@@ -5,6 +5,7 @@ import Game.Cards.Deck;
 import Game.Bots.Bot;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class GameSession implements Cloneable {
     public Player[] players;
@@ -20,6 +21,8 @@ public class GameSession implements Cloneable {
     public final boolean isTeamGame;
 
     public Deck deck;
+
+    private int totalCycles;
 
     public GameSession(Player... players) {
 
@@ -52,7 +55,11 @@ public class GameSession implements Cloneable {
             deck = new Deck(36);
         else
             deck = new Deck(40);
+
+        totalCycles = deck.getSessionCards().size()/ players.length;
     }
+
+    private int currentCycle ;
 
     public void addNextPlayerCallback(Runnable callback) {
         if (callback == null)
@@ -70,6 +77,7 @@ public class GameSession implements Cloneable {
     public void startRound() {
         deck.reshuffle();
         playedCards.clear();
+        currentCycle = 1;
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < players.length; i++) {
@@ -78,22 +86,27 @@ public class GameSession implements Cloneable {
         }
     }
 
+    private int count = 0;
     public void playTurn(Card card) {
         players[currentPlayer].removeHand(card);
         Table.add(card);
+        deck.remove(card); // Failsafe
+        var tmp = new HashSet<Card>(playedCards);
         playedCards.add(card);
+        ++count;
+        if(count != playedCards.size())
+            throw new RuntimeException("FUCK we desynced");
+
+        if(canGrabCard())
+            players[currentPlayer].addHand(deck.pop());
 
         currentPlayer = (currentPlayer + 1) % players.length;
 
         if (currentPlayer == startPlayer) {
             currentPlayer = startPlayer = determineCycleWinner();
+            ++currentCycle;
             while (!Table.isEmpty()) {
                 players[startPlayer].addCollectedCard(Table.remove(0));
-            }
-            if (!deck.isEmpty()) {
-                for (int i = 0; i < players.length; i++) {
-                    players[(i + startPlayer) % players.length].addHand(deck.pop());
-                }
             }
             executeNextPlayerCallback();
             // Why?
@@ -105,6 +118,13 @@ public class GameSession implements Cloneable {
                 }
             }
         }
+    }
+    public boolean canGrabCard(){
+        int inHand = 0;
+        for(var player : players){
+            inHand += player.getHand().size();
+        }
+        return currentCycle < totalCycles-2;
     }
 
     private int determineCycleWinner() {
@@ -118,10 +138,7 @@ public class GameSession implements Cloneable {
     }
 
     public boolean gameOver() {
-        int sum = 0;
-        for (var p : players)
-            sum += p.CollectedCards.size();
-        return sum == deck.getSessionCards().size();
+        return playedCards.equals(deck.getSessionCards());
     }
 
     public int getWinnerChickenDinner() {
@@ -169,11 +186,11 @@ public class GameSession implements Cloneable {
             return;
 
         try {
-            playerBot.playedCards = Collections.unmodifiableSet(playedCards);
+            playerBot.playedCards = getPlayedCards();
             Card playedCard;
             playTurn(playedCard = playerBot.MakeDecision(Collections.unmodifiableList(Table),
                     (deck.getBriscola().suit)));
-            System.out.printf("Bot played %s\n", playedCard);
+            //System.out.printf("Bot played %s\n", playedCard);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -212,6 +229,9 @@ public class GameSession implements Cloneable {
         clone.startPlayer = startPlayer;
         clone.playedCards.addAll(playedCards);
         clone.Table.addAll(Table);
+        clone.count = count;
+        clone.totalCycles = totalCycles;
+        clone.currentCycle = currentCycle;
         return clone;
     }
 

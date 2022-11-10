@@ -41,10 +41,8 @@ public class Player implements Cloneable {
     public Player clone() {
         try {
             Player clone = (Player) super.clone();
-            clone.Hand = new ArrayList<>();
-            clone.CollectedCards = new ArrayList<>();
-            clone.Hand.addAll(Hand);
-            clone.CollectedCards.addAll(CollectedCards);
+            clone.Hand = new ArrayList<>(Hand);
+            clone.CollectedCards = new ArrayList<>(CollectedCards);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();

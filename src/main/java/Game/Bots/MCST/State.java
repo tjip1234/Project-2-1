@@ -25,6 +25,16 @@ public class State {
     public State(GameSession state, int rootPlayerNumber) {
         this.rootPlayerNumber = rootPlayerNumber;
         board = state;
+        for(int i = 0 ; i < board.players.length;++i){
+            if(i == rootPlayerNumber) continue;
+
+            var hand = board.players[i].getHand();
+            for(int j = hand.size() - 1; j >= 0; --j) {
+                int deckI = board.deck.size() == 0 ? 0 : random.nextInt(0, board.deck.size());
+                board.deck.add(deckI, hand.get(j));
+                board.players[i].removeHand(hand.get(j));
+            }
+        }
     }
 
     //TODO are we taking into account rounds properly?
@@ -44,10 +54,9 @@ public class State {
             }
             // Current player is not "me", create a node for every remaining card
             else {
-                var remainingCards = new HashSet<Card>();
-                remainingCards.addAll(board.deck.getSessionCards());
+                var remainingCards = new HashSet<Card>(board.deck.getSessionCards());
                 remainingCards.removeAll(board.getPlayedCards());
-                remainingCards.removeAll(board.players[rootPlayerNumber].getHand());
+                board.players[rootPlayerNumber].getHand().forEach(remainingCards::remove);
 
                 for (Card card : remainingCards) {
                     GameSession tmp = board.clone();
