@@ -4,8 +4,10 @@ import Game.Utils.SeededRandom;
 
 import java.util.*;
 
-public class Deck extends Stack<Card> implements Cloneable {
-    private final SeededRandom random = new SeededRandom();
+public class Deck implements Cloneable {
+
+    private static final Random rng = new Random();
+    private ArrayList<Card> cards = new ArrayList<>();
 
     private Card briscola = null;
 
@@ -19,35 +21,41 @@ public class Deck extends Stack<Card> implements Cloneable {
 
     public Deck(int deckSize) {
         this.deckSize = deckSize;
-        reshuffle();
+    }
+
+    private Deck(boolean init) {
+
     }
 
     public void reshuffle() {
-        this.clear();
-
         // Create all the cards
-        var cards = new ArrayList<Card>();
+        cards = new ArrayList<Card>();
         for (Card.Suit suit : Card.Suit.values())
             for (Card.Number number : Card.Number.values())
                 cards.add(new Card(suit, number));
 
-        int cardsToRemove = 40 - deckSize;
-        // Put them in the stack
-        while (!cards.isEmpty()) {
-            var card = cards.remove(random.nextInt(cards.size()));
-
-            // We don't add this card.
-            if (card.number == Card.Number.Two && cardsToRemove > 0) {
-                cardsToRemove--;
-                continue;
-            }
-
-            push(card);
-            cardsInSession.add(card);
+        for (int i = 0; i < 40 - deckSize; ++i) {
+            int a = i;
+            cards.removeIf(c -> c.suit == Card.Suit.values()[a]);
         }
 
-        // Find the briscola ahead of time, and add it to the bottom of the stack
-        add(0, briscola = pop());
+        briscola = cards.get(cards.size() - 1);
+    }
+
+    public int size() {
+        return cards.size();
+    }
+
+    public void add(int i, Card card) {
+        cards.add(i, card);
+    }
+
+    public void remove(Card card) {
+        cards.remove(card);
+    }
+
+    public Card pop() {
+        return cards.get(rng.nextInt(0, Math.max(1, cards.size() - 1)));
     }
 
     public Card getBriscola() {
@@ -60,14 +68,9 @@ public class Deck extends Stack<Card> implements Cloneable {
 
     @Override
     public Deck clone() {
-        Deck clone = new Deck();
-        clone.random.setState(random.getState());
+        Deck clone = new Deck(false);
         clone.briscola = briscola;
         clone.cardsInSession = new HashSet<>(cardsInSession);
-        clone.clear();
-        for(int i = 0; i < size(); ++i){
-            clone.add(i, get(i));
-        }
 
         clone.deckSize = deckSize;
         return clone;
