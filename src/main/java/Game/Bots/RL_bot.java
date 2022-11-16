@@ -14,7 +14,11 @@ public class RL_bot extends Bot {
     }
     @Override
     public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) {
-        rememberdeck.removeAll(playedCards);
+        for (var p:playedCards
+             ) {
+            rememberdeck.remove(p);
+        }
+       /////// rememberdeck.removeAll(playedCards);
         if (cardsOnTable.size() == amountofplayers-1){
             return NotMyTurn.MakeDecision(cardsOnTable,Briscola,rememberdeck,getHand());
         }

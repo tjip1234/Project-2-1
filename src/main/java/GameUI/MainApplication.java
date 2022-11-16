@@ -215,7 +215,7 @@ public class MainApplication extends Application {
             }
         }
         for (int i = g.deck.size() + 2; i < deck.size(); i++) {
-            if (g.deck.isEmpty()) {
+            if (g.deck.size()==0) {
                 deck.get(i).setVisible(false);
             }
 
@@ -472,7 +472,7 @@ public class MainApplication extends Application {
          */
         Text suit = new Text(750, 510, "Briscola: " + g.deck.getBriscola().suit);
         // adds card to UI deck display
-        deck.add(0, new ImageView(CardTextureStore.getFrontTexture(g.deck.get(0))));
+        //deck.add(0, new ImageView(CardTextureStore.getFrontTexture(g)));
         deck.get(0).setFitWidth(90);
         deck.get(0).setFitHeight(150);
         deck.get(0).setX(751);

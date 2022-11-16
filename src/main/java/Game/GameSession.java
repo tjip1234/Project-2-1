@@ -186,11 +186,9 @@ public class GameSession implements Cloneable {
             return;
 
         try {
-            playerBot.playedCards = getPlayedCards();
-            Card playedCard;
-            playTurn(playedCard = playerBot.MakeDecision(Collections.unmodifiableList(Table),
-                    (deck.getBriscola().suit)));
-            //System.out.printf("Bot played %s\n", playedCard);
+            playerBot.playedCards = (HashSet<Card>)playedCards.clone();
+            Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
+            playTurn(uhm);
         } catch (Exception e) {
             e.printStackTrace();
         }

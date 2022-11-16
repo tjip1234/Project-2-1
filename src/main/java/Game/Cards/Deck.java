@@ -21,6 +21,7 @@ public class Deck implements Cloneable {
 
     public Deck(int deckSize) {
         this.deckSize = deckSize;
+        reshuffle();
     }
 
     private Deck(boolean init) {
@@ -34,12 +35,15 @@ public class Deck implements Cloneable {
             for (Card.Number number : Card.Number.values())
                 cards.add(new Card(suit, number));
 
+
+
         for (int i = 0; i < 40 - deckSize; ++i) {
             int a = i;
-            cards.removeIf(c -> c.suit == Card.Suit.values()[a]);
+            cards.removeIf(c -> c.suit == Card.Suit.values()[a] && c.number == Card.Number.Two);
         }
 
         briscola = cards.get(cards.size() - 1);
+        cardsInSession.addAll(cards);
     }
 
     public int size() {
@@ -55,7 +59,7 @@ public class Deck implements Cloneable {
     }
 
     public Card pop() {
-        return cards.get(rng.nextInt(0, Math.max(1, cards.size() - 1)));
+        return cards.remove(rng.nextInt(0, Math.max(1, cards.size() - 1)));
     }
 
     public Card getBriscola() {
@@ -71,6 +75,7 @@ public class Deck implements Cloneable {
         Deck clone = new Deck(false);
         clone.briscola = briscola;
         clone.cardsInSession = new HashSet<>(cardsInSession);
+        clone.cards = (ArrayList<Card>) cards.clone();
 
         clone.deckSize = deckSize;
         return clone;

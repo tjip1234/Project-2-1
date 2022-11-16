@@ -1,5 +1,6 @@
 package Game.Bots;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -18,7 +19,7 @@ public abstract class Bot extends Player {
     public Supplier<GameSession> simulationSession;
 
     /// Makes a choosing a card based on the current situation
-    public abstract Card MakeDecision(List<Card> cardsOnTable, Suit Briscola);
+    public abstract Card MakeDecision(List<Card> cardsOnTable, Suit Briscola) throws IOException;
 
     public final static Card FindDominantCard(List<Card> cardsOnTable, Suit Briscola) {
         return cardsOnTable.stream().max((lhs, rhs) -> lhs.compareTo(rhs, Briscola)).get();

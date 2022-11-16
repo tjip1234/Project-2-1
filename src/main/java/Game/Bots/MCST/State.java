@@ -1,16 +1,12 @@
 package Game.Bots.MCST;
 
-import Game.Bots.Trees.Node;
 import Game.Cards.Card;
 import Game.GameSession;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class State {
-    private GameSession board;
+    private GameSession boardState;
     public Card cardPlayed;
     private static final Random random = new Random();
 
@@ -18,34 +14,34 @@ public class State {
 
     private final int rootPlayerNumber;
     private int visitCountForState;
-    private double scoreForState;
+    private int scoreForState;
 
     private List<State> possibleStates;
 
-    public State(GameSession state, int rootPlayerNumber) {
+    public State(GameSession board, int rootPlayerNumber) {
         this.rootPlayerNumber = rootPlayerNumber;
-        board = state;
-        for(int i = 0 ; i < board.players.length;++i){
+        this.boardState = board;
+        for(int i = 0; i < this.boardState.players.length; ++i){
             if(i == rootPlayerNumber) continue;
 
-            var hand = board.players[i].getHand();
+            var hand = this.boardState.players[i].getHand();
             for(int j = hand.size() - 1; j >= 0; --j) {
-                int deckI = board.deck.size() == 0 ? 0 : random.nextInt(0, board.deck.size());
-                board.deck.add(deckI, hand.get(j));
-                board.players[i].removeHand(hand.get(j));
+                int deckI = this.boardState.deck.size() == 0 ? 0 : random.nextInt(0, this.boardState.deck.size());
+                this.boardState.deck.add(deckI, hand.get(j));
+                this.boardState.players[i].removeHand(hand.get(j));
             }
         }
     }
 
-    //TODO are we taking into account rounds properly?
+    //TODO are we taking into account rounds properly? answer: NOOOOOO! check table
     public List<State> getAllPossibleStates() {
         // Generate possibilities if we haven't computed it yet
         if (possibleStates == null) {
             possibleStates = new ArrayList<>();
-            if (board.currentPlayer == rootPlayerNumber) {
-                var hand = board.players[board.currentPlayer].getHand();
+            if (boardState.currentPlayer == rootPlayerNumber) {
+                var hand = boardState.players[boardState.currentPlayer].getHand();
                 for (Card card : hand) {
-                    GameSession tmp = board.clone();
+                    GameSession tmp = boardState.clone();
                     tmp.playTurn(card);
                     State tempState = new State(tmp, rootPlayerNumber);
                     tempState.cardPlayed = card;
@@ -54,12 +50,12 @@ public class State {
             }
             // Current player is not "me", create a node for every remaining card
             else {
-                var remainingCards = new HashSet<Card>(board.deck.getSessionCards());
-                remainingCards.removeAll(board.getPlayedCards());
-                board.players[rootPlayerNumber].getHand().forEach(remainingCards::remove);
+                var remainingCards = new HashSet<Card>(boardState.deck.getSessionCards());
+                remainingCards.removeAll(boardState.getPlayedCards());
+                boardState.players[rootPlayerNumber].getHand().forEach(remainingCards::remove);
 
                 for (Card card : remainingCards) {
-                    GameSession tmp = board.clone();
+                    GameSession tmp = boardState.clone();
                     tmp.playTurn(card);
                     State tempState = new State(tmp, rootPlayerNumber);
                     tempState.cardPlayed = card;
@@ -76,6 +72,18 @@ public class State {
         return getAllPossibleStates().get(randomChild);
     }
 
+    public State getFittestChildState(int iterationCount){
+        double chance = 1/(iterationCount+0.1);
+        double roll = Math.random()/10;
+        if(chance<roll){
+            return getAllPossibleStates().stream().max(Comparator.comparingInt(a -> a.scoreForState/(a.visitCountForState+1))).get();
+           // return getAllPossibleStates().stream().max(Comparator.comparingInt(a -> a.boardState.players[rootPlayerNumber].Score())).get();
+        }else{
+            return getRandomChildState();
+        }
+
+    }
+
     public void addToVisitCount() {
         this.visitCountForState++;
     }
@@ -84,15 +92,15 @@ public class State {
         this.scoreForState += score;
     }
 
-    public GameSession getBoard() {
-        return board;
+    public GameSession getBoardState() {
+        return boardState;
     }
 
     public double getScoreForState() {
         return scoreForState;
     }
 
-    public void setScoreForState(double scoreForState) {
+    public void setScoreForState(int scoreForState) {
         this.scoreForState = scoreForState;
     }
 

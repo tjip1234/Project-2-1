@@ -5,20 +5,18 @@ import Game.Bots.Trees.Node;
 import Game.Bots.Trees.Tree;
 import Game.Cards.Card;
 import Game.GameSession;
-import Game.TestSimulate;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-public class MCST_bot extends Bot {
+public class MCST2_bot extends Bot {
     @Override
-    public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) throws IOException {
-        return findCardToPlay(simulationSession.get(), 10000);
+    public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) {
+        return findCardToPlay(simulationSession.get(), 1000);
     }
 
-    public Card findCardToPlay(GameSession board, int iterationCount) throws IOException {
+    public Card findCardToPlay(GameSession board, int iterationCount) {
         Tree tree = new Tree(board, board.currentPlayer);
         Node rootNode = tree.getRootNode();
         List<State> possibleRootStates = rootNode.getState().getAllPossibleStates();
@@ -29,7 +27,9 @@ public class MCST_bot extends Bot {
         }
         //TODO Possible to do time-based instead of iteration based
         long starttime = System.currentTimeMillis();
-        while (iterationCount > 0) {
+        int  iterationCount2 = 0;
+        while (System.currentTimeMillis()-starttime<200) {
+            iterationCount2++;
             // Selection
             Node currentNode = rootNode;
             while (currentNode.getListOfChildren().size() != 0) {
@@ -56,7 +56,7 @@ public class MCST_bot extends Bot {
                     if(stateToExplore.peek().getBoardState().getWinnerChickenDinner() == board.currentPlayer){
                         State finalStateToExplore = stateToExplore.peek();
                         if (Arrays.stream(stateToExplore.peek().getBoardState().players).filter(
-                                c -> c.Score() == finalStateToExplore.getBoardState().players[board.currentPlayer].Score())
+                                        c -> c.Score() == finalStateToExplore.getBoardState().players[board.currentPlayer].Score())
                                 .count() > 1) {
                             score = 0;
                         } else {
@@ -67,7 +67,7 @@ public class MCST_bot extends Bot {
                     }
                     break;
                 }
-                stateToExplore.push(stateToExplore.peek().getFittestChildState(10000-iterationCount));
+                stateToExplore.push(stateToExplore.peek().getFittestChildState(iterationCount2));
             }
 
             //Backpropagation
@@ -78,8 +78,6 @@ public class MCST_bot extends Bot {
             }
             iterationCount--;
         }
-        //System.out.println();
-        //TestSimulate.saveScore(System.currentTimeMillis()-starttime + ", " + rootNode.getState().getBoardState().deck.size());
         var winner = getWinningNode(rootNode).getState();
         return winner.cardPlayed;
     }
