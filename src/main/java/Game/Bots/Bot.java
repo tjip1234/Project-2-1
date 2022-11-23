@@ -21,7 +21,9 @@ public abstract class Bot extends Player {
     /// Makes a choosing a card based on the current situation
     public abstract Card MakeDecision(List<Card> cardsOnTable, Suit Briscola) throws IOException;
 
-    public final static Card FindDominantCard(List<Card> cardsOnTable, Suit Briscola) {
+    public static Card FindDominantCard(List<Card> cardsOnTable, Suit Briscola) {
+        if(cardsOnTable.size() == 0)
+            return null;
         return cardsOnTable.stream().max((lhs, rhs) -> lhs.compareTo(rhs, Briscola)).get();
     }
 }
