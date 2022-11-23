@@ -24,9 +24,9 @@ public class TestSimulate {
         boolean isEven = c%2 == 0;
         GameSession g;
         if(isEven)
-            g = new GameSession(new MCST2_bot(), new MCST_bot());
+            g = new GameSession(new GreedyBot(), new GreedyBot(), new GreedyBot());
         else
-            g = new GameSession(new MCST_bot(), new MCST2_bot());
+            g = new GameSession(new GreedyBot(), new GreedyBot(), new GreedyBot());
 
         g.startRound();
         g.simulate();
@@ -71,7 +71,10 @@ public class TestSimulate {
 
         @Override
         public Runnable next() {
-            ++count;return () -> simulateRun(count);
+            return () -> {
+                int c = ++count;
+                simulateRun(c);
+            };
         }
     }
 
