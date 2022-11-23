@@ -12,7 +12,7 @@ public class State {
 
     private int player;
 
-    private final int rootPlayerNumber;
+    public final int rootPlayerNumber;
     private int visitCountForState;
     private int scoreForState;
 
@@ -88,7 +88,7 @@ public class State {
         this.visitCountForState++;
     }
 
-    public void addWinScore(int score) {
+    public void addWinScore(double score) {
         this.scoreForState += score;
     }
 
