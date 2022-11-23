@@ -54,11 +54,16 @@ public class Card implements Comparable<Card> {
      */
     @Override
     public int compareTo(Card other) {
-        // Comparisons are only valid if they are the same suit
+        // A card is better than no card
+        if(other == null)
+            return 1;
+
+        // If this card is not the same suit as the other card, then by default it is less valuable
         if (suit != other.suit)
-            return 0;
+            return -1;
 
         int scoreDifference = Integer.compare(number.scoreValue, other.number.scoreValue);
+
         if (scoreDifference != 0)
             return scoreDifference;
 
@@ -68,14 +73,16 @@ public class Card implements Comparable<Card> {
 
     // Performs a comparison, but also take briscola suit priority into account
     public int compareTo(Card other, Suit briscolaSuit) {
-        var valueResult = compareTo(other);
-        if (valueResult != 0)
-            return valueResult;
-
-        if (suit == briscolaSuit)
+        if(other == null)
             return 1;
 
-        return 0;
+        if(suit == briscolaSuit && other.suit != briscolaSuit)
+            return 1;
+
+        if(suit != briscolaSuit && other.suit == briscolaSuit)
+            return -1;
+
+        return compareTo(other);
     }
 
     @Override
