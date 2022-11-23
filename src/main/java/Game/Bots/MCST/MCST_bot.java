@@ -5,7 +5,6 @@ import Game.Bots.Trees.Node;
 import Game.Bots.Trees.Tree;
 import Game.Cards.Card;
 import Game.GameSession;
-import Game.TestSimulate;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -21,7 +20,7 @@ public class MCST_bot extends Bot {
     public Card findCardToPlay(GameSession board, int iterationCount) throws IOException {
         Tree tree = new Tree(board, board.currentPlayer);
         Node rootNode = tree.getRootNode();
-        List<State> possibleRootStates = rootNode.getState().getAllPossibleStates();
+        List<State> possibleRootStates = rootNode.getState().createAllPossibleStates();
         for (State possibleState : possibleRootStates) {
             Node newNode = new Node(possibleState);
             newNode.setParentNode(rootNode);
@@ -38,7 +37,7 @@ public class MCST_bot extends Bot {
 
             // Extension
             if (!currentNode.getState().getBoardState().gameOver()) {
-                List<State> possibleStates = currentNode.getState().getAllPossibleStates();
+                List<State> possibleStates = currentNode.getState().createAllPossibleStates();
                 for (State possibleState : possibleStates) {
                     Node newNode = new Node(possibleState);
                     newNode.setParentNode(currentNode);
@@ -81,7 +80,7 @@ public class MCST_bot extends Bot {
         //System.out.println();
         //TestSimulate.saveScore(System.currentTimeMillis()-starttime + ", " + rootNode.getState().getBoardState().deck.size());
         var winner = getWinningNode(rootNode).getState();
-        return winner.cardPlayed;
+        return winner.getCardPlayed();
     }
 
     private Node getWinningNode(Node rootNode) {

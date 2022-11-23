@@ -8,7 +8,6 @@ import Game.GameSession;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 public class MCST2_bot extends Bot {
     @Override
@@ -16,6 +15,7 @@ public class MCST2_bot extends Bot {
         return findCardToPlay(simulationSession.get(), 1000);
     }
     public double simulate(State simulationState, int rootPlayerNumber ){
+
         double score;
         while(true){
             if(simulationState.getBoardState().gameOver()){
@@ -41,16 +41,25 @@ public class MCST2_bot extends Bot {
     public Tree initializeTree(GameSession board){
         Tree tree = new Tree(board, board.currentPlayer);
         Node rootNode = tree.getRootNode();
-        List<State> possibleRootStates = rootNode.getState().getAllPossibleStates();
-        for (State possibleState : possibleRootStates) {
-            Node newNode = new Node(possibleState);
-            newNode.setParentNode(rootNode);
-            rootNode.getListOfChildren().add(newNode);
-        }
+        addingAllChildNode(2,rootNode);
         return tree;
     }
+    public void addingAllChildNode(int depth, Node currentNode){
+        if(depth == 0){return;}
+        List<State> possibleStates = currentNode.getState().createAllPossibleStates();
+
+        for (State possibleState : possibleStates) {
+            Node newNode = new Node(possibleState);
+            newNode.setParentNode(currentNode);
+            currentNode.getListOfChildren().add(newNode);
+            addingAllChildNode(depth-1,newNode);
+        }
+
+    }
     public Node selection(Node rootNode){
+        int count = 0;
         while (rootNode.getListOfChildren().size() != 0) {
+            count = rootNode.getState().getVisitCountForState();
             rootNode = UTC.findPossibleNode(rootNode);
         }
         return rootNode;
@@ -70,7 +79,7 @@ public class MCST2_bot extends Bot {
             // Extension
             //TODO Do we add all possible children?
             if (!currentNode.getState().getBoardState().gameOver()) {
-                List<State> possibleStates = currentNode.getState().getAllPossibleStates();
+                List<State> possibleStates = currentNode.getState().createAllPossibleStates();
                 for (State possibleState : possibleStates) {
                     Node newNode = new Node(possibleState);
                     newNode.setParentNode(currentNode);
@@ -89,7 +98,7 @@ public class MCST2_bot extends Bot {
             iterationCount--;
         }
         var winner = getWinningNode(tree.getRootNode()).getState();
-        return winner.cardPlayed;
+        return winner.getCardPlayed();
     }
 
     private Node getWinningNode(Node rootNode) {
@@ -107,13 +116,11 @@ public class MCST2_bot extends Bot {
     public static void backPropagate(Node node, double Score){
         node.getState().addToVisitCount();
 
-
         if(node.getParentNode()==null){
             return;
         }
 
         node.getParentNode().getState().addWinScore(Score);
         backPropagate(node.getParentNode(), Score);
-
     }
 }

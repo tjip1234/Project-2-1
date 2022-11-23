@@ -10,6 +10,7 @@ public class Tree {
 
     public Tree(GameSession initialState, int rootPlayer){
         rootNode = new Node(new State(initialState, rootPlayer));
+        rootNode.getState().createAllPossibleStates();
     }
 
     public Node getRootNode() {
