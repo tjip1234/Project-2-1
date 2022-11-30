@@ -1,4 +1,4 @@
-package Game.Bots.MCST;
+package Game.Bots.MCTS;
 
 import Game.Bots.Bot;
 import Game.Bots.Trees.Node;
@@ -9,14 +9,20 @@ import Game.GameSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-    
+
 public class MCTS3_bot extends Bot {
     private int round;
+    private double UTC_constant;
+    private int iterationCount;
+    public MCTS3_bot(int iterationCount, double UTC_constant){
+        this.iterationCount = iterationCount;
+        this.UTC_constant = UTC_constant;
+    }
+
 
     @Override
     public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) throws IOException {
-        return findCardToPlay(simulationSession.get(), 2000);
+        return findCardToPlay(simulationSession.get(), iterationCount);
     }
 
     /**
@@ -118,7 +124,7 @@ public class MCTS3_bot extends Bot {
                 currentNode = currentNode.getListOfChildren().get((int)(Math.random()*currentNode.getListOfChildren().size()));
                 continue;
             }
-            Node tempNode = UTC.findPossibleNode(currentNode);
+            Node tempNode = UTC.findPossibleNode(currentNode,UTC_constant);
 //            if((((double)tempNode.getState().getVisitCountForState()/(double)currentNode.getState().getVisitCountForState())>0.95&&currentNode.getState().getPossibleStates().size()>0)){
 //                break;
 //            }

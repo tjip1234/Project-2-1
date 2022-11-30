@@ -1,11 +1,11 @@
-package Game.Bots.MCST;
+package Game.Bots.MCTS;
 
 import Game.Bots.Trees.Node;
 
 public class UTC {
     //root of 2 based on theory I think ;)
-    final static double UTC_CONSTANT = 2.23;
-    public static Node findPossibleNode(Node currentNode) {
+    //final static double UTC_CONSTANT = 1.41;
+    public static Node findPossibleNode(Node currentNode, double UTC_CONSTANT) {
         int totalVisitAmount = currentNode.getState().getVisitCountForState();
         Node maxValueNode = null;
         double maxValue  = 0;

@@ -1,4 +1,4 @@
-package Game.Bots.MCST;
+package Game.Bots.MCTS;
 
 import Game.Cards.Card;
 import Game.GameSession;

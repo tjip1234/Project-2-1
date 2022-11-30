@@ -1,7 +1,6 @@
 package Game.Bots.Trees;
 
-import Game.Bots.MCST.State;
-import Game.GameSession;
+import Game.Bots.MCTS.State;
 
 import java.util.ArrayList;
 import java.util.List;

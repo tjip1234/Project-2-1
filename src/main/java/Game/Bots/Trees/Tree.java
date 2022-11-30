@@ -1,7 +1,6 @@
 package Game.Bots.Trees;
 
-import Game.Bots.MCST.State;
-import Game.Bots.Trees.Node;
+import Game.Bots.MCTS.State;
 import Game.GameSession;
 
 import java.io.FileWriter;
