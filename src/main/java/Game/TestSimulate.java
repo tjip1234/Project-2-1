@@ -1,8 +1,8 @@
 package Game;
 
 import Game.Bots.GreedyBot;
-import Game.Bots.MCST.MCST2_bot;
-import Game.Bots.MCST.MCST_bot;
+//import Game.Bots.MCST.MCST2_bot;
+//import Game.Bots.MCST.MCST_bot;
 import Game.Bots.MCST.MCTS3_bot;
 import Game.Bots.RL_bot;
 import Game.Bots.RandomBot;
@@ -19,20 +19,21 @@ public class TestSimulate {
 
     private static final AtomicInteger wins = new AtomicInteger(0);
 
-    public static int runs = 500;
+    public static int runs = 100;
 
     private static void simulateRun(int c) {
         boolean isEven = c%2 == 0;
         GameSession g;
         if(isEven)
-            g = new GameSession(new MCTS3_bot(), new GreedyBot());
-        else
             g = new GameSession(new GreedyBot(), new MCTS3_bot());
+        else
+            g = new GameSession(new MCTS3_bot(), new GreedyBot());
 
         g.startRound();
         g.simulate();
+        System.out.println("The game is: "+(double)c+"% done");
 
-        if (g.getWinnerChickenDinner() == (isEven? 0:1))
+        if (g.getWinnerChickenDinner() == (isEven? 1:0))
             wins.incrementAndGet();
     }
 
@@ -46,26 +47,29 @@ public class TestSimulate {
 
     }
     public static void main(String[] args) throws IOException {
-        double wins = 0;
+        /**
+         * for poor people
+         */
+        //double wins = 0;
 
-        for(int i = 0; i < 500;i++){
-
-            var game = new GameSession(new MCTS3_bot(), new RL_bot());
-            game.startRound();
-            game.simulate();
-            if(game.getWinnerChickenDinner()== 0){
-                wins++;
-            }
-            game = new GameSession(new RL_bot(),new MCTS3_bot());
-            game.startRound();
-            game.simulate();
-            if(game.getWinnerChickenDinner()== 1){
-                wins++;
-            }
-            System.out.println(wins/(2*i+2));
-
-        }
-        //  jobStream().forEach(Runnable::run);
+//        for(int i = 0; i < 500;i++){
+//
+//            var game = new GameSession(new MCTS3_bot(), new RL_bot());
+//            game.startRound();
+//            game.simulate();
+//            if(game.getWinnerChickenDinner()== 0){
+//                wins++;
+//            }
+//            game = new GameSession(new RL_bot(),new MCTS3_bot());
+//            game.startRound();
+//            game.simulate();
+//            if(game.getWinnerChickenDinner()== 1){
+//                wins++;
+//            }
+//            System.out.println(wins/(2*i+2));
+//
+//        }
+        jobStream().forEach(Runnable::run);
 
 
         System.out.println(wins);
@@ -79,10 +83,10 @@ public class TestSimulate {
         }
 
         @Override
-        public Runnable next() {
+        public Runnable next() {int c = ++count;
             return () -> {
-                int c = ++count;
-                simulateRun(c);
+                int tmp = c;
+                simulateRun(tmp);
             };
         }
     }

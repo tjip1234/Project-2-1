@@ -4,7 +4,7 @@ import Game.Bots.Trees.Node;
 
 public class UTC {
     //root of 2 based on theory I think ;)
-    final static double UTC_CONSTANT = 1.41;
+    final static double UTC_CONSTANT = 2.23;
     public static Node findPossibleNode(Node currentNode) {
         int totalVisitAmount = currentNode.getState().getVisitCountForState();
         Node maxValueNode = null;
@@ -18,6 +18,7 @@ public class UTC {
 
             //Checking for max
             if(maxValueNode==null) {
+                maxValue = value;
                 maxValueNode = currentChild;
             } else if (value>maxValue) {
                 maxValue = value;

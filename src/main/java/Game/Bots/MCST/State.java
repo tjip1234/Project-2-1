@@ -17,6 +17,7 @@ public class State {
     private int scoreForState;
 
     private List<State> possibleStates;
+    private List<Card> remainingCards = new ArrayList<>();
 
     public State(GameSession board, int rootPlayerNumber) {
         this.rootPlayerNumber = rootPlayerNumber;
@@ -34,62 +35,77 @@ public class State {
     }
 
     //TODO are we taking into account rounds properly?
-    public List<State> createAllPossibleStates() {
+    public void createAllPossibleStates() {
         // Generate possibilities if we haven't computed it yet
-        if (possibleStates == null) {
-            possibleStates = new ArrayList<>();
-            if (boardState.currentPlayer == rootPlayerNumber) {
-                var hand = boardState.players[boardState.currentPlayer].getHand();
-                for (Card card : hand) {
-                    GameSession tmp = boardState.clone();
-                    tmp.playTurn(card);
-                    State tempState = new State(tmp, rootPlayerNumber);
-                    tempState.cardPlayed = card;
-                    possibleStates.add(tempState);
-                }
-            }
-            // Current player is not "me", create a node for every remaining card
-            else {
-                var remainingCards = new HashSet<Card>(boardState.deck.getSessionCards());
-                remainingCards.removeAll(boardState.getPlayedCards());
-                boardState.players[rootPlayerNumber].getHand().forEach(remainingCards::remove);
+        possibleStates = new ArrayList<>();
+        if (boardState.currentPlayer == rootPlayerNumber) {
+            remainingCards = new ArrayList<>((boardState.players[boardState.currentPlayer].getHand()));
+        }
+        // Current player is not "me", create a node for every remaining card
+        else {
+            var remainingCardsTemp = new HashSet<>(boardState.deck.getSessionCards());
+            remainingCardsTemp.removeAll(boardState.getPlayedCards());
+            boardState.players[rootPlayerNumber].getHand().forEach(remainingCardsTemp::remove);
+            remainingCards = new ArrayList<>(remainingCardsTemp);
 
-                for (Card card : remainingCards) {
-                    GameSession tmp = boardState.clone();
-                    tmp.playTurn(card);
-                    State tempState = new State(tmp, rootPlayerNumber);
-                    tempState.cardPlayed = card;
-                    possibleStates.add(tempState);
-                }
-            }
         }
 
-        return possibleStates;
     }
 
-    public State getRandomChildState() {
-        int randomChild = random.nextInt(0, getPossibleStates().size());
+//    public List<State> createAllPossibleStates2() {
+//        // Generate possibilities if we haven't computed it yet
+//        if (possibleStates == null) {
+//            possibleStates = new ArrayList<>();
+//            if (boardState.currentPlayer == rootPlayerNumber) {
+//                var remainingCards = boardState.players[boardState.currentPlayer].getHand();
+//                for (Card card : hand) {
+//                    GameSession tmp = boardState.clone();
+//                    tmp.playTurn(card);
+//                    State tempState = new State(tmp, rootPlayerNumber);
+//                    tempState.cardPlayed = card;
+//                    possibleStates.add(tempState);
+//                }
+//            }
+//            // Current player is not "me", create a node for every remaining card
+//            else {
+//                remainingCards = new HashSet<Card>(boardState.deck.getSessionCards());
+//                remainingCards.removeAll(boardState.getPlayedCards());
+//                boardState.players[rootPlayerNumber].getHand().forEach(remainingCards::remove);
+//
+//                for (Card card : remainingCards) {
+//                    GameSession tmp = boardState.clone();
+//                    tmp.playTurn(card);
+//                    State tempState = new State(tmp, rootPlayerNumber);
+//                    tempState.cardPlayed = card;
+//                    possibleStates.add(tempState);
+//                }
+//            }
+//        }
+//
+//        return possibleStates;
+//    }
 
-        State state = getPossibleStates().get(randomChild);
+
+    public boolean canYouAddAnChildState(){
+        return remainingCards.size()>0;
+    }
+    public State getRandomChildState() {
+
+        int randomChild = random.nextInt(0, remainingCards.size());
+        GameSession tmp = boardState.clone();
+        Card holder = remainingCards.remove(randomChild);
+        tmp.playTurn(holder);
+        State state = new State(tmp, rootPlayerNumber);
+        state.cardPlayed = holder;
+
+        possibleStates.add(state);
         state.createAllPossibleStates();
 
         return state;
     }
 
-    public List<State> getPossibleStates() {
-        return possibleStates;
-    }
-
-    public State getFittestChildState(int iterationCount){
-        double chance = 1/(iterationCount+0.1);
-        double roll = Math.random()/10;
-        if(chance<roll){
-            return getPossibleStates().stream().max(Comparator.comparingInt(a -> a.scoreForState/(a.visitCountForState+1))).get();
-           // return getAllPossibleStates().stream().max(Comparator.comparingInt(a -> a.boardState.players[rootPlayerNumber].Score())).get();
-        }else{
-            return getRandomChildState();
-        }
-
+    public List<Card> getPossibleStates() {
+        return remainingCards;
     }
 
     public void addToVisitCount() {
@@ -140,4 +156,5 @@ public class State {
     public int getRootPlayerNumber() {
         return rootPlayerNumber;
     }
+
 }

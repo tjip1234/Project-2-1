@@ -1,7 +1,8 @@
 package Game;
 
-import Game.Bots.MCST.MCST_bot;
+//import Game.Bots.MCST.MCST_bot;
 import Game.Bots.GreedyBot;
+import Game.Bots.MCST.MCTS3_bot;
 import Game.Bots.RL_bot;
 import Game.Bots.RandomBot;
 
@@ -25,7 +26,7 @@ public class TerminalTestGameplay {
     }
 
     public static void main(String[] args) {
-        GameSession g = new GameSession(new MCST_bot(), new RL_bot());
+        GameSession g = new GameSession(new MCTS3_bot(), new RL_bot());
         g.startRound();
         int trickNumber = 0;
 

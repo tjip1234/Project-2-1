@@ -9,8 +9,10 @@ import Game.GameSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Random;
+    
 public class MCTS3_bot extends Bot {
+    private int round;
 
     @Override
     public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) throws IOException {
@@ -24,19 +26,23 @@ public class MCTS3_bot extends Bot {
      */
     public Tree initializeTree(GameSession board){
         Tree tree = new Tree(board, board.currentPlayer);
-        for (int i = 0; i < tree.getRootNode().getState().getPossibleStates().size(); i++) {
+        int x = tree.getRootNode().getState().getPossibleStates().size();
+        for (int i = 0; i < x; i++) {
             Node node = extensionPhase(tree.getRootNode());
             backpropagationPhase(node,simulationPhase(node));
         }
+
         for (int i = 0; i < tree.getRootNode().getListOfChildren().size(); i++) {
-            for (int j = 0; j < tree.getRootNode().getListOfChildren().get(i).getState().getPossibleStates().size(); j++) {
+            int y = tree.getRootNode().getListOfChildren().get(i).getState().getPossibleStates().size();
+            for (int j = 0; j < y; j++) {
                 Node node = extensionPhase(tree.getRootNode().getListOfChildren().get(i));
                 backpropagationPhase(node,simulationPhase(node));
             }
         }
         for (int i = 0; i < tree.getRootNode().getListOfChildren().size(); i++) {
             for (int j = 0; j < tree.getRootNode().getListOfChildren().get(i).getListOfChildren().size(); j++) {
-                for (int j2 = 0; j2 < tree.getRootNode().getListOfChildren().get(i).getListOfChildren().get(j).getState().getPossibleStates().size(); j2++) {
+                int z = tree.getRootNode().getListOfChildren().get(i).getListOfChildren().get(j).getState().getPossibleStates().size();
+                for (int j2 = 0; j2 < z ; j2++) {
 
                     Node node = extensionPhase(tree.getRootNode().getListOfChildren().get(i).getListOfChildren().get(j));
                     backpropagationPhase(node, simulationPhase(node));
@@ -53,7 +59,7 @@ public class MCTS3_bot extends Bot {
      * @param iterationCount an integer representing the count for how many iterations mcts runs
      * @return the best card to play
      */
-    private Card findCardToPlay(GameSession board, int iterationCount) {
+    private Card findCardToPlay(GameSession board, int iterationCount) throws IOException {
 
         Tree tree = initializeTree(board);
         for (int i = 0; i < board.players[board.currentPlayer].getHand().size(); i++) {
@@ -66,6 +72,7 @@ public class MCTS3_bot extends Bot {
 
             iterationCount--;
         }
+        //tree.saveTree(round++);
         return getWinningNode(tree.getRootNode()).getState().getCardPlayed();
     }
 
@@ -106,11 +113,16 @@ public class MCTS3_bot extends Bot {
         // 41% on 1000 games with 2000 iteration against RL when ammount = 0.95 with depth 2 tree
 
         while(currentNode.getListOfChildren().size()>0){
-
-            Node tempNode = UTC.findPossibleNode(currentNode);
-            if((((double)tempNode.getState().getVisitCountForState()/(double)currentNode.getState().getVisitCountForState())>0.95&&currentNode.getState().getPossibleStates().size()>0)){
-                break;
+            //If it isn't bots turn choose random child
+            if(currentNode.getState().getBoardState().currentPlayer!=currentNode.getState().rootPlayerNumber){
+                currentNode = currentNode.getListOfChildren().get((int)(Math.random()*currentNode.getListOfChildren().size()));
+                continue;
             }
+            Node tempNode = UTC.findPossibleNode(currentNode);
+//            if((((double)tempNode.getState().getVisitCountForState()/(double)currentNode.getState().getVisitCountForState())>0.95&&currentNode.getState().getPossibleStates().size()>0)){
+//                break;
+//            }
+
 
             if(tempNode == null){break;}
             currentNode = tempNode;
@@ -130,11 +142,10 @@ public class MCTS3_bot extends Bot {
      */
     private Node extensionPhase(Node targetParentNode){
         // Adds one of the child of targetNode
-        if(targetParentNode.getState().getPossibleStates().size()==0){
+        if(!targetParentNode.getState().canYouAddAnChildState()){
             return  targetParentNode;
         }
         State state = targetParentNode.getState().getRandomChildState();
-        targetParentNode.getState().getPossibleStates().remove(state);
         Node targetNode = new Node(state);
         targetNode.setParentNode(targetParentNode);
         targetParentNode.getListOfChildren().add(targetNode);
@@ -155,19 +166,19 @@ public class MCTS3_bot extends Bot {
             State simulationState = targetNode.getState();
 
             while(true){
-                if(simulationState.getBoardState().gameOver()){
+                if(simulationState.getBoardState().gameOver() || !simulationState.canYouAddAnChildState()){
                     if(simulationState.getBoardState().getWinnerChickenDinner() == simulationState.getRootPlayerNumber()){
                         State finalStateToExplore = simulationState;
                         //true if two players have the same score
                         if (Arrays.stream(simulationState.getBoardState().players).filter(
                                         c -> c.Score() == finalStateToExplore.getBoardState().players[finalStateToExplore.getRootPlayerNumber()].Score())
                                 .count() > 1) {
-                            score = 0;
+                            score = 0.5;
                         } else {
                             score += 1;
                         }
                     } else {
-                        score = -1;
+                        score = 0;
                     }
                     break;
                 }
