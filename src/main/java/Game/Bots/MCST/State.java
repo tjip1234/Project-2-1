@@ -7,12 +7,12 @@ import java.util.*;
 
 public class State {
     private GameSession boardState;
-    public Card cardPlayed;
+    private Card cardPlayed;
     private static final Random random = new Random();
 
     private int player;
 
-    private final int rootPlayerNumber;
+    public final int rootPlayerNumber;
     private int visitCountForState;
     private int scoreForState;
 
@@ -33,8 +33,8 @@ public class State {
         }
     }
 
-    //TODO are we taking into account rounds properly? answer: NOOOOOO! check table
-    public List<State> getAllPossibleStates() {
+    //TODO are we taking into account rounds properly?
+    public List<State> createAllPossibleStates() {
         // Generate possibilities if we haven't computed it yet
         if (possibleStates == null) {
             possibleStates = new ArrayList<>();
@@ -68,15 +68,23 @@ public class State {
     }
 
     public State getRandomChildState() {
-        int randomChild = random.nextInt(0, getAllPossibleStates().size());
-        return getAllPossibleStates().get(randomChild);
+        int randomChild = random.nextInt(0, getPossibleStates().size());
+
+        State state = getPossibleStates().get(randomChild);
+        state.createAllPossibleStates();
+
+        return state;
+    }
+
+    public List<State> getPossibleStates() {
+        return possibleStates;
     }
 
     public State getFittestChildState(int iterationCount){
         double chance = 1/(iterationCount+0.1);
         double roll = Math.random()/10;
         if(chance<roll){
-            return getAllPossibleStates().stream().max(Comparator.comparingInt(a -> a.scoreForState/(a.visitCountForState+1))).get();
+            return getPossibleStates().stream().max(Comparator.comparingInt(a -> a.scoreForState/(a.visitCountForState+1))).get();
            // return getAllPossibleStates().stream().max(Comparator.comparingInt(a -> a.boardState.players[rootPlayerNumber].Score())).get();
         }else{
             return getRandomChildState();
@@ -88,7 +96,7 @@ public class State {
         this.visitCountForState++;
     }
 
-    public void addWinScore(int score) {
+    public void addWinScore(double score) {
         this.scoreForState += score;
     }
 
@@ -123,5 +131,13 @@ public class State {
 
     public void setVisitCountForState(int visitCountForState) {
         this.visitCountForState = visitCountForState;
+    }
+
+    public Card getCardPlayed() {
+        return cardPlayed;
+    }
+
+    public int getRootPlayerNumber() {
+        return rootPlayerNumber;
     }
 }
