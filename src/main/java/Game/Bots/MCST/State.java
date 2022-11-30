@@ -69,8 +69,10 @@ public class State {
 
     public State getRandomChildState() {
         int randomChild = random.nextInt(0, getPossibleStates().size());
+
         State state = getPossibleStates().get(randomChild);
         state.createAllPossibleStates();
+
         return state;
     }
 
