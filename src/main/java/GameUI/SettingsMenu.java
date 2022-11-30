@@ -4,11 +4,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class SettingsMenu extends Stage {
-    private Stage menuStage;
+    private final Stage menuStage;
 
     public SettingsMenu(Stage menuStage){
         this.menuStage = menuStage;
@@ -28,25 +29,37 @@ public class SettingsMenu extends Stage {
         setOnCloseRequest(e -> returnControl());
     }
 
+    public void showSettings(){
+        numberOfPlayers.getSelectionModel().clearSelection();
+        skinChoice.getSelectionModel().clearSelection();
+
+        show();
+    }
+
+    private ComboBox<Integer> numberOfPlayers;
+    private ComboBox<CardTextureStore.CardSkin> skinChoice;
+
     private void createSettingEntries(Group target){
-        ComboBox<String> numberOfPlayers = new ComboBox<String>();
+        numberOfPlayers = new ComboBox<>();
+        numberOfPlayers.setPromptText("Choose the amount of players");
         numberOfPlayers.setPrefSize(240, 50);
         numberOfPlayers.setLayoutY(20);
         numberOfPlayers.setLayoutX(150);
-
-        numberOfPlayers.setPromptText("Choose the amount of players");
-        numberOfPlayers.getItems().add("2");
-        numberOfPlayers.getItems().add("4");
-        numberOfPlayers.getItems().add("6");
+        numberOfPlayers.getItems().add(2);
+        numberOfPlayers.getItems().add(4);
+        numberOfPlayers.getItems().add(6);
+        numberOfPlayers.setButtonCell(new PromptListCell<>("Choose the amount of players"));
         target.getChildren().add(numberOfPlayers);
 
-        ComboBox<CardTextureStore.CardSkin> skinChoice = new ComboBox<CardTextureStore.CardSkin>();
+        skinChoice = new ComboBox<>();
         skinChoice.setPromptText("Choose a skin");
         skinChoice.getItems().add(CardTextureStore.CardSkin.CardBack1);
         skinChoice.getItems().add(CardTextureStore.CardSkin.Pizza);
         skinChoice.setPrefSize(240, 50);
         skinChoice.setLayoutY(90);
         skinChoice.setLayoutX(150);
+        skinChoice.setButtonCell(new PromptListCell<>("Choose a skin"));
+
         target.getChildren().add(skinChoice);
     }
 
@@ -70,11 +83,33 @@ public class SettingsMenu extends Stage {
     }
 
     private void commitChanges(){
-        // Commit configs
+        if(numberOfPlayers.getValue() != null)
+            BriscolaConfigs.setPlayerNumber(numberOfPlayers.getValue());
+
+        if(skinChoice.getValue() != null)
+            BriscolaConfigs.setSkin(skinChoice.getValue());
     }
 
     private void returnControl(){
         this.hide();
         menuStage.show();
+    }
+
+    private static class PromptListCell<T> extends ListCell<T>{
+        private final String prompt;
+
+        public PromptListCell(String promptText){
+            prompt = promptText;
+        }
+
+        @Override
+        protected void updateItem(T item, boolean empty) {
+            super.updateItem(item, empty) ;
+            if (empty || item == null) {
+                setText(prompt);
+            } else {
+                setText(item.toString());
+            }
+        }
     }
 }

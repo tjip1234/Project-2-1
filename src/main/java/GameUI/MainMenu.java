@@ -82,7 +82,7 @@ public class MainMenu extends Application {
 
     private static void onSettingsPressed(ActionEvent e){
         menuStage.hide();
-        settings.show();
+        settings.showSettings();
     }
 
     private static void onExitPressed(ActionEvent e){
