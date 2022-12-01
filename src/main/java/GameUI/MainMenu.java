@@ -77,7 +77,8 @@ public class MainMenu extends Application {
         target.getChildren().add(exit);
     }
     private void onStartPressed(ActionEvent e){
-
+        menuStage.hide();
+        new Playfield();
     }
 
     private static void onSettingsPressed(ActionEvent e){
