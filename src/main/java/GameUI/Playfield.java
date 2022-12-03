@@ -31,7 +31,15 @@ public class Playfield extends Stage {
 
     private final Group playfieldElements;
 
-    public Playfield() {
+    private final Stage menuStage;
+
+    public Playfield(Stage menuStage) {
+        this.menuStage = menuStage;
+        setOnCloseRequest(e -> {
+            menuStage.show();
+            this.close();
+        });
+
         setTitle("Briscola - Game");
         transformHandler.start();
 
@@ -39,7 +47,12 @@ public class Playfield extends Stage {
         playfieldElements.setAutoSizeChildren(false);
         playfieldElements.resize(700,700);
 
-        game = new GameSession(new Player(), new Player(), new Player(), new Player(), new Player(), new Player());
+        Player[] players = new Player[BriscolaConfigs.getPlayerNumber()];
+        for(int i = 0; i < players.length; ++i){
+            players[i] = new Player();
+        }
+
+        game = new GameSession(players);
         game.addNextPlayerCallback(this::onNextPlayer);
         game.addNextTrickCallback(this::onTrickComplete);
 
