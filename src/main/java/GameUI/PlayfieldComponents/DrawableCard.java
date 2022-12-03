@@ -3,32 +3,59 @@ package GameUI.PlayfieldComponents;
 import Game.Cards.Card;
 import GameUI.BriscolaConfigs;
 import GameUI.CardTextureStore;
-import javafx.animation.AnimationTimer;
+import GameUI.PlayfieldComponents.Transforms.TransformHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Consumer;
 
 public class DrawableCard extends ImageView{
     private final TransformHandler transforms;
 
-    private Image backSide = CardTextureStore.getBackTexture(BriscolaConfigs.getSkin());
+    private final Image backSide = CardTextureStore.getBackTexture(BriscolaConfigs.getSkin());
     private Image frontSide = CardTextureStore.getFrontTexture(new Card(Card.Suit.Hearts, Card.Number.Ace));
+
+    public Card currentCard;
+    private PlayerCardHandler handler;
 
     public DrawableCard(){
         transforms = new TransformHandler();
         transforms.start();
-        setFitHeight(150);
-        setFitWidth(90);
+        setFitHeight(110);
+        setFitWidth(75);
         setPreserveRatio(true);
         setImage(backSide);
+
+        setOnMouseClicked(this::onMouseClicked);
+    }
+
+    public void setCard(Card card){
+        currentCard = card;
+        frontSide = CardTextureStore.getFrontTexture(card);
+    }
+
+    public void bindHandler(PlayerCardHandler handler){
+        this.handler = handler;
+    }
+
+    public void unbindHandler(){
+        handler = null;
+    }
+
+    private void onMouseClicked(MouseEvent e){
+        if(handler == null)
+            return;
+
+        if(e.getButton() != MouseButton.PRIMARY)
+            return;
+
+        handler.onCardClicked(this);
     }
 
     // Animation stuff
-    public void moveTo(long startTime, double x, double y){
+    public long moveTo(long startTime, double x, double y){
         float durationMS = 1000;
 
         double originX  = this.getX();
@@ -40,17 +67,17 @@ public class DrawableCard extends ImageView{
         Consumer<Float> function = (Float progress) -> {
             // TODO: needs normalization
             // TODO: Consider an easing function
-            double currentX = originX + deltaX * Easings.easeOutBounce(progress);
-            double currentY = originY + deltaY * Easings.easeOutBounce(progress);
+            double currentX = originX + deltaX * Easings.easeOutBack(progress);
+            double currentY = originY + deltaY * Easings.easeOutBack(progress);
 
             this.setX(currentX);
             this.setY(currentY);
         };
 
-        transforms.addTransform(startTime,durationMS, function);
+        return transforms.addTransform(startTime,durationMS, function);
     }
 
-    public void flip(long startTime){
+    public long flip(long startTime){
         float durationMS = 200;
 
         Image currentImage = this.getImage();
@@ -66,53 +93,26 @@ public class DrawableCard extends ImageView{
             this.setScaleX(currentX);
         };
 
-        transforms.addTransform(startTime,durationMS, function);
+        return transforms.addTransform(startTime,durationMS, function);
     }
 
-    private boolean canBeSelected(){
-        return getImage() == frontSide;
+    public long rotateTo(long startTime, double angle){
+        float durationMS = 1000;
+        double originRot = getRotate();
+        double deltaRot = angle - originRot;
+
+        Consumer<Float> function = (Float progress) -> {
+            // TODO: needs normalization
+            // TODO: Consider an easing function
+            double currentRot = originRot + deltaRot *  Easings.easeOutBack(progress);
+
+            this.setRotate(currentRot);
+        };
+
+        return transforms.addTransform(startTime, durationMS, function);
     }
 
-    private static class TransformHandler extends AnimationTimer {
-
-        private static final float conversionFactor = 1000000f;
-
-        public static record Transform(long startTime, long duration, Consumer<Float> transformFunction){}
-
-        private final ArrayList<Transform> transforms = new ArrayList<>();
-
-        // Add a transform that starts now
-        public void addTransform(float durationMs, Consumer<Float> transformFunction){
-            addTransform(System.nanoTime(), durationMs, transformFunction);
-        }
-
-        public void addTransform(long startTime, float durationMs, Consumer<Float> transformFunction){
-            transforms.add(new Transform(startTime, (long)Math.round(durationMs * conversionFactor), transformFunction));
-        }
-
-        private final Set<Transform> transformsRemovalQueue = new HashSet<>();
-
-        @Override
-        public void handle(long now) {
-            // Update transformation states
-            for (var transform : transforms){
-                float progress = clampProgress((now - transform.startTime) / (float)transform.duration);
-                transform.transformFunction.accept(progress);
-
-                if(progress >= 1)
-                    transformsRemovalQueue.add(transform);
-            }
-
-
-            // Remove completed transforms
-            if(transformsRemovalQueue.size() > 0){
-                transforms.removeAll(transformsRemovalQueue);
-                transformsRemovalQueue.clear();
-            }
-        }
-
-        private static float clampProgress(float value){
-            return Math.min(Math.max(value, 0), 1);
-        }
+    public void scheduleTransform(long startTime, Consumer<Float> function){
+        transforms.addTransform(startTime, 0, function);
     }
 }

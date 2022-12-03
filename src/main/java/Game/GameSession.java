@@ -6,6 +6,8 @@ import Game.Bots.Bot;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class GameSession implements Cloneable {
     public Player[] players;
@@ -14,7 +16,8 @@ public class GameSession implements Cloneable {
     int startPlayer = 0;
     int winnerChickenDinner = 0;
 
-    private final ArrayList<Runnable> onNextPlayer = new ArrayList<>();
+    private final ArrayList<BiConsumer<Integer, Integer>> onNextPlayer = new ArrayList<>();
+    private final ArrayList<Consumer<Integer>> onTrickComplete = new ArrayList<>();
 
     private final HashSet<Card> playedCards = new HashSet<>();
 
@@ -61,17 +64,27 @@ public class GameSession implements Cloneable {
 
     private int currentCycle ;
 
-    public void addNextPlayerCallback(Runnable callback) {
+    public void addNextPlayerCallback(BiConsumer<Integer, Integer> callback) {
         if (callback == null)
             return;
+
         onNextPlayer.add(callback);
     }
+    public void addNextTrickCallback(Consumer<Integer> callback) {
+        if (callback == null)
+            return;
 
-    private void executeNextPlayerCallback() {
-        for (var runnable : onNextPlayer) {
-            runnable.run();
-            ;
-        }
+        onTrickComplete.add(callback);
+    }
+
+    private void executeNextPlayerCallback(int prev, int curr) {
+        for (var runnable : onNextPlayer)
+            runnable.accept(prev, curr);
+    }
+
+    private void executeNextTrickCallback(int winner) {
+        for (var runnable : onTrickComplete)
+            runnable.accept(winner);
     }
 
     public void startRound() {
@@ -100,6 +113,7 @@ public class GameSession implements Cloneable {
         if(canGrabCard())
             players[currentPlayer].addHand(deck.pop());
 
+        var previousPlayer = currentPlayer;
         currentPlayer = (currentPlayer + 1) % players.length;
 
         if (currentPlayer == startPlayer) {
@@ -108,7 +122,9 @@ public class GameSession implements Cloneable {
             while (!Table.isEmpty()) {
                 players[startPlayer].addCollectedCard(Table.remove(0));
             }
-            executeNextPlayerCallback();
+
+            executeNextTrickCallback(currentPlayer);
+
             // Why?
             if (gameOver()) {
                 int playerWinner = 0;
@@ -118,6 +134,8 @@ public class GameSession implements Cloneable {
                 }
             }
         }
+
+        executeNextPlayerCallback(previousPlayer, currentPlayer);
     }
     public boolean canGrabCard(){
         int inHand = 0;
