@@ -9,7 +9,7 @@ public class BriscolaConfigs {
     }
 
     public static void setPlayerNumber(int number){
-
+        playerNumber = number;
     }
 
     public static CardTextureStore.CardSkin getSkin(){
@@ -17,10 +17,6 @@ public class BriscolaConfigs {
     }
 
     public static void setSkin(CardTextureStore.CardSkin cardSkin){
-
+        skin = cardSkin;
     }
-
-
-
-
 }
