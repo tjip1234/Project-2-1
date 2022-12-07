@@ -4,10 +4,11 @@ import java.util.List;
 
 import Game.Cards.Card;
 import Game.Cards.Card.Suit;
+import Game.GameSession;
 
 public class GreedyBot extends Bot {
     @Override
-    public Card MakeDecision(List<Card> cardsOnTable, Suit Briscola) {
+    public Card MakeDecision(List<Card> cardsOnTable, Suit Briscola, GameSession game) {
         // Find the most valuable card on the table, may be null
         var dominantCard = FindDominantCard(cardsOnTable, Briscola);
 

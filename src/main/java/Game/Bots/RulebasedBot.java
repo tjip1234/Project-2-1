@@ -2,18 +2,19 @@ package Game.Bots;
 
 import Game.Cards.Card;
 import Game.Cards.Deck;
+import Game.GameSession;
 
 import java.util.List;
 
-public class RL_bot extends Bot {
+public class RulebasedBot extends Bot {
     private int briscolaValue = 5;
     private int amountofplayers = 2;
     Deck rememberdeck;
-    public RL_bot() {
+    public RulebasedBot() {
         rememberdeck = new Deck();
     }
     @Override
-    public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) {
+    public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola, GameSession game) {
         for (var p:playedCards
              ) {
             rememberdeck.remove(p);

@@ -168,6 +168,9 @@ public class GameSession implements Cloneable {
     public Player getPlayer(int playerNumber) {
         return players[playerNumber % players.length];
     }
+    public GameSession getstate(){
+        return this;
+    }
 
     public int getTeamNumber(int playerNumber) {
         return playerNumber % 2;
@@ -187,10 +190,24 @@ public class GameSession implements Cloneable {
 
         try {
             playerBot.playedCards = (HashSet<Card>)playedCards.clone();
-            Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
+            Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit),this);
             playTurn(uhm);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    public Card botPlayTurnCard() {
+        if (!(players[currentPlayer] instanceof Bot playerBot))
+            return null;
+
+        try {
+            playerBot.playedCards = (HashSet<Card>)playedCards.clone();
+            Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit),this);
+            playTurn(uhm);
+            return uhm;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

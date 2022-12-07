@@ -15,7 +15,7 @@ public class MCTS3_bot extends Bot {
     private int round;
 
     @Override
-    public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) throws IOException {
+    public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola, GameSession game) throws IOException {
         return findCardToPlay(simulationSession.get(), 2000);
     }
 

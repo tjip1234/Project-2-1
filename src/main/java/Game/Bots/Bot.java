@@ -19,7 +19,7 @@ public abstract class Bot extends Player {
     public Supplier<GameSession> simulationSession;
 
     /// Makes a choosing a card based on the current situation
-    public abstract Card MakeDecision(List<Card> cardsOnTable, Suit Briscola) throws IOException;
+    public abstract Card MakeDecision(List<Card> cardsOnTable, Suit Briscola, GameSession game) throws IOException;
 
     public static Card FindDominantCard(List<Card> cardsOnTable, Suit Briscola) {
         if(cardsOnTable.size() == 0)

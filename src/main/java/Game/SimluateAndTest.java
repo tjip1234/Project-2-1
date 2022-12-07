@@ -1,8 +1,8 @@
 package Game;
 
 import Game.Bots.GreedyBot;
-import Game.Bots.RL_bot;
 import Game.Bots.RandomBot;
+import Game.Bots.ReinforcementLearning.RL_bot;
 import Game.Cards.Card;
 import Game.Utils.CreateCSV;
 
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public class SimluateAndTest {
     static Player[] bots;
-    static String name = "GreedyvsRule";
+    static String name = "RL vs greedy";
     public static void initBots(){
         bots = new Player[]{new RL_bot(), new GreedyBot()}; //change your players and bots here
     }

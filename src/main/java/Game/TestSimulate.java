@@ -4,8 +4,6 @@ import Game.Bots.GreedyBot;
 //import Game.Bots.MCST.MCST2_bot;
 //import Game.Bots.MCST.MCST_bot;
 import Game.Bots.MCST.MCTS3_bot;
-import Game.Bots.RL_bot;
-import Game.Bots.RandomBot;
 
 import java.io.FileWriter;
 import java.io.IOException;
