@@ -1,5 +1,6 @@
 package GameUI;
 
+import Game.Cards.Card;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -53,8 +54,10 @@ public class SettingsMenu extends Stage {
 
         skinChoice = new ComboBox<>();
         skinChoice.setPromptText("Choose a skin");
-        skinChoice.getItems().add(CardTextureStore.CardSkin.CardBack1);
-        skinChoice.getItems().add(CardTextureStore.CardSkin.Pizza);
+
+        for(var skin : CardTextureStore.CardSkin.values())
+            skinChoice.getItems().add(skin);
+
         skinChoice.setPrefSize(240, 50);
         skinChoice.setLayoutY(90);
         skinChoice.setLayoutX(150);

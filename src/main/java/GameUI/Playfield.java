@@ -1,6 +1,7 @@
 package GameUI;
 
 import Game.Bots.GreedyBot;
+import Game.Bots.MCTS.MCTS3_bot;
 import Game.Cards.Card;
 import Game.GameSession;
 import Game.Player;
@@ -60,7 +61,7 @@ public class Playfield extends Stage {
         scoreTexts = new Text[players.length];
 
         for(int i = 0; i < players.length; ++i){
-            players[i] = new GreedyBot();
+            players[i] = new MCTS3_bot(1000, 1.41);
             scoreTexts[i] = new Text(0, 20+ 20 * i, String.format("Player %d: 0", i+1));
             scoreTexts[i].setFont(Font.font("verdana", FontWeight.BOLD, 20));
             playfieldElements.getChildren().add(scoreTexts[i]);
