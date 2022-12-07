@@ -59,17 +59,15 @@ public class PlayerCardHandler {
             moveBasedOnIndex(cards.get(i), i, System.nanoTime());
 
         playfield.putCardOnTable(card);
-        playfield.game.playTurn(card.currentCard);
-
-        // if applicable
-        addNewCard();
     }
+
 
     public void onCardClicked(DrawableCard card){
         if(!canBeClicked())
             return;
 
         discardCardFromHand(card);
+        playfield.game.playTurn(card.currentCard);
     }
 
     private boolean canBeClicked(){
@@ -81,7 +79,7 @@ public class PlayerCardHandler {
             card.flip(System.nanoTime());
     }
 
-    private void addNewCard(){
+    public void addNewCard(boolean flip){
         var hand = new ArrayList<Card>(playfield.game.players[playerNumber].getHand());
 
         hand.removeIf(c -> cards.stream().anyMatch(d -> d.currentCard == c));
@@ -89,7 +87,15 @@ public class PlayerCardHandler {
         hand.forEach(c -> {
             var drawable = playfield.deckCards.pop();
             drawable.setCard(c);
+            if(flip)
+                drawable.flip(System.nanoTime());
             addCardToHand(drawable, System.nanoTime() + 100 * 1000000);
         });
+    }
+
+    public void botPlayCard(Card card){
+        var dCard = cards.stream().filter(d -> d.currentCard == card).findFirst().get();
+
+        discardCardFromHand(dCard);
     }
 }

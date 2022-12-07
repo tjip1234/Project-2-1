@@ -1,5 +1,6 @@
 package GameUI;
 
+import Game.Bots.GreedyBot;
 import Game.Cards.Card;
 import Game.GameSession;
 import Game.Player;
@@ -10,9 +11,12 @@ import GameUI.PlayfieldComponents.Transforms.TransformHandler;
 import GameUI.Utils.MathUtils;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.function.Consumer;
@@ -31,10 +35,8 @@ public class Playfield extends Stage {
 
     private final Group playfieldElements;
 
-    private final Stage menuStage;
 
     public Playfield(Stage menuStage) {
-        this.menuStage = menuStage;
         setOnCloseRequest(e -> {
             menuStage.show();
             this.close();
@@ -49,13 +51,13 @@ public class Playfield extends Stage {
 
         Player[] players = new Player[BriscolaConfigs.getPlayerNumber()];
         for(int i = 0; i < players.length; ++i){
-            players[i] = new Player();
+            players[i] = new GreedyBot();
         }
 
         game = new GameSession(players);
+        game.setBotVisualHook(this::onBotMove);
         game.addNextPlayerCallback(this::onNextPlayer);
         game.addNextTrickCallback(this::onTrickComplete);
-
 
         createCards(playfieldElements);
         createPlayerCardHandlers();
@@ -69,18 +71,8 @@ public class Playfield extends Stage {
         game.startRound();
         spreadCards();
         onNextPlayer(-1, 0);
-    }
 
-    private void rotateTo(double targetRot){
-        double originRot = playfieldElements.getRotate();
-        double deltaRot = targetRot - originRot;
-        Consumer<Float> function = (Float progress) -> {
-            var newRot = originRot + deltaRot * Easings.easeOutBounce(progress);
-
-            playfieldElements.setRotate(newRot);
-        };
-
-        transformHandler.addTransform(1000, function);
+        scene.setOnKeyPressed(this::onKeyDown);
     }
 
     private void createCards(Group playfieldElements) {
@@ -135,8 +127,15 @@ public class Playfield extends Stage {
     }
 
     private void onNextPlayer(Integer prevPlayer, Integer newPlayer){
-        if(prevPlayer != -1)
+        if(prevPlayer.equals(newPlayer)){
+            cardHandlers[prevPlayer].addNewCard(true);
+            return;
+        }
+
+        if(prevPlayer != -1) {
             cardHandlers[prevPlayer].flip();
+            cardHandlers[prevPlayer].addNewCard(false);
+        }
 
         cardHandlers[newPlayer].flip();
     }
@@ -148,5 +147,16 @@ public class Playfield extends Stage {
             card.scheduleTransform(System.nanoTime() + 1000 * 1000000, f -> card.moveTo(System.nanoTime(), winningDirection.x(), winningDirection.y()));
 
         tableCards.clear();
+    }
+
+    private void onBotMove(int playerNumber, Card card){
+        cardHandlers[playerNumber].botPlayCard(card);
+    }
+
+    private void onKeyDown(KeyEvent e){
+        if(!e.getCode().equals(KeyCode.SPACE))
+            return;
+
+        game.botPlayTurn();
     }
 }

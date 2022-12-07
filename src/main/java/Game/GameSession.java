@@ -5,7 +5,6 @@ import Game.Cards.Deck;
 import Game.Bots.Bot;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -60,6 +59,7 @@ public class GameSession implements Cloneable {
             deck = new Deck(40);
 
         totalCycles = deck.getSessionCards().size()/ players.length;
+
     }
 
     private int currentCycle ;
@@ -75,6 +75,12 @@ public class GameSession implements Cloneable {
             return;
 
         onTrickComplete.add(callback);
+    }
+
+    private BiConsumer<Integer, Card> onBotPlayCard = null;
+
+    public void setBotVisualHook(BiConsumer<Integer, Card> callback){
+        onBotPlayCard = callback;
     }
 
     private void executeNextPlayerCallback(int prev, int curr) {
@@ -206,6 +212,11 @@ public class GameSession implements Cloneable {
         try {
             playerBot.playedCards = (HashSet<Card>)playedCards.clone();
             Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
+
+            if(onBotPlayCard != null) {
+                onBotPlayCard.accept(currentPlayer, uhm);
+            }
+
             playTurn(uhm);
         } catch (Exception e) {
             e.printStackTrace();
