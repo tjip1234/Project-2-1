@@ -69,6 +69,13 @@ public class Playfield extends Stage {
         show();
 
         game.startRound();
+
+        // Show the briscola
+        deckCards.get(0).setCard(game.deck.getBriscola());
+        deckCards.get(0).flipToFront();
+        deckCards.get(0).rotateTo(System.nanoTime(),-20);
+        deckCards.get(0).setX(110);
+
         spreadCards();
         onNextPlayer(-1, 0);
 
