@@ -14,6 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.security.Key;
@@ -35,6 +38,8 @@ public class Playfield extends Stage {
 
     private final Group playfieldElements;
 
+    public final Text[] scoreTexts;
+
 
     public Playfield(Stage menuStage) {
         setOnCloseRequest(e -> {
@@ -50,8 +55,13 @@ public class Playfield extends Stage {
         playfieldElements.resize(700,700);
 
         Player[] players = new Player[BriscolaConfigs.getPlayerNumber()];
+        scoreTexts = new Text[players.length];
+
         for(int i = 0; i < players.length; ++i){
             players[i] = new GreedyBot();
+            scoreTexts[i] = new Text(0, 20+ 20 * i, String.format("Player %d: 0", i+1));
+            scoreTexts[i].setFont(Font.font("verdana", FontWeight.BOLD, 20));
+            playfieldElements.getChildren().add(scoreTexts[i]);
         }
 
         game = new GameSession(players);
@@ -148,6 +158,8 @@ public class Playfield extends Stage {
     }
 
     private void onTrickComplete(Integer winningPlayer){
+        scoreTexts[winningPlayer].setText(String.format("Player %d: %d",winningPlayer + 1,  game.players[winningPlayer].Score()));
+
         var winningDirection = MathUtils.getCircularPosition(500, (360.0f / game.players.length) * winningPlayer);
 
         for(var card : tableCards)
