@@ -14,7 +14,7 @@ public class State {
 
     public final int rootPlayerNumber;
     private int visitCountForState;
-    private int scoreForState;
+    private double scoreForState;
 
     private List<State> possibleStates;
     private List<Card> remainingCards = new ArrayList<>();

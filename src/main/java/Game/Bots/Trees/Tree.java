@@ -25,16 +25,14 @@ public class Tree {
     }
 
     public void saveTree(int round) throws IOException {
-        FileWriter file = new FileWriter("src/main/java/Game/Bots/MCST/testing.txt", true);
+        FileWriter file = new FileWriter("src/main/java/Game/Bots/MCTS/dataMCTS.txt", true);
         PrintWriter out = new PrintWriter(file);
-        StringBuilder a = new StringBuilder();
-        int childCount = 0;
-        a.append("Round: ").append(round).append(", ");
-        for (Node child : rootNode.getListOfChildren()){
-            a.append("Child: ").append(childCount++).append(", ");
-            a.append("Score: ").append(child.getState().getScoreForState()).append(", ");
-            a.append("VisitCount: ").append(child.getState().getVisitCountForState()).append(", ");
+        String a = "";
+        for (int i = 0; i < getRootNode().getListOfChildren().size(); i++) {
+            a+=getRootNode().getListOfChildren().get(i).getState().getVisitCountForState()+", "+(getRootNode().getListOfChildren().get(i).getState().getScoreForState()/getRootNode().getListOfChildren().get(i).getState().getVisitCountForState())    +", ";
         }
+
+
         out.println(a);
         out.close();
     }

@@ -24,36 +24,38 @@ public class MCTS3_bot extends Bot {
     public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) throws IOException {
         return findCardToPlay(simulationSession.get(), iterationCount);
     }
+    /**
+     * recursive part of initializing the tree
+     * @param parent, the node for which the process is aplied
+     * @param recursionCounter, how many iterations left
+     */
+    private void recursionTreeInitialization(Node parent, int  recursionCounter, int howManyMax){
+        if(recursionCounter==0){
+            return;
+        }
+        int x = parent.getState().getPossibleStates().size();
+        for (int i = 0; (i < x)&&(i < howManyMax); i++) {
+            Node node = extensionPhase(parent);
+            backpropagationPhase(node,simulationPhase(node));
+            recursionTreeInitialization(node, recursionCounter-1, howManyMax);
+        }
+
+    }
 
     /**
      * Initialize Tree
      * @param board, an object representing the board
      * @return The tree
      */
-    public Tree initializeTree(GameSession board){
+    public Tree initializeTree(GameSession board, int recursionCounter){
         Tree tree = new Tree(board, board.currentPlayer);
+        tree.getRootNode().getState().createAllPossibleStates();
         int x = tree.getRootNode().getState().getPossibleStates().size();
+
         for (int i = 0; i < x; i++) {
             Node node = extensionPhase(tree.getRootNode());
             backpropagationPhase(node,simulationPhase(node));
-        }
-
-        for (int i = 0; i < tree.getRootNode().getListOfChildren().size(); i++) {
-            int y = tree.getRootNode().getListOfChildren().get(i).getState().getPossibleStates().size();
-            for (int j = 0; j < y; j++) {
-                Node node = extensionPhase(tree.getRootNode().getListOfChildren().get(i));
-                backpropagationPhase(node,simulationPhase(node));
-            }
-        }
-        for (int i = 0; i < tree.getRootNode().getListOfChildren().size(); i++) {
-            for (int j = 0; j < tree.getRootNode().getListOfChildren().get(i).getListOfChildren().size(); j++) {
-                int z = tree.getRootNode().getListOfChildren().get(i).getListOfChildren().get(j).getState().getPossibleStates().size();
-                for (int j2 = 0; j2 < z ; j2++) {
-
-                    Node node = extensionPhase(tree.getRootNode().getListOfChildren().get(i).getListOfChildren().get(j));
-                    backpropagationPhase(node, simulationPhase(node));
-                }
-            }
+            recursionTreeInitialization(node, recursionCounter-1, 25);
         }
 
         return tree;
@@ -67,18 +69,15 @@ public class MCTS3_bot extends Bot {
      */
     private Card findCardToPlay(GameSession board, int iterationCount) throws IOException {
 
-        Tree tree = initializeTree(board);
-        for (int i = 0; i < board.players[board.currentPlayer].getHand().size(); i++) {
-            extensionPhase(tree.getRootNode());
-        }
+        Tree tree = initializeTree(board,3 );
+
         while(iterationCount!=0){
             Node currentNode = tree.getRootNode();
-            currentNode = selectionPhase(currentNode);
+            currentNode = selectionPhase(currentNode, iterationCount);
             backpropagationPhase(currentNode,simulationPhase(currentNode));
 
             iterationCount--;
         }
-        //tree.saveTree(round++);
         return getWinningNode(tree.getRootNode()).getState().getCardPlayed();
     }
 
@@ -87,7 +86,7 @@ public class MCTS3_bot extends Bot {
      * @param rootNode the rootnode of the tree
      * @return the node from which we are going to do the next phase
      */
-    private Node selectionPhase(Node rootNode){
+    private Node selectionPhase(Node rootNode, int iterationCount){
         // depth =2 all children
         // depth >2 some heuristic
 
@@ -120,22 +119,21 @@ public class MCTS3_bot extends Bot {
 
         while(currentNode.getListOfChildren().size()>0){
             //If it isn't bots turn choose random child
+            if(((currentNode.getState().getPossibleStates().size()>0)&&(Math.random()<0.01))){
+                break;
+            }
             if(currentNode.getState().getBoardState().currentPlayer!=currentNode.getState().rootPlayerNumber){
                 currentNode = currentNode.getListOfChildren().get((int)(Math.random()*currentNode.getListOfChildren().size()));
                 continue;
             }
-            Node tempNode = UTC.findPossibleNode(currentNode,UTC_constant);
-//            if((((double)tempNode.getState().getVisitCountForState()/(double)currentNode.getState().getVisitCountForState())>0.95&&currentNode.getState().getPossibleStates().size()>0)){
-//                break;
-//            }
 
 
-            if(tempNode == null){break;}
-            currentNode = tempNode;
+            currentNode = UTC.findPossibleNode(currentNode,UTC_constant);
+        }
+        if(currentNode.getState().getPossibleStates().size()==0){
+            return currentNode;
         }
 
-
-        int exploredChildSize = currentNode.getListOfChildren().size();
 
         //Basic version
         return extensionPhase(currentNode);
@@ -148,9 +146,7 @@ public class MCTS3_bot extends Bot {
      */
     private Node extensionPhase(Node targetParentNode){
         // Adds one of the child of targetNode
-        if(!targetParentNode.getState().canYouAddAnChildState()){
-            return  targetParentNode;
-        }
+
         State state = targetParentNode.getState().getRandomChildState();
         Node targetNode = new Node(state);
         targetNode.setParentNode(targetParentNode);
@@ -168,31 +164,31 @@ public class MCTS3_bot extends Bot {
         //simulate one random game
         //simulate couple and return average
         //return normalized score in game instead of 1,0,-1
-        double score= 0;
-            State simulationState = targetNode.getState();
 
-            while(true){
-                if(simulationState.getBoardState().gameOver() || !simulationState.canYouAddAnChildState()){
-                    if(simulationState.getBoardState().getWinnerChickenDinner() == simulationState.getRootPlayerNumber()){
-                        State finalStateToExplore = simulationState;
-                        //true if two players have the same score
-                        if (Arrays.stream(simulationState.getBoardState().players).filter(
-                                        c -> c.Score() == finalStateToExplore.getBoardState().players[finalStateToExplore.getRootPlayerNumber()].Score())
-                                .count() > 1) {
-                            score = 0.5;
-                        } else {
-                            score += 1;
-                        }
-                    } else {
-                        score = 0;
+        double score= 0 ;
+        for (int i = 0; i < 1; i++) {
+
+
+            State simulationState = new State(targetNode.getState().getBoardState().clone(), targetNode.getState().getRootPlayerNumber());
+
+            while (true) {
+                if (simulationState.getBoardState().gameOver() || simulationState.getPossibleStates().size() == 0) {
+                    if (simulationState.getBoardState().getWinnerChickenDinner() == -1) {
+                        score += 0.5;
+                        break;
+                    }
+                    if (simulationState.getBoardState().getWinnerChickenDinner() == simulationState.getRootPlayerNumber()) {
+                        score += 1;
                     }
                     break;
+                } else {
+                    simulationState = simulationState.getRandomChildState();
                 }
-                simulationState = simulationState.getRandomChildState();
+
+            }
 
         }
-        return score;
-
+        return score/1;
 
     }
 
@@ -220,7 +216,7 @@ public class MCTS3_bot extends Bot {
         for (Node node : rootNode.getListOfChildren()) {
             if (highestValueNode == null) {
                 highestValueNode = node;
-            } else if (node.getState().getScoreForState() > highestValueNode.getState().getScoreForState()) {
+            } else if (node.getState().getScoreForState()/node.getState().getVisitCountForState() > highestValueNode.getState().getScoreForState()/highestValueNode.getState().getVisitCountForState()) {
                 highestValueNode = node;
             }
         }

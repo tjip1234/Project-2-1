@@ -144,6 +144,9 @@ public class GameSession implements Cloneable {
     public int getWinnerChickenDinner() {
         int currentMaxScore = 0;
         int maxScorePlayerIndex = 0;
+        if(players[0].Score()==players[1].Score()){
+            return -1;
+        }
         for (int i = 0; i < players.length; i++) {
             if (players[i].Score() > currentMaxScore) {
                 currentMaxScore = players[i].Score();

@@ -48,27 +48,43 @@ public class TestSimulate {
          * for poor people
          */
         double wins = 0;
-        for(int j = 100; j < 300;j++) {
+        String a = "aa";
+        double draws;
+        for(double j = 0; j < 10000; j+=500) {
+            draws = 0;
             wins = 0;
             for (int i = 0; i < runs; i++) {
+                GameSession game;
                 if (i % 2 == 0) {
-                    var game = new GameSession(new MCTS3_bot(1000, (double)j/100), new GreedyBot());
+                    game = new GameSession(new MCTS3_bot((int) 1000, 3), new GreedyBot());
                     game.startRound();
                     game.simulate();
+                    if (game.getWinnerChickenDinner() == -1) {
+                        draws++;
+                        continue;
+                    }
                     if (game.getWinnerChickenDinner() == 0) {
                         wins++;
                     }
                 } else {
-                    var game = new GameSession(new GreedyBot(), new MCTS3_bot(1000, (double)j/100));
+                    game = new GameSession(new GreedyBot(), new MCTS3_bot((int) 1000, 3));
                     game.startRound();
                     game.simulate();
+                    if (game.getWinnerChickenDinner() == -1) {
+                        draws++;
+                        continue;
+                    }
                     if (game.getWinnerChickenDinner() == 1) {
                         wins++;
                     }
                 }
-                System.out.println("Game " + (i+1) + ", total wins: " + wins);
+
+                System.out.println("Game " + (i+1) + ", total wins: " + wins + ", total draws: "+draws);
+
             }
-            saveData("winRate: " + (wins/runs)*100 + "%, UTC_Constant: " +  (double)j/100);
+            System.out.println("Iterations " + (j) + ", start");
+
+            saveData("winRate: " + (wins/runs)*100 + "%, Iteration amount: " +  (double)j+", total draws: "+draws);
         }
         //jobStream().forEach(Runnable::run);
 
