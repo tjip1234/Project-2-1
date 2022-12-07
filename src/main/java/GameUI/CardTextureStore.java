@@ -9,7 +9,10 @@ import java.util.HashMap;
 public class CardTextureStore {
     public static enum CardSkin{
         CardBack1("CardBack1"),
-        Pizza("PizzaSkin");
+        Pizza("PizzaSkin"),
+        Mike("mike"),
+        Noot("noot"),
+        Birb("Birb");
 
         public final String nameValue;
         CardSkin(String name){
