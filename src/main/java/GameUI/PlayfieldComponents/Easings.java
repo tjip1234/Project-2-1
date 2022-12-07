@@ -22,4 +22,12 @@ public class Easings {
             return n1 * (t -= 2.625f / d1) * t + 0.984375f;
         }
     }
+
+    public static float easeOutCubic(float t) {
+        return (float) (1 - Math.pow(1 - t, 3));
+    }
+
+    public static float easeOutExpo(float t) {
+        return (float)(t == 1 ? 1 : 1 - Math.pow(2, -10 * t));
+    }
 }

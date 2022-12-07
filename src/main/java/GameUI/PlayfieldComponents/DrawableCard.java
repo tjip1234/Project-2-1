@@ -67,8 +67,8 @@ public class DrawableCard extends ImageView{
         Consumer<Float> function = (Float progress) -> {
             // TODO: needs normalization
             // TODO: Consider an easing function
-            double currentX = originX + deltaX * Easings.easeOutBack(progress);
-            double currentY = originY + deltaY * Easings.easeOutBack(progress);
+            double currentX = originX + deltaX * Easings.easeOutExpo(progress);
+            double currentY = originY + deltaY * Easings.easeOutExpo(progress);
 
             this.setX(currentX);
             this.setY(currentY);
@@ -88,11 +88,11 @@ public class DrawableCard extends ImageView{
         Image targetImage = currentImage == frontSide ? backSide: frontSide;
 
         Consumer<Float> function = (Float progress) -> {
-            if(this.getImage() == currentImage && Easings.easeOutBack(progress) >= 0.5f)
+            if(this.getImage() == currentImage && Easings.easeOutExpo(progress) >= 0.5f)
                 this.setImage(targetImage);
 
             // TODO: Consider an easing function
-            double currentX = Math.abs(1 - 2 * Easings.easeOutBack(progress));
+            double currentX = Math.abs(1 - 2 * Easings.easeOutExpo(progress));
 
             this.setScaleX(currentX);
         };
@@ -108,7 +108,7 @@ public class DrawableCard extends ImageView{
         Consumer<Float> function = (Float progress) -> {
             // TODO: needs normalization
             // TODO: Consider an easing function
-            double currentRot = originRot + deltaRot *  Easings.easeOutBack(progress);
+            double currentRot = originRot + deltaRot *  Easings.easeOutExpo(progress);
 
             this.setRotate(currentRot);
         };
