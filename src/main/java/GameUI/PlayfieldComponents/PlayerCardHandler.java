@@ -6,6 +6,8 @@ import GameUI.Utils.MathUtils;
 import GameUI.Utils.Vector2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class PlayerCardHandler {
     private static final float distanceFromCentre = 380;
@@ -27,7 +29,7 @@ public class PlayerCardHandler {
         var thisOrigin = MathUtils.getCircularPosition(distanceFromCentre, angle);
 
         for(int i = 0; i < 3; ++i){
-            int laneOffset = ((i * 2) - 1) % 3;
+            int laneOffset = i - 1;
             cardAngles[i] = (angle + laneOffset*30)+180;
 
             var positionRelativeToOrigin = MathUtils.getCircularPosition(120, cardAngles[i]);
