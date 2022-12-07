@@ -21,10 +21,12 @@ import javafx.stage.Stage;
 
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Stack;
 import java.util.function.Consumer;
 
 public class Playfield extends Stage {
+    private static final Random rng = new Random();
 
     private final TransformHandler transformHandler = new TransformHandler();
 
@@ -139,6 +141,8 @@ public class Playfield extends Stage {
     public void putCardOnTable(DrawableCard card){
         card.setViewOrder(--cardNumber);
         card.moveTo(System.nanoTime(), 0,0);
+        // Random rotation for flair
+        card.rotateTo(System.nanoTime(), rng.nextFloat() * (720 * 2) - 720);
 
         tableCards.add(card);
     }
