@@ -119,7 +119,7 @@ public class MCTS3_bot extends Bot {
 
         while(currentNode.getListOfChildren().size()>0){
             //If it isn't bots turn choose random child
-            if(((currentNode.getState().getPossibleStates().size()>0)&&(Math.random()<0.01))){
+            if(((currentNode.getState().getPossibleStates().size()>0)&&(Math.random()<0.05))){
                 break;
             }
             if(currentNode.getState().getBoardState().currentPlayer!=currentNode.getState().rootPlayerNumber){

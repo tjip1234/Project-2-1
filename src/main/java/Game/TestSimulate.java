@@ -4,6 +4,8 @@ import Game.Bots.GreedyBot;
 //import Game.Bots.MCST.MCST2_bot;
 //import Game.Bots.MCST.MCST_bot;
 import Game.Bots.MCTS.MCTS3_bot;
+import Game.Bots.RL_bot;
+import Game.Bots.RandomBot;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,9 +25,9 @@ public class TestSimulate {
         boolean isEven = c%2 == 0;
         GameSession g;
         if(isEven)
-            g = new GameSession(new GreedyBot(), new MCTS3_bot(1000,1.41));
+            g = new GameSession(new GreedyBot(), new MCTS3_bot(10000,1.41));
         else
-            g = new GameSession(new MCTS3_bot(1000,1.41), new GreedyBot());
+            g = new GameSession(new MCTS3_bot(10000,1.41), new GreedyBot());
 
         g.startRound();
         g.simulate();
@@ -36,7 +38,7 @@ public class TestSimulate {
     }
 
     public static void saveData(String a) throws IOException {
-        FileWriter file = new FileWriter("src/main/java/Game/Bots/MCTS/dataMCTS.txt", true);
+        FileWriter file = new FileWriter("src/main/java/Game/Bots/MCTS/dataMCTS4.txt", true);
         PrintWriter out = new PrintWriter(file);
         out.println(a);
         out.close();
@@ -49,47 +51,80 @@ public class TestSimulate {
          */
         double wins = 0;
         String a = "aa";
+        saveData("winRate, time, space, score");
+
         double draws;
-        for(double j = 0; j < 10000; j+=500) {
-            draws = 0;
-            wins = 0;
-            for (int i = 0; i < runs; i++) {
-                GameSession game;
-                if (i % 2 == 0) {
-                    game = new GameSession(new MCTS3_bot((int) 1000, 3), new GreedyBot());
-                    game.startRound();
-                    game.simulate();
-                    if (game.getWinnerChickenDinner() == -1) {
-                        draws++;
-                        continue;
+        for(int bots = 0; bots<3;bots++) {
+            saveData("Bot: " + getBot(bots));
+            for(double j = 0; j < 10; j++) {
+                draws = 0;
+                wins = 0;
+                double score = 0;
+
+                double start = System.currentTimeMillis();
+
+                for (int i = 0; i < runs; i++) {
+                    GameSession game;
+                    if (i % 2 == 0) {
+                        game = new GameSession(getGoalPlayer(), getOpponenant(bots));
+                        game.startRound();
+                        game.simulate();
+                        score += game.players[i % 2].Score() - 60;
+                        if (game.getWinnerChickenDinner() == -1) {
+                            draws++;
+                            continue;
+                        }
+                        if (game.getWinnerChickenDinner() == 0) {
+                            wins++;
+                        }
+                    } else {
+                        game = new GameSession(getOpponenant(bots), getGoalPlayer());
+                        game.startRound();
+                        game.simulate();
+                        score += game.players[i % 2].Score() - 60;
+
+                        if (game.getWinnerChickenDinner() == -1) {
+                            draws++;
+                            continue;
+                        }
+                        if (game.getWinnerChickenDinner() == 1) {
+                            wins++;
+                        }
                     }
-                    if (game.getWinnerChickenDinner() == 0) {
-                        wins++;
-                    }
-                } else {
-                    game = new GameSession(new GreedyBot(), new MCTS3_bot((int) 1000, 3));
-                    game.startRound();
-                    game.simulate();
-                    if (game.getWinnerChickenDinner() == -1) {
-                        draws++;
-                        continue;
-                    }
-                    if (game.getWinnerChickenDinner() == 1) {
-                        wins++;
-                    }
+
+                    System.out.println("Game " + (i + 1) + ", total wins: " + wins + ", total draws: " + draws);
                 }
-
-                System.out.println("Game " + (i+1) + ", total wins: " + wins + ", total draws: "+draws);
-
+                System.out.println("Set: " + (j) + ", start");
+                saveData((wins / (runs - draws)) * 100 + "," + (System.currentTimeMillis() - start) + "," + (3000 + 900) + "," + score / 100);
             }
-            System.out.println("Iterations " + (j) + ", start");
-
-            saveData("winRate: " + (wins/runs)*100 + "%, Iteration amount: " +  (double)j+", total draws: "+draws);
         }
-        //jobStream().forEach(Runnable::run);
-
-
         System.out.println("Final total wins: "+ wins);
+    }
+
+    private static String getBot(int bots) {
+        switch(bots){
+            case 0: return "RandomBot";
+            case 1: return "GreedyBot";
+            case 2: return "MCTS3_bot(2000,1.41)";
+            case 3: //ReinforcementLearning
+            case 4: //Expected minimax
+        }
+        return "RandomBot";
+    }
+
+    public static Player getGoalPlayer(){
+        return new MCTS3_bot(2000,1.41);
+    }
+
+    public static Player getOpponenant(int set){
+        switch(set){
+            case 0: return new RandomBot();
+            case 1: return new GreedyBot();
+            case 2: return new MCTS3_bot(2000,1.41);
+            case 3: //ReinforcementLearning
+            case 4: //Expected minimax
+        }
+        return new RandomBot();
     }
 
     public static class SimulationJob implements Iterator<Runnable> {
