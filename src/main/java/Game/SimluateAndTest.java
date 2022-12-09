@@ -1,23 +1,18 @@
 package Game;
 
 import Game.Bots.GreedyBot;
-import Game.Bots.RL_bot;
-import Game.Bots.RandomBot;
-import Game.Cards.Card;
+import Game.Bots.RuleBased_bot;
 import Game.Utils.CreateCSV;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SimluateAndTest {
     static Player[] bots;
     static String name = "GreedyvsRule";
     public static void initBots(){
-        bots = new Player[]{new RL_bot(), new GreedyBot()}; //change your players and bots here
+        bots = new Player[]{new RuleBased_bot(), new GreedyBot()}; //change your players and bots here
     }
     public static void main(String[] args) throws IOException {
         initBots();

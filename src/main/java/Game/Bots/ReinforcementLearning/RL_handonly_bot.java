@@ -48,17 +48,23 @@ public class RL_handonly_bot extends Bot {
             double currentValue = thing.y()[index];
             double addedstuff = (alpha / 1) * (reward - currentValue);
             double newValue = currentValue + (alpha / 1) * (reward - currentValue);
-            double[] modified = Arrays.stream(state)
-                    .mapToDouble(value -> value - addedstuff/2)
-                    .toArray();
-            modified[index] = newValue;
-
-            int indexoflist = stateValues.indexOf(thing);
-            stateValues.set(indexoflist, new Tuple<>(state, modified));
+            if (state.length == 1) {
+                int indexoflist = stateValues.indexOf(thing);
+                thing.y()[0] = newValue;
+                stateValues.set(indexoflist, new Tuple<>(state, thing.y()));
+            }
+            else {
+                double[] modified = Arrays.stream(state)
+                        .mapToDouble(value -> value - addedstuff / (thing.x().length - 1))
+                        .toArray();
+                modified[index] = newValue;
+                int indexoflist = stateValues.indexOf(thing);
+                stateValues.set(indexoflist, new Tuple<>(state, modified));
+            }
         }
     }
 
-    public Card chooseAction(int[] state) {
+    public Card chooseAction(int[] state,Card.Suit Briscola) {
         if (Math.random() < epsilon) {
             // Explore: choose a random action
             return getHand().get((int) (Math.random() * getHand().size()));
@@ -79,7 +85,7 @@ public class RL_handonly_bot extends Bot {
                 // No information about this state: choose a random action
                 return getHand().get((int) (Math.random() * getHand().size()));
             }
-            return numbertocard(bestAction);
+            return numbertocard(bestAction,Briscola);
 
         }
     }
@@ -89,13 +95,13 @@ public class RL_handonly_bot extends Bot {
         Card[] hand = getHand().toArray(new Card[0]);
         ArrayList<Integer> k = new ArrayList<>();
         for (Card card : hand) {
-            k.add(cardtonumber(card));
+            k.add(cardtonumber(card,Briscola));
         }
         int[] state = k.stream().mapToInt(i -> i).toArray();
         // Choose an action
-        Card action = chooseAction(state);
+        Card action = chooseAction(state,Briscola);
         int[] nextState = state.clone();
-        rewards.add(new Tuple<>(nextState,cardtonumber(action)));
+        rewards.add(new Tuple<>(nextState,cardtonumber(action,Briscola)));
 
 
         return action;
@@ -103,8 +109,8 @@ public class RL_handonly_bot extends Bot {
     public static void main(String[] args) {
 
         //ONLY USE TO RESET PARAMETERS MIGHT WASTE HOURS OF TRAINING!!!!!!!
-        //stateValues = new ArrayList<>();
-        //writeObjectToFile(stateValues,filepath);
+        stateValues = new ArrayList<>();
+        writeObjectToFile(stateValues,filepath);
         stateValues = (ArrayList<Tuple<int[], double[]>>) readObjectFromFile(filepath);
         System.out.print(stateValues);
     }
@@ -114,14 +120,21 @@ public class RL_handonly_bot extends Bot {
         }
         writeObjectToFile(stateValues,filepath);
     }
-    public static int cardtonumber(Card card){
+    public static int cardtonumber(Card card,Card.Suit briscola ){
+        if (card.suit.equals(briscola))
+            return card.number.ordinal()+(card.suit.ordinal()*100)+12893;
         return card.number.ordinal()+(card.suit.ordinal()*100);
     }
-    public static Card numbertocard(int number){
+    public static Card numbertocard(int number,Card.Suit briscola){
         Card.Suit[] k = Card.Suit.values();
         Card.Number[] v = Card.Number.values();
+        int briscolanumber = 12893;
         int ordinalsuit = (int)number/100;
-        return new Card(k[ordinalsuit],v[number-ordinalsuit*100]);
+        if (number-briscolanumber >= 0){
+            ordinalsuit = (int)((number-briscolanumber)/100);
+            return new Card(k[ordinalsuit], v[(number-briscolanumber) - ((ordinalsuit) * 100)]);
+        }
+        return new Card(k[ordinalsuit], v[number - ordinalsuit * 100]);
     }
     public static void writeObjectToFile(Object obj, String filePath) {
         try {

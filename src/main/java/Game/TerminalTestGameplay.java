@@ -2,7 +2,7 @@ package Game;
 
 //import Game.Bots.MCST.MCST_bot;
 import Game.Bots.MCTS.MCTS3_bot;
-import Game.Bots.RL_bot;
+import Game.Bots.RuleBased_bot;
 
 import Game.Cards.Card;
 
@@ -23,7 +23,7 @@ public class TerminalTestGameplay {
     }
 
     public static void main(String[] args) {
-        GameSession g = new GameSession(new MCTS3_bot(1000,1.41), new RL_bot());
+        GameSession g = new GameSession(new MCTS3_bot(1000,1.41), new RuleBased_bot());
         g.startRound();
         int trickNumber = 0;
 

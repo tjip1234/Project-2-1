@@ -4,8 +4,8 @@ import Game.Bots.GreedyBot;
 //import Game.Bots.MCST.MCST2_bot;
 //import Game.Bots.MCST.MCST_bot;
 import Game.Bots.MCTS.MCTS3_bot;
-import Game.Bots.RL_bot;
 import Game.Bots.RandomBot;
+import Game.Bots.ReinforcementLearning.RL_handonly_bot;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,9 +25,9 @@ public class TestSimulate {
         boolean isEven = c%2 == 0;
         GameSession g;
         if(isEven)
-            g = new GameSession(new GreedyBot(), new MCTS3_bot(10000,1.41));
+            g = new GameSession(new RandomBot(), new RL_handonly_bot());
         else
-            g = new GameSession(new MCTS3_bot(10000,1.41), new GreedyBot());
+            g = new GameSession(new RL_handonly_bot(), new RandomBot());
 
         g.startRound();
         g.simulate();
