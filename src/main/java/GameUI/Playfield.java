@@ -40,7 +40,6 @@ public class Playfield extends Stage {
 
     public final Text botText;
 
-
     public Playfield(Stage menuStage) {
         setOnCloseRequest(e -> {
             menuStage.show();
@@ -52,14 +51,14 @@ public class Playfield extends Stage {
 
         playfieldElements = new Group();
         playfieldElements.setAutoSizeChildren(false);
-        playfieldElements.resize(700,800);
+        playfieldElements.resize(700, 800);
 
         Player[] players = new Player[BriscolaConfigs.getPlayerNumber()];
         scoreTexts = new Text[players.length];
 
-        for(int i = 0; i < players.length; ++i){
+        for (int i = 0; i < players.length; ++i) {
             players[i] = new MultiBot();
-            scoreTexts[i] = new Text(0, 20 + 20 * i, String.format("Player %d: 0", i+1));
+            scoreTexts[i] = new Text(0, 20 + 20 * i, String.format("Player %d: 0", i + 1));
             scoreTexts[i].setFont(Font.font("verdana", FontWeight.BOLD, 20));
             playfieldElements.getChildren().add(scoreTexts[i]);
         }
@@ -94,7 +93,7 @@ public class Playfield extends Stage {
         // Show the briscola
         deckCards.get(0).setCard(game.deck.getBriscola());
         deckCards.get(0).flipToFront(time, 0);
-        deckCards.get(0).rotateTo(time,-20);
+        deckCards.get(0).rotateTo(time, -20);
         deckCards.get(0).moveTo(time, 110, 0);
         onNextPlayer(-1, 0);
 
@@ -124,16 +123,17 @@ public class Playfield extends Stage {
     }
 
     private PlayerCardHandler[] cardHandlers;
-    private void createPlayerCardHandlers(){
-        cardHandlers  = new PlayerCardHandler[game.players.length];
+
+    private void createPlayerCardHandlers() {
+        cardHandlers = new PlayerCardHandler[game.players.length];
         float angleDelta = 360.0f / game.players.length;
 
-        for(int i = 0; i < game.players.length; ++i){
+        for (int i = 0; i < game.players.length; ++i) {
             cardHandlers[i] = new PlayerCardHandler(this, angleDelta * i, i);
         }
     }
 
-    private long spreadCards(){
+    private long spreadCards() {
         var startTime = System.nanoTime();
 
         for (int i = 0; i < cardHandlers.length; ++i)
@@ -147,20 +147,19 @@ public class Playfield extends Stage {
         return startTime;
     }
 
-    public void putCardOnTable(DrawableCard card){
+    public void putCardOnTable(DrawableCard card) {
         card.setViewOrder(--cardNumber);
-        card.moveTo(System.nanoTime(), 0,0);
+        card.moveTo(System.nanoTime(), 0, 0);
         // Random rotation for flair
-        card.rotateTo(System.nanoTime(), rng.nextFloat() * (720 * 2) - 720);
+        card.rotateTo(System.nanoTime(), rng.nextFloat() * (2000 * 2) - 2000);
 
         tableCards.add(card);
     }
 
-    private void onNextPlayer(Integer prevPlayer, Integer newPlayer){
+    private void onNextPlayer(Integer prevPlayer, Integer newPlayer) {
 
-
-        if(prevPlayer != -1) {
-            if(!prevPlayer.equals(newPlayer))
+        if (prevPlayer != -1) {
+            if (!prevPlayer.equals(newPlayer))
                 cardHandlers[prevPlayer].flipToBack();
 
             cardHandlers[prevPlayer].addNewCard();
@@ -171,23 +170,25 @@ public class Playfield extends Stage {
         updateBotText();
     }
 
-    private void onTrickComplete(Integer winningPlayer){
-        scoreTexts[winningPlayer].setText(String.format("Player %d: %d",winningPlayer + 1,  game.players[winningPlayer].Score()));
+    private void onTrickComplete(Integer winningPlayer) {
+        scoreTexts[winningPlayer]
+                .setText(String.format("Player %d: %d", winningPlayer + 1, game.players[winningPlayer].Score()));
 
         var winningDirection = MathUtils.getCircularPosition(500, (360.0f / game.players.length) * winningPlayer);
 
-        for(var card : tableCards)
-            card.scheduleTransform(System.nanoTime() + 1000 * 1000000, f -> card.moveTo(System.nanoTime(), winningDirection.x(), winningDirection.y()));
+        for (var card : tableCards)
+            card.scheduleTransform(System.nanoTime() + 1000 * 1000000,
+                    f -> card.moveTo(System.nanoTime(), winningDirection.x(), winningDirection.y()));
 
         tableCards.clear();
     }
 
-    private void onBotMove(int playerNumber, Card card){
+    private void onBotMove(int playerNumber, Card card) {
         cardHandlers[playerNumber].botPlayCard(card);
     }
 
-    private void onKeyDown(KeyEvent e){
-        switch (e.getCode()){
+    private void onKeyDown(KeyEvent e) {
+        switch (e.getCode()) {
             case SPACE -> game.botPlayTurn();
             case DIGIT1 -> updateCurrentBot(1);
             case DIGIT2 -> updateCurrentBot(2);
@@ -195,21 +196,21 @@ public class Playfield extends Stage {
         }
     }
 
-    public void updateCurrentBot(int i){
-        if(game.players[game.currentPlayer] instanceof MultiBot multiBot)
+    public void updateCurrentBot(int i) {
+        if (game.players[game.currentPlayer] instanceof MultiBot multiBot)
             multiBot.selectBot(i);
 
         updateBotText();
     }
 
-    public void updateBotText(){
-        if(game.players[game.currentPlayer] instanceof MultiBot multiBot){
-            botText.setText(String.format("Current bot: %s bot", switch (multiBot.getBotIndex()){
+    public void updateBotText() {
+        if (game.players[game.currentPlayer] instanceof MultiBot multiBot) {
+            botText.setText(String.format("Current bot: %s bot", switch (multiBot.getBotIndex()) {
                 case 2 -> "Greedy";
                 case 3 -> "MCTS";
                 default -> "Random";
             }));
-        }
-        else botText.setText("Current bot: N/A");
+        } else
+            botText.setText("Current bot: N/A");
     }
 }
