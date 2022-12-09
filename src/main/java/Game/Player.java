@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Player implements Cloneable {
-    private ArrayList<Card> Hand;
+    public ArrayList<Card> Hand;
     public ArrayList<Card> CollectedCards;
 
     public Player() {

@@ -7,13 +7,13 @@ import Game.Cards.Card;
 import Game.GameSession;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class MCTS3_bot extends Bot {
     private int round;
     private double UTC_constant;
     private int iterationCount;
+
     public MCTS3_bot(int iterationCount, double UTC_constant){
         this.iterationCount = iterationCount;
         this.UTC_constant = UTC_constant;
