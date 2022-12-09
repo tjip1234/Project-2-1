@@ -6,8 +6,6 @@ import GameUI.Utils.MathUtils;
 import GameUI.Utils.Vector2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class PlayerCardHandler {
     private static final float distanceFromCentre = 380;
@@ -76,12 +74,17 @@ public class PlayerCardHandler {
         return playfield.game.currentPlayer == playerNumber;
     }
 
-    public void flip(){
+    public void flipToBack(){
         for(var card : cards)
-            card.flip(System.nanoTime());
+            card.flipToBack();
     }
 
-    public void addNewCard(boolean flip){
+    public void flipToFront(){
+        for(var card : cards)
+            card.flipToFront();
+    }
+
+    public void addNewCard(){
         var hand = new ArrayList<Card>(playfield.game.players[playerNumber].getHand());
 
         hand.removeIf(c -> cards.stream().anyMatch(d -> d.currentCard == c));
@@ -89,8 +92,6 @@ public class PlayerCardHandler {
         hand.forEach(c -> {
             var drawable = playfield.deckCards.pop();
             drawable.setCard(c);
-            if(flip)
-                drawable.flip(System.nanoTime());
             addCardToHand(drawable, System.nanoTime() + 100 * 1000000);
         });
     }

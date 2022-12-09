@@ -1,18 +1,15 @@
 package GameUI;
 
-import Game.Bots.GreedyBot;
-import Game.Bots.MCTS.MCTS3_bot;
+import Game.Bots.MultiBot;
 import Game.Cards.Card;
 import Game.GameSession;
 import Game.Player;
 import GameUI.PlayfieldComponents.DrawableCard;
-import GameUI.PlayfieldComponents.Easings;
 import GameUI.PlayfieldComponents.PlayerCardHandler;
 import GameUI.PlayfieldComponents.Transforms.TransformHandler;
 import GameUI.Utils.MathUtils;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -20,11 +17,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
-import java.util.function.Consumer;
 
 public class Playfield extends Stage {
     private static final Random rng = new Random();
@@ -43,6 +38,8 @@ public class Playfield extends Stage {
 
     public final Text[] scoreTexts;
 
+    public final Text botText;
+
 
     public Playfield(Stage menuStage) {
         setOnCloseRequest(e -> {
@@ -55,17 +52,26 @@ public class Playfield extends Stage {
 
         playfieldElements = new Group();
         playfieldElements.setAutoSizeChildren(false);
-        playfieldElements.resize(700,700);
+        playfieldElements.resize(700,800);
 
         Player[] players = new Player[BriscolaConfigs.getPlayerNumber()];
         scoreTexts = new Text[players.length];
 
         for(int i = 0; i < players.length; ++i){
-            players[i] = new MCTS3_bot(1000, 1.41);
-            scoreTexts[i] = new Text(0, 20+ 20 * i, String.format("Player %d: 0", i+1));
+            players[i] = new MultiBot();
+            scoreTexts[i] = new Text(0, 20 + 20 * i, String.format("Player %d: 0", i+1));
             scoreTexts[i].setFont(Font.font("verdana", FontWeight.BOLD, 20));
             playfieldElements.getChildren().add(scoreTexts[i]);
         }
+
+        botText = new Text(250, 20, "Current bot: Random bot");
+        botText.setFont(Font.font("verdana", FontWeight.BOLD, 20));
+
+        var botChangeText = new Text(250, 20 + 20, "Change bot with (1, 2, 3)");
+        botChangeText.setFont(Font.font("verdana", FontWeight.BOLD, 20));
+
+        playfieldElements.getChildren().add(botText);
+        playfieldElements.getChildren().add(botChangeText);
 
         game = new GameSession(players);
         game.setBotVisualHook(this::onBotMove);
@@ -75,7 +81,7 @@ public class Playfield extends Stage {
         createCards(playfieldElements);
         createPlayerCardHandlers();
 
-        Scene scene = new Scene(playfieldElements, 700, 700, Color.GREEN);
+        Scene scene = new Scene(playfieldElements, 700, 800, Color.GREEN);
         setScene(scene);
 
         setResizable(false);
@@ -83,13 +89,13 @@ public class Playfield extends Stage {
 
         game.startRound();
 
+        var time = spreadCards() + 500000000; // Show the briscola 500ms after cars are distributed
+
         // Show the briscola
         deckCards.get(0).setCard(game.deck.getBriscola());
-        deckCards.get(0).flipToFront();
-        deckCards.get(0).rotateTo(System.nanoTime(),-20);
-        deckCards.get(0).setX(110);
-
-        spreadCards();
+        deckCards.get(0).flipToFront(time, 0);
+        deckCards.get(0).rotateTo(time,-20);
+        deckCards.get(0).moveTo(time, 110, 0);
         onNextPlayer(-1, 0);
 
         scene.setOnKeyPressed(this::onKeyDown);
@@ -113,7 +119,7 @@ public class Playfield extends Stage {
     private DrawableCard createDrawableCard() {
         var drawableCard = new DrawableCard();
         drawableCard.setLayoutX(350 - drawableCard.getFitWidth() / 2);
-        drawableCard.setLayoutY(350 - drawableCard.getFitHeight() / 2);
+        drawableCard.setLayoutY(400 - drawableCard.getFitHeight() / 2);
         return drawableCard;
     }
 
@@ -127,7 +133,7 @@ public class Playfield extends Stage {
         }
     }
 
-    private void spreadCards(){
+    private long spreadCards(){
         var startTime = System.nanoTime();
 
         for (int i = 0; i < cardHandlers.length; ++i)
@@ -137,6 +143,8 @@ public class Playfield extends Stage {
                 cardHandlers[i].addCardToHand(cardDrawable, startTime);
                 startTime += 200 * 1000000;
             }
+
+        return startTime;
     }
 
     public void putCardOnTable(DrawableCard card){
@@ -149,17 +157,18 @@ public class Playfield extends Stage {
     }
 
     private void onNextPlayer(Integer prevPlayer, Integer newPlayer){
-        if(prevPlayer.equals(newPlayer)){
-            cardHandlers[prevPlayer].addNewCard(true);
-            return;
-        }
+
 
         if(prevPlayer != -1) {
-            cardHandlers[prevPlayer].flip();
-            cardHandlers[prevPlayer].addNewCard(false);
+            if(!prevPlayer.equals(newPlayer))
+                cardHandlers[prevPlayer].flipToBack();
+
+            cardHandlers[prevPlayer].addNewCard();
         }
 
-        cardHandlers[newPlayer].flip();
+        cardHandlers[newPlayer].flipToFront();
+
+        updateBotText();
     }
 
     private void onTrickComplete(Integer winningPlayer){
@@ -178,9 +187,29 @@ public class Playfield extends Stage {
     }
 
     private void onKeyDown(KeyEvent e){
-        if(!e.getCode().equals(KeyCode.SPACE))
-            return;
+        switch (e.getCode()){
+            case SPACE -> game.botPlayTurn();
+            case DIGIT1 -> updateCurrentBot(1);
+            case DIGIT2 -> updateCurrentBot(2);
+            case DIGIT3 -> updateCurrentBot(3);
+        }
+    }
 
-        game.botPlayTurn();
+    public void updateCurrentBot(int i){
+        if(game.players[game.currentPlayer] instanceof MultiBot multiBot)
+            multiBot.selectBot(i);
+
+        updateBotText();
+    }
+
+    public void updateBotText(){
+        if(game.players[game.currentPlayer] instanceof MultiBot multiBot){
+            botText.setText(String.format("Current bot: %s bot", switch (multiBot.getBotIndex()){
+                case 2 -> "Greedy";
+                case 3 -> "MCTS";
+                default -> "Random";
+            }));
+        }
+        else botText.setText("Current bot: N/A");
     }
 }

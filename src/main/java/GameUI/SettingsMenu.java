@@ -1,6 +1,5 @@
 package GameUI;
 
-import Game.Cards.Card;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,7 +21,7 @@ public class SettingsMenu extends Stage {
         createButtons(settingsGroup);
 
         Color background = Color.rgb(60, 124, 83);
-        Scene settingScene = new Scene(settingsGroup, 540, 240, background);
+        Scene settingScene = new Scene(settingsGroup, 540, 160, background);
         setResizable(false);
 
         this.setScene(settingScene);
@@ -43,9 +42,9 @@ public class SettingsMenu extends Stage {
     private void createSettingEntries(Group target){
         numberOfPlayers = new ComboBox<>();
         numberOfPlayers.setPromptText("Choose the amount of players");
-        numberOfPlayers.setPrefSize(240, 50);
+        numberOfPlayers.setPrefSize(220, 50); // w:240
         numberOfPlayers.setLayoutY(20);
-        numberOfPlayers.setLayoutX(150);
+        numberOfPlayers.setLayoutX(30); //150
         numberOfPlayers.getItems().add(2);
         numberOfPlayers.getItems().add(4);
         numberOfPlayers.getItems().add(6);
@@ -58,9 +57,9 @@ public class SettingsMenu extends Stage {
         for(var skin : CardTextureStore.CardSkin.values())
             skinChoice.getItems().add(skin);
 
-        skinChoice.setPrefSize(240, 50);
-        skinChoice.setLayoutY(90);
-        skinChoice.setLayoutX(150);
+        skinChoice.setPrefSize(220, 50);
+        skinChoice.setLayoutY(20); //90
+        skinChoice.setLayoutX(290); //150
         skinChoice.setButtonCell(new PromptListCell<>("Choose a skin"));
 
         target.getChildren().add(skinChoice);
@@ -69,7 +68,7 @@ public class SettingsMenu extends Stage {
     private void createButtons(Group target){
         Button OkButton = new Button("Ok");
         OkButton.setPrefSize(240, 50);
-        OkButton.setLayoutY(160);
+        OkButton.setLayoutY(90);
         OkButton.setLayoutX(20);
         OkButton.setOnAction(e -> {
             commitChanges();
@@ -79,7 +78,7 @@ public class SettingsMenu extends Stage {
 
         Button cancelButton = new Button("Cancel");
         cancelButton.setPrefSize(240, 50);
-        cancelButton.setLayoutY(160);
+        cancelButton.setLayoutY(90);
         cancelButton.setLayoutX(280);
         cancelButton.setOnAction(e -> returnControl());
         target.getChildren().add(cancelButton);
