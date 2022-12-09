@@ -33,6 +33,7 @@ public class SettingsMenu extends Stage {
     public void showSettings(){
         numberOfPlayers.getSelectionModel().clearSelection();
         skinChoice.getSelectionModel().clearSelection();
+        botChoice.getSelectionModel().clearSelection();
 
         show();
     }
@@ -40,12 +41,14 @@ public class SettingsMenu extends Stage {
     private ComboBox<Integer> numberOfPlayers;
     private ComboBox<CardTextureStore.CardSkin> skinChoice;
 
+    private ComboBox<String> botChoice;
+
     private void createSettingEntries(Group target){
         numberOfPlayers = new ComboBox<>();
         numberOfPlayers.setPromptText("Choose the amount of players");
-        numberOfPlayers.setPrefSize(240, 50);
+        numberOfPlayers.setPrefSize(220, 50); // w:240
         numberOfPlayers.setLayoutY(20);
-        numberOfPlayers.setLayoutX(150);
+        numberOfPlayers.setLayoutX(25); //150
         numberOfPlayers.getItems().add(2);
         numberOfPlayers.getItems().add(4);
         numberOfPlayers.getItems().add(6);
@@ -58,12 +61,24 @@ public class SettingsMenu extends Stage {
         for(var skin : CardTextureStore.CardSkin.values())
             skinChoice.getItems().add(skin);
 
-        skinChoice.setPrefSize(240, 50);
-        skinChoice.setLayoutY(90);
-        skinChoice.setLayoutX(150);
+        skinChoice.setPrefSize(220, 50);
+        skinChoice.setLayoutY(20); //90
+        skinChoice.setLayoutX(300); //150
         skinChoice.setButtonCell(new PromptListCell<>("Choose a skin"));
 
         target.getChildren().add(skinChoice);
+
+        botChoice = new ComboBox<>();
+        botChoice.setPromptText("Choose Bot Type");
+        botChoice.setPrefSize(220, 50);
+        botChoice.setLayoutY(90);
+        botChoice.setLayoutX(25);
+        botChoice.getItems().add("Random Bot");
+        botChoice.getItems().add("Greedy Bot");
+        botChoice.getItems().add("Monte Carlo Tree Search");
+        botChoice.setButtonCell(new PromptListCell<>("Choose Bot Type"));
+        target.getChildren().add(botChoice);
+
     }
 
     private void createButtons(Group target){
@@ -91,6 +106,9 @@ public class SettingsMenu extends Stage {
 
         if(skinChoice.getValue() != null)
             BriscolaConfigs.setSkin(skinChoice.getValue());
+
+        if(botChoice.getValue() != null)
+            BriscolaConfigs.setBot(botChoice.getValue());
     }
 
     private void returnControl(){

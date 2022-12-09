@@ -14,12 +14,15 @@ import javafx.stage.*;
 
 public class MainMenu extends Application {
     private static SettingsMenu settings;
+
+    private static RulesMenu rules;
     private static Stage menuStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         menuStage = primaryStage;
         settings = new SettingsMenu(primaryStage);
+        rules = new RulesMenu(primaryStage);
 
         primaryStage.setTitle("Briscola - Main menu");
 
@@ -52,7 +55,7 @@ public class MainMenu extends Application {
     }
 
     private void createButtons(Group target){
-        double buttonWidth = 200, buttonHeight = 50;
+        double buttonWidth = 150, buttonHeight = 50;
 
         Button start = new Button("Start");
         start.setPrefSize(buttonWidth, buttonHeight);
@@ -65,14 +68,21 @@ public class MainMenu extends Application {
         Button settings = new Button("Settings");
         settings.setPrefSize(buttonWidth, buttonHeight);
         settings.setLayoutY(400); // 100
-        settings.setLayoutX(350); // 170
+        settings.setLayoutX(275); // 170, 350
         settings.setOnAction(MainMenu::onSettingsPressed);
         target.getChildren().add(settings);
+
+        Button rules = new Button("Rules");
+        rules.setPrefSize(buttonWidth, buttonHeight);
+        rules.setLayoutY(400); // 100
+        rules.setLayoutX(500); // 170, 350
+        rules.setOnAction(MainMenu::onRulesPressed);
+        target.getChildren().add(rules);
 
         Button exit = new Button("Exit");
         exit.setPrefSize(buttonWidth, buttonHeight);
         exit.setLayoutY(400); // 150
-        exit.setLayoutX(650); // 170
+        exit.setLayoutX(725); // 170, 650
         exit.setOnAction(MainMenu::onExitPressed);
         target.getChildren().add(exit);
     }
@@ -84,6 +94,11 @@ public class MainMenu extends Application {
     private static void onSettingsPressed(ActionEvent e){
         menuStage.hide();
         settings.showSettings();
+    }
+
+    private static void onRulesPressed(ActionEvent e){
+        menuStage.hide();
+        rules.showRules();
     }
 
     private static void onExitPressed(ActionEvent e){

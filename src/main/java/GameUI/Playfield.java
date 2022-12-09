@@ -2,6 +2,7 @@ package GameUI;
 
 import Game.Bots.GreedyBot;
 import Game.Bots.MCTS.MCTS3_bot;
+import Game.Bots.RandomBot;
 import Game.Cards.Card;
 import Game.GameSession;
 import Game.Player;
@@ -60,8 +61,9 @@ public class Playfield extends Stage {
         Player[] players = new Player[BriscolaConfigs.getPlayerNumber()];
         scoreTexts = new Text[players.length];
 
+        players = botChoice(BriscolaConfigs.getBot());
+
         for(int i = 0; i < players.length; ++i){
-            players[i] = new MCTS3_bot(1000, 1.41);
             scoreTexts[i] = new Text(0, 20+ 20 * i, String.format("Player %d: 0", i+1));
             scoreTexts[i].setFont(Font.font("verdana", FontWeight.BOLD, 20));
             playfieldElements.getChildren().add(scoreTexts[i]);
@@ -182,5 +184,21 @@ public class Playfield extends Stage {
             return;
 
         game.botPlayTurn();
+    }
+
+    private Player[] botChoice(String bot) {
+        Player[] players = new Player[BriscolaConfigs.getPlayerNumber()];
+        for(int i = 0; i < players.length; i++) {
+            if(bot.equals("Random Bot")) {
+                players[i] = new RandomBot();
+            }
+            if(bot.equals("Greedy Bot")) {
+                players[i] = new GreedyBot();
+            }
+            else {
+                players[i] = new MCTS3_bot(1000, 1.41);
+            }
+        }
+        return players;
     }
 }
