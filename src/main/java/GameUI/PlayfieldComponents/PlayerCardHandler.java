@@ -6,8 +6,6 @@ import GameUI.Utils.MathUtils;
 import GameUI.Utils.Vector2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class PlayerCardHandler {
     private static final float distanceFromCentre = 380;
@@ -89,6 +87,7 @@ public class PlayerCardHandler {
         hand.forEach(c -> {
             var drawable = playfield.deckCards.pop();
             drawable.setCard(c);
+            drawable.flipToBack();
             if(flip)
                 drawable.flip(System.nanoTime());
             addCardToHand(drawable, System.nanoTime() + 100 * 1000000);

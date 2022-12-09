@@ -81,6 +81,10 @@ public class DrawableCard extends ImageView{
         this.setImage(frontSide);
     }
 
+    public void flipToBack(){
+        this.setImage(backSide);
+    }
+
     public long flip(long startTime){
         float durationMS = 200;
 
