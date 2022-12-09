@@ -1,19 +1,23 @@
-# Briscola (2022 Group 13 - Phase 1)
+# Briscola (2022 Group 13 - Phase 2)
 
 A game about cards.
 
-**Date:** October 2022
+**Date:** December 2022
 
 **Authors:** Derrick, Rafael, Sascha, Simon, Drago, Alejandro, Filip
 
-## Running the code
+## Setup
 
 Requirements: Java SDK
 
 Download/Clone this repository and navigate to the root of the directory.
 
-### To run the program:
+### Running the program
 
 ```sh
  ./gradlew run
 ```
+
+### Testing the bots
+
+You can select a bot for each player on the playfield during gameplay using the numrow keys. To let the bot make a decision, press `Spacebar`.
