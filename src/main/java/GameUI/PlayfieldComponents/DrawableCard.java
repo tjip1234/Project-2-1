@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.function.Consumer;
 
-public class DrawableCard extends ImageView{
+public class DrawableCard extends ImageView {
     private final TransformHandler transforms;
 
     private final Image backSide = CardTextureStore.getBackTexture(BriscolaConfigs.getSkin());
@@ -20,46 +20,46 @@ public class DrawableCard extends ImageView{
     public Card currentCard;
     private PlayerCardHandler handler;
 
-    public DrawableCard(){
+    public DrawableCard() {
         transforms = new TransformHandler();
         transforms.start();
         setFitHeight(110);
         setFitWidth(75);
-        setPreserveRatio(true);
+        setPreserveRatio(false);
         setImage(backSide);
 
         setOnMouseClicked(this::onMouseClicked);
     }
 
-    public void setCard(Card card){
+    public void setCard(Card card) {
         currentCard = card;
         frontSide = CardTextureStore.getFrontTexture(card);
     }
 
-    public void bindHandler(PlayerCardHandler handler){
+    public void bindHandler(PlayerCardHandler handler) {
         this.handler = handler;
     }
 
-    public void unbindHandler(){
+    public void unbindHandler() {
         handler = null;
     }
 
-    private void onMouseClicked(MouseEvent e){
-        if(handler == null)
+    private void onMouseClicked(MouseEvent e) {
+        if (handler == null)
             return;
 
-        if(e.getButton() != MouseButton.PRIMARY)
+        if (e.getButton() != MouseButton.PRIMARY)
             return;
 
         handler.onCardClicked(this);
     }
 
     // Animation stuff
-    public long moveTo(long startTime, double x, double y){
+    public long moveTo(long startTime, double x, double y) {
         float durationMS = 500;
 
-        double originX  = this.getX();
-        double originY  = this.getY();
+        double originX = this.getX();
+        double originY = this.getY();
 
         double deltaX = x - originX;
         double deltaY = y - originY;
@@ -74,28 +74,28 @@ public class DrawableCard extends ImageView{
             this.setY(currentY);
         };
 
-        return transforms.addTransform(startTime,durationMS, function);
+        return transforms.addTransform(startTime, durationMS, function);
     }
 
-    public long flipToFront(){
+    public long flipToFront() {
         return flipToFront(System.nanoTime(), 200);
     }
 
-    public long flipToFront(long startTime, float duration){
+    public long flipToFront(long startTime, float duration) {
         return flip(startTime, duration, frontSide);
     }
 
-    public long flipToBack(){
+    public long flipToBack() {
         return flipToBack(System.nanoTime(), 200);
     }
 
-    public long flipToBack(long startTime, float duration){
+    public long flipToBack(long startTime, float duration) {
         return flip(startTime, duration, backSide);
     }
 
-    public long flip(long startTime, float durationMS, Image image){
+    public long flip(long startTime, float durationMS, Image image) {
         Consumer<Float> function = (Float progress) -> {
-            if(this.getImage() != image && Easings.easeOutExpo(progress) >= 0.5f)
+            if (this.getImage() != image && Easings.easeOutExpo(progress) >= 0.5f)
                 this.setImage(image);
 
             // TODO: Consider an easing function
@@ -104,10 +104,10 @@ public class DrawableCard extends ImageView{
             this.setScaleX(currentX);
         };
 
-        return transforms.addTransform(startTime,durationMS, function);
+        return transforms.addTransform(startTime, durationMS, function);
     }
 
-    public long rotateTo(long startTime, double angle){
+    public long rotateTo(long startTime, double angle) {
         float durationMS = 1000;
         double originRot = getRotate();
         double deltaRot = angle - originRot;
@@ -115,7 +115,7 @@ public class DrawableCard extends ImageView{
         Consumer<Float> function = (Float progress) -> {
             // TODO: needs normalization
             // TODO: Consider an easing function
-            double currentRot = originRot + deltaRot *  Easings.easeOutExpo(progress);
+            double currentRot = originRot + deltaRot * Easings.easeOutExpo(progress);
 
             this.setRotate(currentRot);
         };
@@ -123,7 +123,7 @@ public class DrawableCard extends ImageView{
         return transforms.addTransform(startTime, durationMS, function);
     }
 
-    public void scheduleTransform(long startTime, Consumer<Float> function){
+    public void scheduleTransform(long startTime, Consumer<Float> function) {
         transforms.addTransform(startTime, 0, function);
     }
 }
