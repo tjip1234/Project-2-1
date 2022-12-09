@@ -56,7 +56,7 @@ public class DrawableCard extends ImageView{
 
     // Animation stuff
     public long moveTo(long startTime, double x, double y){
-        float durationMS = 1000;
+        float durationMS = 500;
 
         double originX  = this.getX();
         double originY  = this.getY();
@@ -77,23 +77,26 @@ public class DrawableCard extends ImageView{
         return transforms.addTransform(startTime,durationMS, function);
     }
 
-    public void flipToFront(){
-        this.setImage(frontSide);
+    public long flipToFront(){
+        return flipToFront(System.nanoTime(), 200);
     }
 
-    public void flipToBack(){
-        this.setImage(backSide);
+    public long flipToFront(long startTime, float duration){
+        return flip(startTime, duration, frontSide);
     }
 
-    public long flip(long startTime){
-        float durationMS = 200;
+    public long flipToBack(){
+        return flipToBack(System.nanoTime(), 200);
+    }
 
-        Image currentImage = this.getImage();
-        Image targetImage = currentImage == frontSide ? backSide: frontSide;
+    public long flipToBack(long startTime, float duration){
+        return flip(startTime, duration, backSide);
+    }
 
+    public long flip(long startTime, float durationMS, Image image){
         Consumer<Float> function = (Float progress) -> {
-            if(this.getImage() == currentImage && Easings.easeOutExpo(progress) >= 0.5f)
-                this.setImage(targetImage);
+            if(this.getImage() != image && Easings.easeOutExpo(progress) >= 0.5f)
+                this.setImage(image);
 
             // TODO: Consider an easing function
             double currentX = Math.abs(1 - 2 * Easings.easeOutExpo(progress));

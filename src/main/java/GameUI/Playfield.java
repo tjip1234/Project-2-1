@@ -89,13 +89,13 @@ public class Playfield extends Stage {
 
         game.startRound();
 
+        var time = spreadCards() + 500000000; // Show the briscola 500ms after cars are distributed
+
         // Show the briscola
         deckCards.get(0).setCard(game.deck.getBriscola());
-        deckCards.get(0).flipToFront();
-        deckCards.get(0).rotateTo(System.nanoTime(),-20);
-        deckCards.get(0).setX(110);
-
-        spreadCards();
+        deckCards.get(0).flipToFront(time, 0);
+        deckCards.get(0).rotateTo(time,-20);
+        deckCards.get(0).moveTo(time, 110, 0);
         onNextPlayer(-1, 0);
 
         scene.setOnKeyPressed(this::onKeyDown);
@@ -133,7 +133,7 @@ public class Playfield extends Stage {
         }
     }
 
-    private void spreadCards(){
+    private long spreadCards(){
         var startTime = System.nanoTime();
 
         for (int i = 0; i < cardHandlers.length; ++i)
@@ -143,6 +143,8 @@ public class Playfield extends Stage {
                 cardHandlers[i].addCardToHand(cardDrawable, startTime);
                 startTime += 200 * 1000000;
             }
+
+        return startTime;
     }
 
     public void putCardOnTable(DrawableCard card){
@@ -155,17 +157,16 @@ public class Playfield extends Stage {
     }
 
     private void onNextPlayer(Integer prevPlayer, Integer newPlayer){
-        if(prevPlayer.equals(newPlayer)){
-            cardHandlers[prevPlayer].addNewCard(true);
-            return;
-        }
+
 
         if(prevPlayer != -1) {
-            cardHandlers[prevPlayer].flip();
-            cardHandlers[prevPlayer].addNewCard(false);
+            if(!prevPlayer.equals(newPlayer))
+                cardHandlers[prevPlayer].flipToBack();
+
+            cardHandlers[prevPlayer].addNewCard();
         }
 
-        cardHandlers[newPlayer].flip();
+        cardHandlers[newPlayer].flipToFront();
 
         updateBotText();
     }
