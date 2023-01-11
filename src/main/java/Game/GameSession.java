@@ -155,7 +155,7 @@ public class GameSession implements Cloneable {
         int winner = 0;
 
         for (int i = 0; i < Table.size(); ++i)
-            if (Table.get(i).compareTo(Table.get(winner), deck.getBriscola().suit) >= 1)
+            if (Table.get(i).compareTo(Table.get(winner), deck.getBriscola().suit, Table.get(0).suit) >= 1)
                 winner = i;
 
         return (winner + startPlayer) % players.length;

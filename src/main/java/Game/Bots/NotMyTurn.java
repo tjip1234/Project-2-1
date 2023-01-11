@@ -14,7 +14,7 @@ public class NotMyTurn {
 
         ArrayList<Card> winnables = new ArrayList<Card>();
         for (Card card : hand) {
-            if ( card.compareTo(cardsOnTable.get(cardsOnTable.size()-1), Briscola) > 0)
+            if ( card.compareTo(cardsOnTable.get(cardsOnTable.size()-1), Briscola, cardsOnTable.get(0).suit) > 0)
                 winnables.add(card);
         }
         //stay of this function shouldn't use compare to because suit doesn't have to be the same
