@@ -2,33 +2,38 @@ package Game.Bots.ReinforcementLearning;
 
 import Game.Bots.Bot;
 import Game.Cards.Card;
-import Game.GameSession;
+import Game.Player;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-public class RL_bot extends Bot {
+public class RL_Modified_bot extends Bot {
     // State space and action space
 
-    public static ArrayList<Tuple<Gamestate,double[]>> stateValues;
-    static final public String filepath = "src/main/java/Game/Bots/ReinforcementLearning/savedParam.dat";
-    public ArrayList<Tuple<Gamestate, Integer>> rewards;
+    public static ArrayList<Tuple<Gamestate_modified,double[]>> stateValues;
+    static final public String filepath = "src/main/java/Game/Bots/ReinforcementLearning/savedParamModded.dat";
+    public ArrayList<Tuple<Gamestate_modified, Integer>> rewards;
     private final double alpha = 0.1; // Learning rate
     private final double gamma = 0.9; // Discount factor
     private final double epsilon = 0.1; // Exploration rate
 
-    public RL_bot() {
-        stateValues = (ArrayList<Tuple<Gamestate, double[]>>) readObjectFromFile(filepath);
+    public RL_Modified_bot() {
+        if (VirtualSave.stateValues == null)
+            VirtualSave.stateValues = (ArrayList<Tuple<Gamestate_modified, double[]>>) readObjectFromFile(filepath);
+        stateValues = VirtualSave.stateValues;
         rewards = new ArrayList<>();
     }
 
-    public void updateStateValues(Gamestate state, int action, double reward) {
+    public void updateStateValues(Gamestate_modified state, int action, double reward) {
 
-        Stream<Tuple<Gamestate, double[]>> tupleStream = stateValues.stream()
+        Stream<Tuple<Gamestate_modified, double[]>> tupleStream = stateValues.stream()
                 .filter(tuple -> tuple.x().equals(state));
-        Optional<Tuple<Gamestate, double[]>> tuple = tupleStream.findFirst();
-        Tuple<Gamestate, double[]> thing = tuple.orElse(null);
+        Optional<Tuple<Gamestate_modified, double[]>> tuple = tupleStream.findFirst();
+        Tuple<Gamestate_modified, double[]> thing = tuple.orElse(null);
 
         if (thing == null) {
             int index = -1;
@@ -57,16 +62,16 @@ public class RL_bot extends Bot {
         }
     }
 
-    public Card chooseAction(Gamestate state) {
+    public Card chooseAction(Gamestate_modified state) {
         if (Math.random() < epsilon) {
             // Explore
             return getHand().get((int) (Math.random() * getHand().size()));
         } else {
             // Exploit
-            Stream<Tuple<Gamestate, double[]>> tupleStream = stateValues.stream()
+            Stream<Tuple<Gamestate_modified, double[]>> tupleStream = stateValues.stream()
                     .filter(tuple -> tuple.x().equals(state));
-            Optional<Tuple<Gamestate, double[]>> tuple = tupleStream.findFirst();
-            Tuple<Gamestate, double[]> thing = tuple.orElse(null);
+            Optional<Tuple<Gamestate_modified, double[]>> tuple = tupleStream.findFirst();
+            Tuple<Gamestate_modified, double[]> thing = tuple.orElse(null);
             int bestAction = 0;
             double bestValue = -99999.99;
             if (thing != null) {
@@ -90,7 +95,7 @@ public class RL_bot extends Bot {
     public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) throws IOException {
 
         //Card[] playedcards = getPlayedCards().toArray(new Card[0]);
-        Card[] playedcards = null;
+        Card[] playedcards = cardsOnTable.toArray(new Card[0]);
         Card[] hand = getHand().toArray(new Card[0]);
         ArrayList<Integer> h = new ArrayList<>();
         ArrayList<Integer> k = new ArrayList<>();
@@ -100,11 +105,13 @@ public class RL_bot extends Bot {
         for (Card card : hand) {
             k.add(cardtonumber(card));
         }
-        Gamestate state = new Gamestate(h.stream().mapToInt(i -> i).toArray(),k.stream().mapToInt(i -> i).toArray(),Briscola.ordinal());
+        h.sort(Integer::compareTo);
+        k.sort(Integer::compareTo);
+        Gamestate_modified state = new Gamestate_modified(h.stream().mapToInt(i -> i).toArray(),k.stream().mapToInt(i -> i).toArray(),Briscola.ordinal());
         Card action = chooseAction(state);
 
         //save states and execute rewards later
-        Gamestate nextState;
+        Gamestate_modified nextState;
         nextState = state.clone();
         rewards.add(new Tuple<>(nextState,cardtonumber(action)));
 
@@ -114,16 +121,23 @@ public class RL_bot extends Bot {
     public static void main(String[] args) {
 
         //ONLY USE TO RESET PARAMETERS MIGHT WASTE HOURS OF TRAINING!!!!!!!
-        //stateValues = new ArrayList<Tuple<Gamestate,double[]>>();
-        //writeObjectToFile(stateValues,filepath);
-        stateValues = (ArrayList<Tuple<Gamestate, double[]>>) readObjectFromFile(filepath);
+        stateValues = new ArrayList<>();
+        writeObjectToFile(stateValues,filepath);
+        stateValues = (ArrayList<Tuple<Gamestate_modified, double[]>>) readObjectFromFile(filepath);
         System.out.print(stateValues);
     }
     public void executeRewards(double reward){
-        for (Tuple<Gamestate,Integer> rew:rewards) {
+        for (Tuple<Gamestate_modified, Integer> rew:rewards) {
             updateStateValues(rew.x(), rew.y(), reward);
         }
-        writeObjectToFile(stateValues,filepath);
+        VirtualSave.stateValues = stateValues;
+    }
+    public void save(){
+        writeObjectToFile(VirtualSave.stateValues, filepath);
+    }
+    public void scoreRewards(double reward){
+            updateStateValues(rewards.get(rewards.size()-1).x(), rewards.get(rewards.size()-1).y(), reward);
+        VirtualSave.stateValues = stateValues;
     }
     public static int cardtonumber(Card card){
         return card.number.ordinal()+(card.suit.ordinal()*100);

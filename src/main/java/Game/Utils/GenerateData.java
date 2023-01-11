@@ -1,37 +1,36 @@
-package Game;
+package Game.Utils;
 
 import Game.Bots.GreedyBot;
-import Game.Bots.ReinforcementLearning.*;
 import Game.Bots.RandomBot;
-import Game.Cards.Card;
-import Game.Utils.CreateCSV;
+import Game.GameSession;
+import Game.Player;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Random;
 
-public class SimluateAndTest {
+public class GenerateData {
     static Player[] bots;
-    static String name = "GreedyvsRule";
     public static void initBots(){
-        bots = new Player[]{new RL_bot(), new GreedyBot()}; //change your players and bots here
+        Random rnd = new Random();
+        int c = rnd.nextInt(2);
+        if (c == 0)
+            bots = new Player[]{new RandomBot(), new GreedyBot()}; //change your players and bots here
+        else
+            bots = new Player[]{new GreedyBot(), new RandomBot()};
     }
     public static void main(String[] args) throws IOException {
         initBots();
         List<String[]> biglist = new ArrayList<String[]>();
-        List<String[]> timetorun  = new ArrayList<String[]>();
-        String classname[] = new String[bots.length];
-        for (int i = 0; i < bots.length; i++) {
-            classname[i] = String.valueOf(bots[i].getClass()).substring(16);
-        }
+        List<String[]> smalllist = new ArrayList<String[]>();
+        String classname[] = {"hand","table","remainingcards","briscola","result"};
         biglist.add(classname);
         for (int j = 0; j < 100; j++) {
             initBots();
             GameSession g = new GameSession(bots);
             g.startRound();
+            String score[] = new String[5];
             int trickNumber = 0;
             while (g.players[0].getHand().size() > 0) {
                 trickNumber++;
@@ -39,18 +38,13 @@ public class SimluateAndTest {
                     g.botPlayTurn();
                 }
             }
-
-            String score[] = new String[bots.length];
             for (int i = 0; i < bots.length; i++) {
                 score[i] = String.valueOf(bots[i].Score());
             }
-            biglist.add(score);
+            biglist.addAll(smalllist);
         }
         CreateCSV v = new CreateCSV();
-        v.CreateCsv("Python_stuff/"+name,biglist);
+        v.CreateCsv("Python_stuff/"+"Data.csv",biglist);
 
     }
-
-
 }
-

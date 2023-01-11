@@ -1,11 +1,13 @@
 package Game;
 
-//import Game.Bots.MCST.MCST_bot;
-import Game.Bots.MCTS.MCTS3_bot;
-import Game.Bots.RuleBased_bot;
+import Game.Bots.MCTS.*;
+import Game.Bots.GreedyBot;
+import Game.Bots.ReinforcementLearning.*;
+import Game.Bots.RandomBot;
 
 import Game.Cards.Card;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class TerminalTestGameplay {
@@ -23,7 +25,7 @@ public class TerminalTestGameplay {
     }
 
     public static void main(String[] args) {
-        GameSession g = new GameSession(new MCTS3_bot(1000,1.41), new RuleBased_bot());
+        GameSession g = new GameSession(new GreedyBot(), new RL_bot());
         g.startRound();
         int trickNumber = 0;
 

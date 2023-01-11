@@ -180,7 +180,7 @@ public class GameSession implements Cloneable {
         return maxScorePlayerIndex;
     }
 
-    public Integer getScoreForTeam(int teamNumber) {
+    public int getScoreForTeam(int teamNumber) {
         if (!isTeamGame)
             return 0;
 
