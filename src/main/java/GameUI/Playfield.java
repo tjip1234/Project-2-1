@@ -6,6 +6,7 @@ import Game.GameSession;
 import Game.Player;
 import GameUI.PlayfieldComponents.DrawableCard;
 import GameUI.PlayfieldComponents.PlayerCardHandler;
+import GameUI.PlayfieldComponents.RollingCounter;
 import GameUI.PlayfieldComponents.Transforms.TransformHandler;
 import GameUI.Utils.MathUtils;
 import javafx.scene.Group;
@@ -36,7 +37,7 @@ public class Playfield extends Stage {
 
     private final Group playfieldElements;
 
-    public final Text[] scoreTexts;
+    public final RollingCounter[] scoreTexts;
 
     public final Text botText;
 
@@ -54,11 +55,11 @@ public class Playfield extends Stage {
         playfieldElements.resize(700, 800);
 
         Player[] players = new Player[BriscolaConfigs.getPlayerNumber()];
-        scoreTexts = new Text[players.length];
+        scoreTexts = new RollingCounter[players.length];
 
         for (int i = 0; i < players.length; ++i) {
             players[i] = new MultiBot();
-            scoreTexts[i] = new Text(0, 20 + 20 * i, String.format("Player %d: 0", i + 1));
+            scoreTexts[i] = new RollingCounter(20, 40 + 20 * i, String.format("Player %d:", i + 1));
             scoreTexts[i].setFont(Font.font("verdana", FontWeight.BOLD, 20));
             playfieldElements.getChildren().add(scoreTexts[i]);
         }
@@ -171,8 +172,7 @@ public class Playfield extends Stage {
     }
 
     private void onTrickComplete(Integer winningPlayer) {
-        scoreTexts[winningPlayer]
-                .setText(String.format("Player %d: %d", winningPlayer + 1, game.players[winningPlayer].Score()));
+        scoreTexts[winningPlayer].setCount(game.players[winningPlayer].Score());
 
         var winningDirection = MathUtils.getCircularPosition(500, (360.0f / game.players.length) * winningPlayer);
 
