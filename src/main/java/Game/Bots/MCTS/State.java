@@ -97,15 +97,35 @@ public class State {
         tmp.playTurn(holder);
         State state = new State(tmp, rootPlayerNumber);
         state.cardPlayed = holder;
+        state.createAllPossibleStates();
+        return state;
+    }
 
+    public State getRandomChildStateSimulated() {
+
+        int randomChild = random.nextInt(0, remainingCards.size()+possibleStates.size());
+        GameSession tmp = boardState.clone();
+        State state;
+        if(randomChild>remainingCards.size()){
+            state = possibleStates.get(randomChild);
+        }else {
+            randomChild -= remainingCards.size();
+            Card holder = remainingCards.get(randomChild);
+            tmp.playTurn(holder);
+            state = new State(tmp, rootPlayerNumber);
+
+        }
         possibleStates.add(state);
         state.createAllPossibleStates();
 
         return state;
     }
 
-    public List<Card> getPossibleStates() {
+    public List<Card> getPossibleUncheckedStates() {
         return remainingCards;
+    }
+    public List<State> getPossibleCheckedStates() {
+        return possibleStates;
     }
 
     public void addToVisitCount() {

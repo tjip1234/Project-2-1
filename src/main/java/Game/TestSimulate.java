@@ -19,7 +19,7 @@ public class TestSimulate {
 
     private static final AtomicInteger wins = new AtomicInteger(0);
 
-    public static int runs = 1000;
+    public static int runs = 100;
 
     private static void simulateRun(int c) {
         boolean isEven = c%2 == 0;
@@ -51,12 +51,12 @@ public class TestSimulate {
          */
         double wins = 0;
         String a = "aa";
-        saveData("winRate, time, space, score");
+        saveData("winRate, time, score");
 
         double draws;
-        for(int bots = 0; bots<3;bots++) {
-            saveData("Bot: " + getBot(bots));
-            for(double j = 0; j < 10; j++) {
+        //for(int bots = 0; bots<3;bots++) {
+            saveData("Bot: " + getBot(1));
+            for(double j = 0; j < 1; j++) {
                 draws = 0;
                 wins = 0;
                 double score = 0;
@@ -66,7 +66,7 @@ public class TestSimulate {
                 for (int i = 0; i < runs; i++) {
                     GameSession game;
                     if (i % 2 == 0) {
-                        game = new GameSession(getGoalPlayer(), getOpponenant(bots));
+                        game = new GameSession(getGoalPlayer(), getOpponent(1));
                         game.startRound();
                         game.simulate();
                         score += game.players[i % 2].Score() - 60;
@@ -78,7 +78,7 @@ public class TestSimulate {
                             wins++;
                         }
                     } else {
-                        game = new GameSession(getOpponenant(bots), getGoalPlayer());
+                        game = new GameSession(getOpponent(1), getGoalPlayer());
                         game.startRound();
                         game.simulate();
                         score += game.players[i % 2].Score() - 60;
@@ -95,8 +95,8 @@ public class TestSimulate {
                     System.out.println("Game " + (i + 1) + ", total wins: " + wins + ", total draws: " + draws);
                 }
                 System.out.println("Set: " + (j) + ", start");
-                saveData((wins / (runs - draws)) * 100 + "," + (System.currentTimeMillis() - start) + "," + (3000 + 900) + "," + score / 100);
-            }
+                saveData((wins + "," + (System.currentTimeMillis() - start) + "," + score / 1000));
+            //}
         }
         System.out.println("Final total wins: "+ wins);
     }
@@ -116,7 +116,7 @@ public class TestSimulate {
         return new MCTS3_bot(2000,1.41);
     }
 
-    public static Player getOpponenant(int set){
+    public static Player getOpponent(int set){
         switch(set){
             case 0: return new RandomBot();
             case 1: return new GreedyBot();
