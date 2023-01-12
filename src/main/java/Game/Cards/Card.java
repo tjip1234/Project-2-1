@@ -37,7 +37,8 @@ public class Card implements Comparable<Card> {
 
     /**
      * Constructor for a card
-     * @param suit of the card
+     *
+     * @param suit   of the card
      * @param number of the card
      */
     public Card(Suit suit, Number number) {
@@ -49,18 +50,15 @@ public class Card implements Comparable<Card> {
 
     /**
      * Performs a comparison, will return 0 if both cards don't share the same suit
+     *
      * @param other card to be compared
      * @return which card won
      */
     @Override
     public int compareTo(Card other) {
         // A card is better than no card
-        if(other == null)
+        if (other == null)
             return 1;
-
-        // If this card is not the same suit as the other card, then by default it is less valuable
-        if (suit != other.suit)
-            return -1;
 
         int scoreDifference = Integer.compare(number.scoreValue, other.number.scoreValue);
 
@@ -71,15 +69,36 @@ public class Card implements Comparable<Card> {
         return Integer.compare(number.ordinal(), other.number.ordinal());
     }
 
+
     // Performs a comparison, but also take briscola suit priority into account
-    public int compareTo(Card other, Suit briscolaSuit) {
-        if(other == null)
+    public int compareTo(Card other, Suit briscolaSuit, Suit... dominantSuit) {
+        if (other == null)
             return 1;
 
-        if(suit == briscolaSuit && other.suit != briscolaSuit)
-            return 1;
+        if (suit == briscolaSuit) {
+            if (other.suit == briscolaSuit)
+                return compareTo(other);
 
-        if(suit != briscolaSuit && other.suit == briscolaSuit)
+            return 1;
+        }
+
+        if(dominantSuit.length > 0) {
+            var dom = dominantSuit[0];
+            if (suit == dom) {
+                if (other.suit == dom)
+                    return compareTo(other);
+
+                if (other.suit == briscolaSuit)
+                    return -1;
+
+                return 1;
+            }
+
+            if (other.suit == dom)
+                return -1;
+        }
+
+        if(other.suit == briscolaSuit)
             return -1;
 
         return compareTo(other);
@@ -99,6 +118,7 @@ public class Card implements Comparable<Card> {
     public int hashCode() {
         return hashCode;
     }
+
     @Override
     public String toString() {
         return String.format("%s of %s (%d pts)", number.toString(), suit.toString(), number.scoreValue);

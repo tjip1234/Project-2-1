@@ -1,14 +1,14 @@
 package Game.Bots;
 
+import Game.Cards.Card;
+import Game.Cards.Card.Suit;
+import Game.GameSession;
+import Game.Player;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
-
-import Game.GameSession;
-import Game.Player;
-import Game.Cards.Card;
-import Game.Cards.Card.Suit;
 
 // Used by gamesession to determine the choice.
 // MakeDecision() must be implemented
@@ -22,8 +22,9 @@ public abstract class Bot extends Player {
     public abstract Card MakeDecision(List<Card> cardsOnTable, Suit Briscola) throws IOException;
 
     public static Card FindDominantCard(List<Card> cardsOnTable, Suit Briscola) {
-        if(cardsOnTable.size() == 0)
+        if (cardsOnTable.size() == 0)
             return null;
-        return cardsOnTable.stream().max((lhs, rhs) -> lhs.compareTo(rhs, Briscola)).get();
+
+        return cardsOnTable.stream().max((lhs, rhs) -> lhs.compareTo(rhs, Briscola, cardsOnTable.get(0).suit)).get();
     }
 }

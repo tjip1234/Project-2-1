@@ -8,6 +8,7 @@ import Game.GameSession;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class MCTS3_bot extends Bot {
     private int round;
@@ -33,7 +34,7 @@ public class MCTS3_bot extends Bot {
         if(recursionCounter==0){
             return;
         }
-        int x = parent.getState().getPossibleStates().size();
+        int x = parent.getState().getPossibleUncheckedStates().size();
         for (int i = 0; (i < x)&&(i < howManyMax); i++) {
             Node node = extensionPhase(parent);
             backpropagationPhase(node,simulationPhase(node));
@@ -50,7 +51,7 @@ public class MCTS3_bot extends Bot {
     public Tree initializeTree(GameSession board, int recursionCounter){
         Tree tree = new Tree(board, board.currentPlayer);
         tree.getRootNode().getState().createAllPossibleStates();
-        int x = tree.getRootNode().getState().getPossibleStates().size();
+        int x = tree.getRootNode().getState().getPossibleUncheckedStates().size();
 
         for (int i = 0; i < x; i++) {
             Node node = extensionPhase(tree.getRootNode());
@@ -118,11 +119,18 @@ public class MCTS3_bot extends Bot {
         // 41% on 1000 games with 2000 iteration against RL when ammount = 0.95 with depth 2 tree
 
         while(currentNode.getListOfChildren().size()>0){
-            //If it isn't bots turn choose random child
-            if(((currentNode.getState().getPossibleStates().size()>0)&&(Math.random()<0.05))){
+            //5% chance to stop here
+            if(((currentNode.getState().getPossibleUncheckedStates().size()>0)&&(Math.random()<0.05))){
                 break;
             }
+
+            //if Bot turn, choose random
             if(currentNode.getState().getBoardState().currentPlayer!=currentNode.getState().rootPlayerNumber){
+                int holder = currentNode.getListOfChildren().size()+currentNode.getState().getPossibleUncheckedStates().size();
+                Random random = new Random();
+                if(random.nextInt(holder)>currentNode.getListOfChildren().size()){
+                    break;
+                }
                 currentNode = currentNode.getListOfChildren().get((int)(Math.random()*currentNode.getListOfChildren().size()));
                 continue;
             }
@@ -130,7 +138,7 @@ public class MCTS3_bot extends Bot {
 
             currentNode = UTC.findPossibleNode(currentNode,UTC_constant);
         }
-        if(currentNode.getState().getPossibleStates().size()==0){
+        if(currentNode.getState().getPossibleUncheckedStates().size()==0){
             return currentNode;
         }
 
@@ -165,14 +173,15 @@ public class MCTS3_bot extends Bot {
         //simulate couple and return average
         //return normalized score in game instead of 1,0,-1
 
-        double score= 0 ;
-        for (int i = 0; i < 1; i++) {
+        double score = 0 ;
+        int simulationCount = 3;
+        for (int i = 0; i < simulationCount; i++) {
 
 
             State simulationState = new State(targetNode.getState().getBoardState().clone(), targetNode.getState().getRootPlayerNumber());
 
             while (true) {
-                if (simulationState.getBoardState().gameOver() || simulationState.getPossibleStates().size() == 0) {
+                if (simulationState.getBoardState().gameOver() || simulationState.getPossibleUncheckedStates().size() == 0) {
                     if (simulationState.getBoardState().getWinnerChickenDinner() == -1) {
                         score += 0.5;
                         break;
@@ -182,13 +191,13 @@ public class MCTS3_bot extends Bot {
                     }
                     break;
                 } else {
-                    simulationState = simulationState.getRandomChildState();
+                    simulationState = simulationState.getRandomChildStateSimulated();
                 }
 
             }
 
         }
-        return score/1;
+        return score/simulationCount;
 
     }
 
@@ -198,11 +207,11 @@ public class MCTS3_bot extends Bot {
      */
     private void backpropagationPhase(Node targetNode, double score){
         targetNode.getState().addToVisitCount();
+        targetNode.getState().addWinScore(score);
 
         if(targetNode.getParentNode()==null){
             return;
         }
-        targetNode.getParentNode().getState().addWinScore(score);
         backpropagationPhase(targetNode.getParentNode(), score);
     }
 
