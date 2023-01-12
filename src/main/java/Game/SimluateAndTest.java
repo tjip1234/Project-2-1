@@ -17,7 +17,7 @@ public class SimluateAndTest {
     static Player[] bots;
     static String name = "GreedyvsRule";
     public static void initBots(){
-        bots = new Player[]{new RL_bot(), new GreedyBot()}; //change your players and bots here
+        bots = new Player[]{new RL_Modified_bot(), new RandomBot()}; //change your players and bots here
     }
     public static void main(String[] args) throws IOException {
         initBots();
@@ -28,24 +28,36 @@ public class SimluateAndTest {
             classname[i] = String.valueOf(bots[i].getClass()).substring(16);
         }
         biglist.add(classname);
-        for (int j = 0; j < 100; j++) {
+        int games = 100;
+        int wins = 0;
+        int draws = 0;
+        int otherwin =0;
+        for (int j = 0; j < games; j++) {
             initBots();
             GameSession g = new GameSession(bots);
             g.startRound();
             int trickNumber = 0;
+
             while (g.players[0].getHand().size() > 0) {
                 trickNumber++;
                 for (int i = 0; i < g.players.length; ++i) {
                     g.botPlayTurn();
                 }
             }
-
+            if (bots[0].Score() > bots[1].Score())
+                wins++;
+            else if (bots[0].Score() == bots[1].Score())
+                draws++;
+            else
+                otherwin++;
             String score[] = new String[bots.length];
             for (int i = 0; i < bots.length; i++) {
                 score[i] = String.valueOf(bots[i].Score());
             }
             biglist.add(score);
+            System.out.println(String.valueOf(bots[0].getClass()).substring(16)+" Wins: "+wins+" Draws:"+draws +String.valueOf(bots[1].getClass()).substring(16)+" Wins"+otherwin);
         }
+        System.out.println("winrate:"+((float)wins/(float)games)*100.0);
         CreateCSV v = new CreateCSV();
         v.CreateCsv("Python_stuff/"+name,biglist);
 

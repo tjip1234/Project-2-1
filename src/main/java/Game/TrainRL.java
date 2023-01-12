@@ -25,25 +25,38 @@ public class TrainRL {
     }
     public static void main(String[] args) throws IOException {
         initBots();
-        for (int j = 0; j < 10000; j++) {
+        int count = 0;
+        for (int j = 0; j < 100000; j++) {
             initBots();
             GameSession g = new GameSession(bots);
             g.startRound();
-            int trickNumber = 0;
+            int trickNumber = 1;
+            int previousscore = 0;
             while (g.players[0].getHand().size() > 0) {
                 trickNumber++;
                 for (int i = 0; i < g.players.length; ++i) {
                     
                     g.botPlayTurn();
-                    rlBot.scoreRewards(0.05);
+
                 }
+                if (rlBot.Score() > previousscore)
+                    rlBot.scoreRewards(0.05);
+                else
+                    rlBot.scoreRewards(-0.05);
+                previousscore = rlBot.Score();
             }
+            /*
             if (rlBot.Score() >= otherBot.Score())
                 rlBot.executeRewards(0.1);
             else {
                 rlBot.executeRewards(-0.1);
+            }*/
+            if (j - count > 100) {
+                System.out.println("Itteration:" + j);
+                count = j;
             }
         }
+        rlBot.save();
     }
 
 

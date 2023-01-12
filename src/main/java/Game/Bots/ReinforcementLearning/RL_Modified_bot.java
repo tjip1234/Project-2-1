@@ -2,7 +2,6 @@ package Game.Bots.ReinforcementLearning;
 
 import Game.Bots.Bot;
 import Game.Cards.Card;
-import Game.Player;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,11 +29,13 @@ public class RL_Modified_bot extends Bot {
 
     public void updateStateValues(Gamestate_modified state, int action, double reward) {
 
-        Stream<Tuple<Gamestate_modified, double[]>> tupleStream = stateValues.stream()
-                .filter(tuple -> tuple.x().equals(state));
-        Optional<Tuple<Gamestate_modified, double[]>> tuple = tupleStream.findFirst();
-        Tuple<Gamestate_modified, double[]> thing = tuple.orElse(null);
-
+        Tuple<Gamestate_modified, double[]> thing = getTuple_weird(state);
+        double maxFutureValue = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < state.hand.length; i++) {
+            if (thing != null) {
+                maxFutureValue = Math.max(maxFutureValue, thing.y()[i]);
+            }
+        }
         if (thing == null) {
             int index = -1;
             for (int i = 0; i < state.hand.length; i++) {
@@ -44,51 +45,46 @@ public class RL_Modified_bot extends Bot {
                 }
             }
             double[] values = new double[3];
-            values[index] = reward*10;
+            values[index] = reward;
             stateValues.add(new Tuple<>(state, values));
         }
         else {
-            int index = Arrays.binarySearch(state.hand, action);
+            int index = getIndex(state.hand, action);
             double currentValue = thing.y()[index];
-            double addedstuff = (alpha / 1) * (reward - currentValue);
-            double newValue = currentValue + (alpha / 1) * (reward - currentValue);
-            double[] modified = Arrays.stream(state.hand)
-                    .mapToDouble(value -> value - addedstuff/2)
-                    .toArray();
-            modified[index] = newValue;
+            double addedstuff = (alpha * (reward + (gamma * maxFutureValue) - currentValue));
+            double newValue = currentValue + addedstuff;
+            double[] modified = new double[state.hand.length];
+            for(int i = 0 ; i < modified.length; ++i)
+                if(i == index)
+                    modified[i] = newValue;
+                else
+                    modified[i] = thing.y()[i];
 
-            int indexoflist = stateValues.indexOf(thing);
-            stateValues.set(indexoflist, new Tuple<>(state, modified));
+            stateValues.set(stateValues.indexOf(thing), new Tuple<>(state, modified));
         }
     }
 
     public Card chooseAction(Gamestate_modified state) {
-        if (Math.random() < epsilon) {
-            // Explore
+        // Try out a different move sometimes, to expand our horizons
+        if (Math.random() < epsilon)
             return getHand().get((int) (Math.random() * getHand().size()));
-        } else {
-            // Exploit
-            Stream<Tuple<Gamestate_modified, double[]>> tupleStream = stateValues.stream()
-                    .filter(tuple -> tuple.x().equals(state));
-            Optional<Tuple<Gamestate_modified, double[]>> tuple = tupleStream.findFirst();
-            Tuple<Gamestate_modified, double[]> thing = tuple.orElse(null);
-            int bestAction = 0;
-            double bestValue = -99999.99;
-            if (thing != null) {
-                for (int i = 0; i < thing.x().hand.length; i++) {
-                    if (thing.y()[i] > bestValue) {
-                        bestAction = thing.x().hand[i];
-                        bestValue = thing.y()[i];
-                    }
-                }
-            }
-            else {
-                // No information
-                return getHand().get((int) (Math.random() * getHand().size()));
-            }
-            return numbertocard(bestAction);
+        //afterwards to save time 1/10 of the time
+        Tuple<Gamestate_modified, double[]> thing = getTuple_weird(state);
+        // We never encountered this scenario before
+        if (thing == null)
+            return getHand().get((int) (Math.random() * getHand().size()));
 
+        // Exploit
+        int bestAction = 0;
+        double bestValue = -99999.99;
+        for (int i = 0; i < thing.x().hand.length; i++) {
+            if (thing.y()[i] > bestValue) {
+                bestAction = thing.x().hand[i];
+                bestValue = thing.y()[i];
+            }
         }
+        return numbertocard(bestAction);
+
     }
 
     @Override
@@ -121,8 +117,8 @@ public class RL_Modified_bot extends Bot {
     public static void main(String[] args) {
 
         //ONLY USE TO RESET PARAMETERS MIGHT WASTE HOURS OF TRAINING!!!!!!!
-        stateValues = new ArrayList<>();
-        writeObjectToFile(stateValues,filepath);
+        //stateValues = new ArrayList<>();
+        //writeObjectToFile(stateValues,filepath);
         stateValues = (ArrayList<Tuple<Gamestate_modified, double[]>>) readObjectFromFile(filepath);
         System.out.print(stateValues);
     }
@@ -136,7 +132,7 @@ public class RL_Modified_bot extends Bot {
         writeObjectToFile(VirtualSave.stateValues, filepath);
     }
     public void scoreRewards(double reward){
-            updateStateValues(rewards.get(rewards.size()-1).x(), rewards.get(rewards.size()-1).y(), reward);
+        updateStateValues(rewards.get(rewards.size()-1).x(), rewards.get(rewards.size()-1).y(), reward);
         VirtualSave.stateValues = stateValues;
     }
     public static int cardtonumber(Card card){
@@ -171,5 +167,28 @@ public class RL_Modified_bot extends Bot {
             e.printStackTrace();
         }
         return obj;
+    }
+    public static Tuple<Gamestate_modified, double[]> getTuple(Gamestate_modified key) {
+        for (Tuple<Gamestate_modified, double[]> tuple : stateValues) {
+            if (tuple.x().equals(key)) {
+                // the tuple with the matching int array is found
+                return tuple;
+            }
+        }
+        return null;
+    }
+    private Tuple<Gamestate_modified, double[]> getTuple_weird(Gamestate_modified state) {
+        Stream<Tuple<Gamestate_modified, double[]>> tupleStream = stateValues.stream()
+                .filter(tuple -> tuple.x().equals(state));
+        Optional<Tuple<Gamestate_modified, double[]>> tuple = tupleStream.findFirst();
+        Tuple<Gamestate_modified, double[]> thing = tuple.orElse(null);
+        return thing;
+    }
+    public static int getIndex(int[] k, int l) {
+        for (int i = 0; i < k.length; i++) {
+            if (k[i] == l)
+                return i;
+        }
+        throw new RuntimeException("not part of the thing");
     }
 }

@@ -11,7 +11,7 @@ if __name__ == '__main__':
     GreedyBot_data = []
 
     # Open the CSV file and read the data
-    with open('GreedyvsRandom.csv') as csvfile:
+    with open('GreedyvsRule') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             # Split the row into the bot name and score
