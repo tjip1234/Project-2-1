@@ -1,8 +1,9 @@
 package Game.Cards;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Card implements Comparable<Card> {
+public class Card implements Comparable<Card>, Serializable {
     public static enum Suit {
         Hearts,
         Diamonds,

@@ -1,0 +1,6 @@
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot

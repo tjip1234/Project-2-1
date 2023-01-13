@@ -116,6 +116,9 @@ public class GameSession implements Cloneable {
         if(count != playedCards.size())
             throw new RuntimeException("FUCK we desynced");
 
+        if(card == null)
+            System.out.println("Damn");
+
         if(canGrabCard())
             players[currentPlayer].addHand(deck.pop());
 
