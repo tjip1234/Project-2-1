@@ -26,7 +26,7 @@ public class TrainRL {
     public static void main(String[] args) throws IOException {
         initBots();
         int count = 0;
-        for (int j = 0; j < 100000; j++) {
+        for (int j = 0; j < 100; j++) {
             initBots();
             GameSession g = new GameSession(bots);
             g.startRound();

@@ -117,8 +117,8 @@ public class RL_Modified_bot extends Bot {
     public static void main(String[] args) {
 
         //ONLY USE TO RESET PARAMETERS MIGHT WASTE HOURS OF TRAINING!!!!!!!
-        //stateValues = new ArrayList<>();
-        //writeObjectToFile(stateValues,filepath);
+        stateValues = new ArrayList<>();
+        writeObjectToFile(stateValues,filepath);
         stateValues = (ArrayList<Tuple<Gamestate_modified, double[]>>) readObjectFromFile(filepath);
         System.out.print(stateValues);
     }
