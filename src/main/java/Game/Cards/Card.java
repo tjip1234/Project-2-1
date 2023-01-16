@@ -11,6 +11,9 @@ public class Card implements Comparable<Card>, Serializable {
         Clubs
     }
 
+    public final static Suit[] suitVal = Suit.values();
+    public final static Number[] numberVals = Number.values();
+
     public static enum Number {
         Two(0),
         Three(10),

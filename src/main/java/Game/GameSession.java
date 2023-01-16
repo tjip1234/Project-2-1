@@ -26,6 +26,40 @@ public class GameSession implements Cloneable {
 
     private int totalCycles;
 
+    public GameSession(int seed, Player... players) {
+        for (var player : players) {
+            if (player instanceof Bot bot)
+                bot.simulationSession = this::clone;
+        }
+        if (players.length == 0)
+            throw new UnsupportedOperationException("Games don't work like that. Dumbss.");
+        if (players.length == 1)
+            throw new UnsupportedOperationException(
+                    "Trying to play this game by yourself? How sad... Go get some friends");
+
+        if (players.length == 5)
+            throw new UnsupportedOperationException("Briscola Chiamata is unsupported.");
+
+        if (players.length > 6)
+            throw new UnsupportedOperationException(
+                    "As fun as that may sound, you can't play briscola with that many players. The limit is 6.");
+
+        currentPlayer = 0;
+
+        this.players = players;
+
+        isTeamGame = players.length != 2 && players.length % 2 == 0;
+
+        if (players.length == 3)
+            deck = new Deck(39, seed);
+        else if (players.length == 6)
+            deck = new Deck(36, seed);
+        else
+            deck = new Deck(40, seed);
+
+        totalCycles = deck.getSessionCards().size()/ players.length;
+    }
+
     public GameSession(Player... players) {
 
         for (var player : players) {
@@ -216,6 +250,7 @@ public class GameSession implements Cloneable {
             return;
 
         try {
+            playerBot.trickNumber = currentCycle;
             playerBot.playedCards = (HashSet<Card>)playedCards.clone();
             Card uhm = playerBot.MakeDecision((ArrayList<Card>)Table.clone(), (deck.getBriscola().suit));
 

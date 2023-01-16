@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Deck implements Cloneable {
 
-    private static final Random rng = new Random();
+    private SeededRandom rng ;
     private ArrayList<Card> cards = new ArrayList<>();
 
     private Card briscola = null;
@@ -21,6 +21,13 @@ public class Deck implements Cloneable {
 
     public Deck(int deckSize) {
         this.deckSize = deckSize;
+        rng = new SeededRandom();
+        reshuffle();
+    }
+
+    public Deck(int deckSize, int seed){
+        this.deckSize = deckSize;
+        rng = new SeededRandom(seed);
         reshuffle();
     }
 
@@ -30,18 +37,21 @@ public class Deck implements Cloneable {
 
     public void reshuffle() {
         // Create all the cards
+        var cardsOrig = new ArrayList<Card>();
         cards = new ArrayList<Card>();
+        cardsInSession.clear();
         for (Card.Suit suit : Card.Suit.values())
             for (Card.Number number : Card.Number.values())
-                cards.add(new Card(suit, number));
+                cardsOrig.add(new Card(suit, number));
 
         for (int i = 0; i < 40 - deckSize; ++i) {
             int a = i;
-            cards.removeIf(c -> c.suit == Card.Suit.values()[a] && c.number == Card.Number.Two);
+            cardsOrig.removeIf(c -> c.suit == Card.Suit.values()[a] && c.number == Card.Number.Two);
         }
 
-        
-        Collections.shuffle(cards);
+        for (int i = cardsOrig.size()-1; i >= 0; --i) {
+            cards.add(cardsOrig.remove(rng.nextInt(0, cardsOrig.size())));
+        }
 
         briscola = cards.get(cards.size() - 1);
         cardsInSession.addAll(cards);
@@ -74,6 +84,7 @@ public class Deck implements Cloneable {
     @Override
     public Deck clone() {
         Deck clone = new Deck(false);
+        clone.rng = new SeededRandom(rng.getState());
         clone.briscola = briscola;
         clone.cardsInSession = new HashSet<>(cardsInSession);
         clone.cards = new ArrayList<>(cards);
