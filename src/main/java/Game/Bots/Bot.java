@@ -18,6 +18,8 @@ public abstract class Bot extends Player {
 
     public Supplier<GameSession> simulationSession;
 
+    public int trickNumber = 0;
+
     /// Makes a choosing a card based on the current situation
     public abstract Card MakeDecision(List<Card> cardsOnTable, Suit Briscola) throws IOException;
 

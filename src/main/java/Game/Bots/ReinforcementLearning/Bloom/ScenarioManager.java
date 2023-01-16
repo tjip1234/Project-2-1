@@ -1,23 +1,25 @@
 package Game.Bots.ReinforcementLearning.Bloom;
 
 import Game.Cards.Card;
+import Game.Tuple;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.io.Serializable;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ScenarioManager
+public class ScenarioManager implements Serializable
 {
     public AtomicInteger wins = new AtomicInteger();
 
-    public Map<Scenario, Map<Card, Double>> scenarios = new HashMap<>();
+    public Map<Scenario, Map<Tuple<Integer, Integer>, Double>> scenarios = new HashMap<>();
 
     private static Map<Scenario, Integer> mostEncounteredScenarios = new HashMap<>();
 
+    private float alpha = 0.1f;
+
     public void addScenario(Scenario scenario){
-        var map = new HashMap<Card, Double>();
+        var map = new HashMap<Tuple<Integer, Integer>, Double>();
         for(var Card : scenario.cardsInHand)
             map.put(Card, 0.0);
 
@@ -36,7 +38,7 @@ public class ScenarioManager
 
             var cards = scenarios.get(scenario);
 
-            cards.merge(chosen, amount, Double::sum);
+            cards.merge(tupleFromCard(chosen), amount, Double::sum);
             lock.release();
         }
         catch(InterruptedException e){
@@ -46,12 +48,11 @@ public class ScenarioManager
     private static Random random = new Random();
 
     public Card getBestMoveFor(Scenario scenario){
-
-        if(!scenarios.containsKey(scenario) || random.nextFloat() < 0.2f){
-            return (Card)scenario.cardsInHand.toArray()[random.nextInt(scenario.cardsInHand.size())];
+        if(!scenarios.containsKey(scenario)) {
+            return cardFromTuple((Tuple<Integer, Integer>)scenario.cardsInHand.toArray()[random.nextInt(scenario.cardsInHand.size())]);
         }
 
-        Card bestCard = null;
+        Tuple<Integer, Integer> bestCard = null;
 
         double bestValue = -Double.MAX_VALUE;
 
@@ -63,10 +64,15 @@ public class ScenarioManager
                 bestCard = card;
             }
         }
-        if(bestCard == null)
-            return null;
 
-        return bestCard;
+        var excluded = new ArrayList<>(scenarios.get(scenario).keySet());
+
+        if(excluded.size() > 1 && random.nextFloat() < 0.2f){
+            excluded.remove(bestCard);
+            return cardFromTuple(excluded.get(random.nextInt(excluded.size())));
+        }
+
+        return cardFromTuple(bestCard);
     }
 
 
@@ -77,5 +83,13 @@ public class ScenarioManager
             if(count == 1)
                 scenarios.remove(scen);
         }
+    }
+
+    public static Card cardFromTuple(Tuple<Integer, Integer> card){
+        return new Card(Card.suitVal[card.x()], Card.numberVals[card.y()]);
+    }
+
+    public static Tuple<Integer, Integer> tupleFromCard(Card card){
+        return new Tuple<Integer, Integer>(card.suit.ordinal(), card.number.ordinal());
     }
 }
