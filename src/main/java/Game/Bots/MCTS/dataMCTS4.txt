@@ -4,3 +4,26 @@ winRate, time, score
 Bot: GreedyBot
 winRate, time, score
 Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+winRate, time, score
+Bot: GreedyBot
+1.0,68551.0,0.014

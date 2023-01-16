@@ -70,11 +70,11 @@ public class MCTS3_bot extends Bot {
      */
     private Card findCardToPlay(GameSession board, int iterationCount) throws IOException {
 
-        Tree tree = initializeTree(board,3 );
-
+        Tree tree = initializeTree(board,1);
+        int maxIteration = iterationCount;
         while(iterationCount!=0){
             Node currentNode = tree.getRootNode();
-            currentNode = selectionPhase(currentNode, iterationCount);
+            currentNode = selectionPhase(currentNode, maxIteration-iterationCount);
             backpropagationPhase(currentNode,simulationPhase(currentNode));
 
             iterationCount--;
@@ -132,6 +132,8 @@ public class MCTS3_bot extends Bot {
                     break;
                 }
                 currentNode = currentNode.getListOfChildren().get((int)(Math.random()*currentNode.getListOfChildren().size()));
+                //System.out.println("RandomNode "+currentNode.getState().getVisitCountForState()+" Its parent "+currentNode.getParentNode().getState().getVisitCountForState());
+
                 continue;
             }
 
@@ -174,12 +176,12 @@ public class MCTS3_bot extends Bot {
         //return normalized score in game instead of 1,0,-1
 
         double score = 0 ;
-        int simulationCount = 3;
+        int simulationCount = 1;
         for (int i = 0; i < simulationCount; i++) {
 
 
             State simulationState = new State(targetNode.getState().getBoardState().clone(), targetNode.getState().getRootPlayerNumber());
-
+            simulationState.createAllPossibleStates();
             while (true) {
                 if (simulationState.getBoardState().gameOver() || simulationState.getPossibleUncheckedStates().size() == 0) {
                     if (simulationState.getBoardState().getWinnerChickenDinner() == -1) {
@@ -232,7 +234,18 @@ public class MCTS3_bot extends Bot {
         return highestValueNode;
     }
 
+    public Node getRoute(GameSession board, int iterationCount) {
+        Tree tree = initializeTree(board,1 );
 
+        while(iterationCount!=0){
+            Node currentNode = tree.getRootNode();
+            currentNode = selectionPhase(currentNode, iterationCount);
+            backpropagationPhase(currentNode,simulationPhase(currentNode));
+
+            iterationCount--;
+        }
+        return tree.getRootNode();
+    }
 
 
     

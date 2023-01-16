@@ -10,7 +10,6 @@ public class State {
     private Card cardPlayed;
     private static final Random random = new Random();
 
-    private int player;
 
     public final int rootPlayerNumber;
     private int visitCountForState;
@@ -106,13 +105,14 @@ public class State {
         int randomChild = random.nextInt(0, remainingCards.size()+possibleStates.size());
         GameSession tmp = boardState.clone();
         State state;
-        if(randomChild>remainingCards.size()){
-            state = possibleStates.get(randomChild);
-        }else {
-            randomChild -= remainingCards.size();
-            Card holder = remainingCards.get(randomChild);
+        if(randomChild<=remainingCards.size()||possibleStates.size()==0){
+
+            Card holder = remainingCards.get(random.nextInt(remainingCards.size()));
             tmp.playTurn(holder);
             state = new State(tmp, rootPlayerNumber);
+        }else {
+            state = possibleStates.get(random.nextInt(possibleStates.size()));
+
 
         }
         possibleStates.add(state);
@@ -146,19 +146,6 @@ public class State {
 
     public void setScoreForState(int scoreForState) {
         this.scoreForState = scoreForState;
-    }
-
-    public int getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(int player) {
-        this.player = player;
-    }
-
-    //1 is the bot, 2 is opponent, needs to be changed for multiplayer
-    public int getOpponent() {
-        return (player % 2) + 1;
     }
 
     public int getVisitCountForState() {
