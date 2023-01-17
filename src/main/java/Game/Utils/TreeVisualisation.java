@@ -1,13 +1,19 @@
 package Game.Utils;
 
 import Game.Bots.Trees.Node;
+import Game.TestSimulate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class TreeVisualisation {
-    public static void visualiseDepthFirst(Node root, int counter){
+    public static void visualiseDepthFirst(Node root, int counter) throws IOException {
+        if(counter==0){
+            TestSimulate.saveData(-1+"Visit count: "+root.getState().getVisitCountForState()+" Score: "+root.getState().getScoreForState()/root.getState().getVisitCountForState()+"\n");
+
+        }
         if(root.getListOfChildren().isEmpty()){
             return;
         }
@@ -18,7 +24,7 @@ public class TreeVisualisation {
                 answer+=" ";
             }
             answer+=counter+"Visit count: "+root.getListOfChildren().get(i).getState().getVisitCountForState()+" Score: "+root.getListOfChildren().get(i).getState().getScoreForState()/root.getListOfChildren().get(i).getState().getVisitCountForState()+"\n";
-            System.out.println(answer);
+            TestSimulate.saveData(answer);
             visualiseDepthFirst(root.getListOfChildren().get(i), counter+1);
         }
     }

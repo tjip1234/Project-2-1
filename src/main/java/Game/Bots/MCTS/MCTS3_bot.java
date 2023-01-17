@@ -120,17 +120,14 @@ public class MCTS3_bot extends Bot {
 
         while(currentNode.getListOfChildren().size()>0){
             //5% chance to stop here
-            if(((currentNode.getState().getPossibleUncheckedStates().size()>0)&&(Math.random()<0.05))){
+            if(((currentNode.getState().getPossibleUncheckedStates().size()>0)&&(Math.random()<0.1))){
                 break;
             }
 
             //if Bot turn, choose random
             if(currentNode.getState().getBoardState().currentPlayer!=currentNode.getState().rootPlayerNumber){
-                int holder = currentNode.getListOfChildren().size()+currentNode.getState().getPossibleUncheckedStates().size();
-                Random random = new Random();
-                if(random.nextInt(holder)>currentNode.getListOfChildren().size()){
-                    break;
-                }
+
+
                 currentNode = currentNode.getListOfChildren().get((int)(Math.random()*currentNode.getListOfChildren().size()));
                 //System.out.println("RandomNode "+currentNode.getState().getVisitCountForState()+" Its parent "+currentNode.getParentNode().getState().getVisitCountForState());
 
@@ -156,8 +153,13 @@ public class MCTS3_bot extends Bot {
      */
     private Node extensionPhase(Node targetParentNode){
         // Adds one of the child of targetNode
+        State state = null;
+        if(targetParentNode.getParentNode()!=null&&targetParentNode.getParentNode().getState().lastTrick!=null){
+            state = targetParentNode.getState().getRandomChildState2(true, targetParentNode.getParentNode().getState().lastTrick[0],targetParentNode.getParentNode().getState().lastTrick[1]);
+        }
+        else state = targetParentNode.getState().getRandomChildState();
 
-        State state = targetParentNode.getState().getRandomChildState();
+
         Node targetNode = new Node(state);
         targetNode.setParentNode(targetParentNode);
         targetParentNode.getListOfChildren().add(targetNode);
@@ -176,7 +178,7 @@ public class MCTS3_bot extends Bot {
         //return normalized score in game instead of 1,0,-1
 
         double score = 0 ;
-        int simulationCount = 1;
+        int simulationCount = 2;
         for (int i = 0; i < simulationCount; i++) {
 
 

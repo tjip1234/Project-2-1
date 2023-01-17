@@ -9,6 +9,7 @@ public class State {
     private GameSession boardState;
     private Card cardPlayed;
     private static final Random random = new Random();
+    Card[] lastTrick = null;
 
 
     public final int rootPlayerNumber;
@@ -94,6 +95,37 @@ public class State {
         GameSession tmp = boardState.clone();
         Card holder = remainingCards.remove(randomChild);
         tmp.playTurn(holder);
+        boolean shouldBe = false;
+        if(tmp.Table.isEmpty()){
+            if(boardState.currentPlayer!=rootPlayerNumber&&(holder.suit!=cardPlayed.suit&&holder.suit!=boardState.deck.getBriscola().suit)){
+                shouldBe = true;
+            }
+        }
+        State state = new State(tmp, rootPlayerNumber);
+        if(shouldBe){
+            state.lastTrick = new Card[]{cardPlayed, holder};
+        }
+        state.cardPlayed = holder;
+        state.createAllPossibleStates();
+        return state;
+    }
+
+    public State getRandomChildState2(boolean isTrick, Card leadingCard, Card otherCard) {
+
+        Card.Suit banned = null;
+        if(isTrick){
+            banned = leadingCard.suit;
+        }
+
+        int randomChild = random.nextInt(0, remainingCards.size());
+        int counter = 0;
+        while(remainingCards.get(randomChild).suit==banned&&counter<10){
+            counter++;
+            randomChild = random.nextInt(0, remainingCards.size());
+        }
+        GameSession tmp = boardState.clone();
+        Card holder = remainingCards.remove(randomChild);
+        tmp.playTurn(holder);
         State state = new State(tmp, rootPlayerNumber);
         state.cardPlayed = holder;
         state.createAllPossibleStates();
@@ -102,10 +134,9 @@ public class State {
 
     public State getRandomChildStateSimulated() {
 
-        int randomChild = random.nextInt(0, remainingCards.size()+possibleStates.size());
         GameSession tmp = boardState.clone();
         State state;
-        if(randomChild<=remainingCards.size()||possibleStates.size()==0){
+        if(random.nextDouble()<0.1||possibleStates.size()==0){
 
             Card holder = remainingCards.get(random.nextInt(remainingCards.size()));
             tmp.playTurn(holder);
