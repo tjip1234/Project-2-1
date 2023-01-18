@@ -3,6 +3,7 @@ package Game.Bots.ReinforcementLearning;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Gamestate_modified implements Serializable {
     public int[] table;
@@ -32,5 +33,10 @@ public class Gamestate_modified implements Serializable {
         return Arrays.equals(this.table, otherGS.table)
                 && Arrays.equals(this.hand, otherGS.hand)
                 && this.briscola == otherGS.briscola;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Arrays.hashCode(table),Arrays.hashCode(hand),briscola);
     }
 }

@@ -4,16 +4,15 @@ import Game.Bots.Bot;
 import Game.Cards.Card;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 public class RL_Modified_bot extends Bot {
     // State space and action space
 
     public static ArrayList<Tuple<Gamestate_modified,double[]>> stateValues;
+    public static Map<Gamestate_modified, double[]> hashvalues;
     static final public String filepath = "src/main/java/Game/Bots/ReinforcementLearning/savedParamModded.dat";
     public ArrayList<Tuple<Gamestate_modified, Integer>> rewards;
     private final double alpha = 0.1; // Learning rate
@@ -21,19 +20,19 @@ public class RL_Modified_bot extends Bot {
     private final double epsilon = 0.1; // Exploration rate
 
     public RL_Modified_bot() {
-        if (VirtualSave.stateValues == null)
-            VirtualSave.stateValues = (ArrayList<Tuple<Gamestate_modified, double[]>>) readObjectFromFile(filepath);
-        stateValues = VirtualSave.stateValues;
+        if (VirtualSave.hashvalues == null)
+            VirtualSave.hashvalues = (Map<Gamestate_modified, double[]>) readObjectFromFile(filepath);
+        hashvalues = VirtualSave.hashvalues;
         rewards = new ArrayList<>();
     }
 
     public void updateStateValues(Gamestate_modified state, int action, double reward) {
 
-        Tuple<Gamestate_modified, double[]> thing = getTuple_weird(state);
+        double[] thing = hashvalues.get(state);
         double maxFutureValue = Double.NEGATIVE_INFINITY;
         for (int i = 0; i < state.hand.length; i++) {
             if (thing != null) {
-                maxFutureValue = Math.max(maxFutureValue, thing.y()[i]);
+                maxFutureValue = Math.max(maxFutureValue, thing[i]);
             }
         }
         if (thing == null) {
@@ -46,11 +45,11 @@ public class RL_Modified_bot extends Bot {
             }
             double[] values = new double[3];
             values[index] = reward;
-            stateValues.add(new Tuple<>(state, values));
+            hashvalues.put(state, values);
         }
         else {
             int index = getIndex(state.hand, action);
-            double currentValue = thing.y()[index];
+            double currentValue = thing[index];
             double addedstuff = (alpha * (reward + (gamma * maxFutureValue) - currentValue));
             double newValue = currentValue + addedstuff;
             double[] modified = new double[state.hand.length];
@@ -58,9 +57,9 @@ public class RL_Modified_bot extends Bot {
                 if(i == index)
                     modified[i] = newValue;
                 else
-                    modified[i] = thing.y()[i];
+                    modified[i] = thing[i];
 
-            stateValues.set(stateValues.indexOf(thing), new Tuple<>(state, modified));
+            hashvalues.put(state, modified);
         }
     }
 
@@ -69,7 +68,7 @@ public class RL_Modified_bot extends Bot {
         if (Math.random() < epsilon)
             return getHand().get((int) (Math.random() * getHand().size()));
         //afterwards to save time 1/10 of the time
-        Tuple<Gamestate_modified, double[]> thing = getTuple_weird(state);
+        double[] thing = hashvalues.get(state);
         // We never encountered this scenario before
         if (thing == null)
             return getHand().get((int) (Math.random() * getHand().size()));
@@ -77,10 +76,10 @@ public class RL_Modified_bot extends Bot {
         // Exploit
         int bestAction = 0;
         double bestValue = -99999.99;
-        for (int i = 0; i < thing.x().hand.length; i++) {
-            if (thing.y()[i] > bestValue) {
-                bestAction = thing.x().hand[i];
-                bestValue = thing.y()[i];
+        for (int i = 0; i < state.hand.length; i++) {
+            if (thing[i] > bestValue) {
+                bestAction = state.hand[i];
+                bestValue = thing[i];
             }
         }
         return numbertocard(bestAction);
@@ -117,23 +116,23 @@ public class RL_Modified_bot extends Bot {
     public static void main(String[] args) {
 
         //ONLY USE TO RESET PARAMETERS MIGHT WASTE HOURS OF TRAINING!!!!!!!
-        stateValues = new ArrayList<>();
-        writeObjectToFile(stateValues,filepath);
-        stateValues = (ArrayList<Tuple<Gamestate_modified, double[]>>) readObjectFromFile(filepath);
-        System.out.print(stateValues);
+        //hashvalues = new ConcurrentHashMap<>();
+        //writeObjectToFile(hashvalues,filepath);
+        hashvalues = (Map<Gamestate_modified, double[]>) readObjectFromFile(filepath);
+        System.out.print(hashvalues);
     }
     public void executeRewards(double reward){
         for (Tuple<Gamestate_modified, Integer> rew:rewards) {
             updateStateValues(rew.x(), rew.y(), reward);
         }
-        VirtualSave.stateValues = stateValues;
+        VirtualSave.hashvalues = hashvalues;
     }
     public void save(){
-        writeObjectToFile(VirtualSave.stateValues, filepath);
+        writeObjectToFile(VirtualSave.hashvalues, filepath);
     }
     public void scoreRewards(double reward){
         updateStateValues(rewards.get(rewards.size()-1).x(), rewards.get(rewards.size()-1).y(), reward);
-        VirtualSave.stateValues = stateValues;
+        VirtualSave.hashvalues = hashvalues;
     }
     public static int cardtonumber(Card card){
         return card.number.ordinal()+(card.suit.ordinal()*100);
