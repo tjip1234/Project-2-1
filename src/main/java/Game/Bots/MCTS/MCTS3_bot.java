@@ -187,7 +187,7 @@ public class MCTS3_bot extends Bot {
             while (true) {
                 if (simulationState.getBoardState().gameOver() || simulationState.getPossibleUncheckedStates().size() == 0) {
                     if (simulationState.getBoardState().getWinnerChickenDinner() == -1) {
-                        score += 0.5;
+                        score += 0;
                         break;
                     }
                     if (simulationState.getBoardState().getWinnerChickenDinner() == simulationState.getRootPlayerNumber()) {
