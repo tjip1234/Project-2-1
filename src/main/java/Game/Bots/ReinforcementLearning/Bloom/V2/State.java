@@ -10,7 +10,9 @@ import java.util.Set;
 public record State (
         int briscolaOrdinal,
         CardTuple dominantCard,
-        Set<CardTuple> cardsInHand) implements Serializable {
+        Set<CardTuple> cardsInHand)
+
+        implements Serializable {
 
     public static State From(List<Card> cardsInHand, Card dominant, Card.Suit briscola){
         HashSet<CardTuple> cardsInHandSet = new HashSet<>();
