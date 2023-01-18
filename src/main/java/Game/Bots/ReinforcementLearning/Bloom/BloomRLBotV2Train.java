@@ -1,4 +1,4 @@
-package Game.Bots.ReinforcementLearning.Bloom.V2;
+package Game.Bots.ReinforcementLearning.Bloom;
 
 import Game.Bots.GreedyBot;
 import Game.GameSession;
@@ -30,14 +30,15 @@ public class BloomRLBotV2Train {
 
         g.startRound();
 
-        int[] oldScores = null;
+        int[] oldScores = Arrays.stream(g.players).mapToInt(Player::Score).toArray();
+
         while (!g.gameOver()) {
-            oldScores = Arrays.stream(g.players).mapToInt(Player::Score).toArray();
+            if(g.currentPlayer == targetIndex) {
+                updateBotScore(g, bot, targetIndex, oldScores);
+                oldScores = Arrays.stream(g.players).mapToInt(Player::Score).toArray();
+            }
 
             g.botPlayTurn();
-
-            if(g.currentPlayer == targetIndex)
-                updateBotScore(g, bot, targetIndex, oldScores);
         }
 
         updateBotScore(g, bot, targetIndex, oldScores);
@@ -55,7 +56,7 @@ public class BloomRLBotV2Train {
         for (int i = 0; i < g.players.length; ++i)
             delta += (g.players[i].Score() - oldScores[i]) * (i == targetIndex ? 1 : -1);
 
-        bot.updateLastMove(delta, g.Table, g.deck.getBriscola().suit);
+        bot.updateLastMove(delta, g.Table, g.deck.getBriscola().suit, g.getPlayedCards());
     }
 
     public static class SimulationJob implements Iterator<Runnable> {

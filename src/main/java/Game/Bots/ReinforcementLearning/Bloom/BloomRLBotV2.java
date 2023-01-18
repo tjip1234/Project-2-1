@@ -1,4 +1,4 @@
-package Game.Bots.ReinforcementLearning.Bloom.V2;
+package Game.Bots.ReinforcementLearning.Bloom;
 
 import Game.Bots.Bot;
 import Game.Cards.Card;
@@ -10,17 +10,12 @@ import com.esotericsoftware.kryo.io.Output;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class BloomRLBotV2 extends Bot {
-
-
-    private Tuple<State, CardTuple> lastMove = null;
+    private Tuple<State, Card> lastMove = null;
 
     public static AtomicInteger winsThisSession = new AtomicInteger();
 
@@ -28,23 +23,23 @@ public class BloomRLBotV2 extends Bot {
     public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) throws IOException {
         var dominant = FindDominantCard(cardsOnTable, Briscola);
 
-        var state = State.From(getHand(), dominant, Briscola);
+        var state = new State(Briscola, dominant, new HashSet<>(getHand()));
 
         var bestMove = getBestMoveFor(state);
         lastMove = new Tuple<>(state, bestMove);
 
-        return bestMove.toCard();
+        return bestMove;
     }
 
-    private static final float alpha = 0.5f;
+    private static final float alpha = 0.2f;
     private static final float gamma = 0.6f;
     public static float epsilon = 0.1f;
 
-    private static ConcurrentHashMap<State, ConcurrentHashMap<CardTuple, Float>> table = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<State, ConcurrentHashMap<Card, Float>> table = new ConcurrentHashMap<>();
 
     private final static Random rng = new Random();
 
-    private CardTuple getBestMoveFor(State state) {
+    private Card getBestMoveFor(State state) {
         if (!table.containsKey(state)) {
             // A more convoluted way to randomly choose from a set, since it has no index
             var chosen = rng.nextInt(state.cardsInHand().size());
@@ -55,7 +50,7 @@ public class BloomRLBotV2 extends Bot {
             }
         }
 
-        CardTuple bestCard = null;
+        Card bestCard = null;
         float bestScore = Float.NEGATIVE_INFINITY;
 
         var moves = table.get(state);
@@ -69,7 +64,7 @@ public class BloomRLBotV2 extends Bot {
 
         // Random deviation chance
         if(state.cardsInHand().size() > 1 && rng.nextFloat() < epsilon){
-            var excluded = new ArrayList<CardTuple>(state.cardsInHand());
+            var excluded = new ArrayList<Card>(state.cardsInHand());
             excluded.remove(bestCard);
 
             return excluded.get(rng.nextInt(excluded.size()));
@@ -78,13 +73,18 @@ public class BloomRLBotV2 extends Bot {
         return bestCard;
     }
 
-    public void updateLastMove(float reward, List<Card> cardsOnTable, Card.Suit Briscola) {
+    public void updateLastMove(float reward, List<Card> cardsOnTable, Card.Suit Briscola, Set<Card> playedCards) {
         if (lastMove == null)
             return;
 
+        if(reward > 0) {
+            assert lastMove.y().number != null;
+            reward -= lastMove.y().number.scoreValue;
+        }
+
         // Initialize state in table if needed
         if (!table.containsKey(lastMove.x())) {
-            var nested = new ConcurrentHashMap<CardTuple, Float>();
+            var nested = new ConcurrentHashMap<Card, Float>();
             for (var card : lastMove.x().cardsInHand())
                 nested.put(card, 0f);
 
@@ -94,7 +94,11 @@ public class BloomRLBotV2 extends Bot {
         float qScoreCurrent = table.get(lastMove.x()).get(lastMove.y());
 
         var dominant = FindDominantCard(cardsOnTable, Briscola);
-        var state = State.From(getHand(), dominant, Briscola);
+
+        var tableValue = getScoreForTable(cardsOnTable);
+        var remaining =  getScoreForTable(playedCards) + tableValue;
+
+        var state = new State(Briscola, dominant,  new HashSet<>(getHand()));
 
         float bestScorePossibleNextTrick = Float.NEGATIVE_INFINITY;
         if (table.containsKey(state)) {
@@ -102,7 +106,7 @@ public class BloomRLBotV2 extends Bot {
             for (var card : state.cardsInHand())
                 bestScorePossibleNextTrick = Math.max(bestScorePossibleNextTrick, nextMoves.get(card));
         } else
-            bestScorePossibleNextTrick = 0;
+            bestScorePossibleNextTrick = remaining;
 
         float qScoreNew = qScoreCurrent + alpha * (reward + (gamma * bestScorePossibleNextTrick) - qScoreCurrent);
 
@@ -117,7 +121,9 @@ public class BloomRLBotV2 extends Bot {
 
         kryo.register(ConcurrentHashMap.class);
         kryo.register(State.class);
-        kryo.register(CardTuple.class);
+        kryo.register(Card.class);
+        kryo.register(Card.Suit.class);
+        kryo.register(Card.Number.class);
         kryo.register(HashSet.class);
     }
 

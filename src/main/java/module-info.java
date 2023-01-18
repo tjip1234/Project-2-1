@@ -7,7 +7,10 @@ module GameUI {
 
     opens GameUI to javafx.fxml;
 
-    exports Game.Bots.ReinforcementLearning.Bloom.V2;
-
     exports GameUI;
+
+    // For serialization purposes
+    exports Game.Bots.ReinforcementLearning.Bloom;
+    exports Game.Cards;
+    opens Game.Cards to com.esotericsoftware.kryo;
 }

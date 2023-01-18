@@ -11,8 +11,6 @@ public class Card implements Comparable<Card>, Serializable {
         Clubs
     }
 
-    public final static Suit[] suitVal = Suit.values();
-    public final static Number[] numberVals = Number.values();
 
     public static enum Number {
         Two(0),
@@ -34,10 +32,14 @@ public class Card implements Comparable<Card>, Serializable {
         }
     }
 
+    // For serialization purposes only
+    private Card(){
+        suit = null;
+        number = null;
+    }
+
     public final Suit suit;
     public final Number number;
-
-    private final int hashCode;
 
     /**
      * Constructor for a card
@@ -48,8 +50,6 @@ public class Card implements Comparable<Card>, Serializable {
     public Card(Suit suit, Number number) {
         this.suit = suit;
         this.number = number;
-
-        hashCode = Objects.hash(suit, number);
     }
 
     /**
@@ -110,17 +110,15 @@ public class Card implements Comparable<Card>, Serializable {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Card))
+        if (!(other instanceof Card otherCard))
             return false;
-
-        Card otherCard = (Card) other;
 
         return (suit == otherCard.suit && number == otherCard.number);
     }
 
     @Override
     public int hashCode() {
-        return hashCode;
+        return Objects.hash(suit, number);
     }
 
     @Override
