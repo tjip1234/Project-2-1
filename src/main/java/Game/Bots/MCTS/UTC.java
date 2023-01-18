@@ -9,12 +9,14 @@ public class UTC {
         int totalVisitAmount = currentNode.getState().getVisitCountForState();
         Node maxValueNode = null;
         double maxValue  = 0;
+        String debugger = "Parent node "+currentNode.getState().getVisitCountForState()+"\n";
 
         for(int i = 0; i<currentNode.getListOfChildren().size(); i++){
             Node currentChild = currentNode.getListOfChildren().get(i);
             int visitAmount = currentChild.getState().getVisitCountForState();
             double score = currentChild.getState().getScoreForState();
             double value = score/(double)visitAmount + UTC_CONSTANT*Math.sqrt(Math.log(totalVisitAmount)/(double)visitAmount);
+            debugger+=visitAmount+"   "+value+"   "+score/visitAmount+"\n";
 
             //Checking for max
             if(maxValueNode==null) {
@@ -25,6 +27,8 @@ public class UTC {
                 maxValueNode = currentChild;
             }
         }
+        //System.out.println(debugger);
+        //System.out.println("End");
         return maxValueNode;
     }
 }

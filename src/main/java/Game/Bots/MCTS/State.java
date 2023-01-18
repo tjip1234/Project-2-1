@@ -9,8 +9,8 @@ public class State {
     private GameSession boardState;
     private Card cardPlayed;
     private static final Random random = new Random();
+    Card[] lastTrick = null;
 
-    private int player;
 
     public final int rootPlayerNumber;
     private int visitCountForState;
@@ -95,6 +95,37 @@ public class State {
         GameSession tmp = boardState.clone();
         Card holder = remainingCards.remove(randomChild);
         tmp.playTurn(holder);
+        boolean shouldBe = false;
+        if(tmp.Table.isEmpty()){
+            if(boardState.currentPlayer!=rootPlayerNumber&&(holder.suit!=cardPlayed.suit&&holder.suit!=boardState.deck.getBriscola().suit)){
+                shouldBe = true;
+            }
+        }
+        State state = new State(tmp, rootPlayerNumber);
+        if(shouldBe){
+            state.lastTrick = new Card[]{cardPlayed, holder};
+        }
+        state.cardPlayed = holder;
+        state.createAllPossibleStates();
+        return state;
+    }
+
+    public State getRandomChildState2(boolean isTrick, Card leadingCard, Card otherCard) {
+
+        Card.Suit banned = null;
+        if(isTrick){
+            banned = leadingCard.suit;
+        }
+
+        int randomChild = random.nextInt(0, remainingCards.size());
+        int counter = 0;
+        while(remainingCards.get(randomChild).suit==banned&&counter<10){
+            counter++;
+            randomChild = random.nextInt(0, remainingCards.size());
+        }
+        GameSession tmp = boardState.clone();
+        Card holder = remainingCards.remove(randomChild);
+        tmp.playTurn(holder);
         State state = new State(tmp, rootPlayerNumber);
         state.cardPlayed = holder;
         state.createAllPossibleStates();
@@ -103,16 +134,16 @@ public class State {
 
     public State getRandomChildStateSimulated() {
 
-        int randomChild = random.nextInt(0, remainingCards.size()+possibleStates.size());
         GameSession tmp = boardState.clone();
         State state;
-        if(randomChild>remainingCards.size()){
-            state = possibleStates.get(randomChild);
-        }else {
-            randomChild -= remainingCards.size();
-            Card holder = remainingCards.get(randomChild);
+        if(random.nextDouble()<0.1||possibleStates.size()==0){
+
+            Card holder = remainingCards.get(random.nextInt(remainingCards.size()));
             tmp.playTurn(holder);
             state = new State(tmp, rootPlayerNumber);
+        }else {
+            state = possibleStates.get(random.nextInt(possibleStates.size()));
+
 
         }
         possibleStates.add(state);
@@ -146,19 +177,6 @@ public class State {
 
     public void setScoreForState(int scoreForState) {
         this.scoreForState = scoreForState;
-    }
-
-    public int getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(int player) {
-        this.player = player;
-    }
-
-    //1 is the bot, 2 is opponent, needs to be changed for multiplayer
-    public int getOpponent() {
-        return (player % 2) + 1;
     }
 
     public int getVisitCountForState() {
