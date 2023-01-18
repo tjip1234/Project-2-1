@@ -134,7 +134,7 @@ public class GameSession implements Cloneable {
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < players.length; i++) {
-                players[(i + startPlayer) % players.length].addHand(deck.pop());
+                players[(i + startPlayer) % players.length].addHand(deck.pop_());
             }
         }
     }

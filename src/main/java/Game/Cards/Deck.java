@@ -7,6 +7,7 @@ import java.util.*;
 public class Deck implements Cloneable {
 
     private SeededRandom rng ;
+    private Random rng2 = new Random();
     private ArrayList<Card> cards = new ArrayList<>();
 
     private Card briscola = null;
@@ -70,9 +71,11 @@ public class Deck implements Cloneable {
     }
 
     public Card pop() {
+        return cards.remove(rng2.nextInt(0, Math.max(1, cards.size() - 1)));
+    }
+    public Card pop_() {
         return cards.remove(rng.nextInt(0, Math.max(1, cards.size() - 1)));
     }
-
     public Card getBriscola() {
         return briscola;
     }

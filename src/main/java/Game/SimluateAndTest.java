@@ -1,6 +1,7 @@
 package Game;
 
 import Game.Bots.GreedyBot;
+import Game.Bots.MCTS.MCTS3_bot;
 import Game.Bots.ReinforcementLearning.*;
 import Game.Bots.RandomBot;
 import Game.Cards.Card;
@@ -15,9 +16,11 @@ import java.util.stream.Stream;
 
 public class SimluateAndTest {
     static Player[] bots;
-    static String name = "GreedyvsRule";
+    static String name = "MCTS";
+    static int iterations = 10;
+    static int[] dif = {50,100,150,200,250,300,500,1000};
     public static void initBots(){
-        bots = new Player[]{new RL_Modified_bot(), new RandomBot()}; //change your players and bots here
+        bots = new Player[]{new MCTS3_bot(iterations,0.2), new GreedyBot()}; //change your players and bots here
     }
     public static void main(String[] args) throws IOException {
         initBots();
@@ -27,11 +30,13 @@ public class SimluateAndTest {
         for (int i = 0; i < bots.length; i++) {
             classname[i] = String.valueOf(bots[i].getClass()).substring(16);
         }
-        biglist.add(classname);
-        int games = 100;
+        //biglist.add(classname);
+        int games = 8000;
         int wins = 0;
         int draws = 0;
         int otherwin =0;
+        int count = 0;
+        int counttimes = 0;
         for (int j = 0; j < games; j++) {
             initBots();
             GameSession g = new GameSession(bots);
@@ -44,18 +49,17 @@ public class SimluateAndTest {
                     g.botPlayTurn();
                 }
             }
+
             if (bots[0].Score() > bots[1].Score())
                 wins++;
-            else if (bots[0].Score() == bots[1].Score())
-                draws++;
-            else
-                otherwin++;
-            String score[] = new String[bots.length];
-            for (int i = 0; i < bots.length; i++) {
-                score[i] = String.valueOf(bots[i].Score());
+            if (count >= games/dif.length){
+                iterations = dif[counttimes];
+                counttimes++;
+                count = 0;
+                biglist.add(new String[]{String.valueOf (wins/(float)(games/dif.length))});
+                wins = 0;
             }
-            biglist.add(score);
-            System.out.println(String.valueOf(bots[0].getClass()).substring(16)+" Wins: "+wins+" Draws:"+draws +String.valueOf(bots[1].getClass()).substring(16)+" Wins"+otherwin);
+            count++;
         }
         System.out.println("winrate:"+((float)wins/(float)games)*100.0);
         CreateCSV v = new CreateCSV();

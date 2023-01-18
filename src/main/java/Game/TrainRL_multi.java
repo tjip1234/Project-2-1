@@ -28,7 +28,7 @@ public class TrainRL_multi {
         int wins = 0;
         //create an ExecutorService with a fixed thread pool of 4 threads
         ExecutorService executor = Executors.newFixedThreadPool(4);
-        for (int j = 0; j < 100000; j++) {
+        for (int j = 0; j < 10000000; j++) {
             initBots();
             //submit a new instance of GameSession to the executor
             Future<Integer> future = executor.submit(() -> {
@@ -44,8 +44,8 @@ public class TrainRL_multi {
                 }
                 return rlBot.Score();
             });
-            if (j - count > 1000) {
-                System.out.println("Itteration:" + j + " Winrate:"+(wins/1000.0)*100);
+            if (j - count > 10000) {
+                System.out.println("Itteration:" + j + " Winrate:"+(wins/10000.0)*100);
                 count = j;
                 wins = 0;
             }

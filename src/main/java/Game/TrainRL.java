@@ -26,7 +26,7 @@ public class TrainRL {
     public static void main(String[] args) throws IOException {
         initBots();
         int count = 0;
-        for (int j = 0; j < 100; j++) {
+        for (int j = 0; j < 100000; j++) {
             initBots();
             GameSession g = new GameSession(bots);
             g.startRound();
@@ -39,18 +39,13 @@ public class TrainRL {
                     g.botPlayTurn();
 
                 }
-                if (rlBot.Score() > previousscore)
-                    rlBot.scoreRewards(0.05);
-                else
-                    rlBot.scoreRewards(-0.05);
-                previousscore = rlBot.Score();
             }
-            /*
+
             if (rlBot.Score() >= otherBot.Score())
                 rlBot.executeRewards(0.1);
             else {
                 rlBot.executeRewards(-0.1);
-            }*/
+            }
             if (j - count > 100) {
                 System.out.println("Itteration:" + j);
                 count = j;
