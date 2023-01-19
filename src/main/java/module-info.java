@@ -11,6 +11,7 @@ module GameUI {
 
     // For serialization purposes
     exports Game.Bots.ReinforcementLearning.Bloom;
+    exports Game.Bots.ReinforcementLearning;
     exports Game.Cards;
     opens Game.Cards to com.esotericsoftware.kryo;
 }

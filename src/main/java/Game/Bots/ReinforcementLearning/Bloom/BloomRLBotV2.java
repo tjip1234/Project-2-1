@@ -1,8 +1,8 @@
 package Game.Bots.ReinforcementLearning.Bloom;
 
 import Game.Bots.Bot;
+import Game.Bots.ReinforcementLearning.Tuple;
 import Game.Cards.Card;
-import Game.Tuple;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -32,7 +32,7 @@ public class BloomRLBotV2 extends Bot {
     }
 
     // For MCTS
-    private static Card getWorstCard(List<Card> cardOnTable, Card.Suit briscola, List<Card> hand){
+    public static Card getWorstCard(List<Card> cardOnTable, Card.Suit briscola, List<Card> hand){
         var dominant = FindDominantCard(cardOnTable, briscola);
 
         var state = new State(briscola, dominant, new HashSet<>(hand));
@@ -54,6 +54,23 @@ public class BloomRLBotV2 extends Bot {
 
         return worstCard;
     }
+
+    public static ArrayList<Tuple<Card, Float>> getCardScores(List<Card> cardOnTable, Card.Suit briscola, List<Card> hand){
+        var dominant = FindDominantCard(cardOnTable, briscola);
+
+        var state = new State(briscola, dominant, new HashSet<>(hand));
+
+        if(!table.containsKey(state))
+            return null;
+
+        var result = new ArrayList<Tuple<Card,Float>>();
+        var Choices = table.get(state);
+
+        for(var card : hand)
+            result.add(new Tuple<>(card, Choices.get(card)));
+
+        return result;
+    };
 
     private static final float alpha = 0.00001f;
     private static final float gamma = 0.9f;
@@ -97,7 +114,6 @@ public class BloomRLBotV2 extends Bot {
 
             return excluded.get(rng.nextInt(excluded.size()));
         }
-
         return bestCard;
     }
 
@@ -167,7 +183,7 @@ public class BloomRLBotV2 extends Bot {
         }
     }
 
-    private static void InitFromFile(){
+    public static void InitFromFile(){
         readFromFile("BloomStuffV2s");
     }
 
