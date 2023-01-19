@@ -17,14 +17,15 @@ public class BloomRLBotV2Train {
     private static final int runs = 131072; // 2^17
     private static final boolean train = true;
 
-    private static void simulateRun(int c) {
+    private static void simulateRun(int c, boolean train) {
+        float epsilon = train ? 0.5f : 0f;
         boolean isEven = c%2 == 0;
         BloomRLBotV2 bot;
         GameSession g;
         if(isEven)
-            g = new GameSession( new GreedyBot(), bot = new BloomRLBotV2());
+            g = new GameSession( new GreedyBot(), bot = new BloomRLBotV2(epsilon));
         else
-            g = new GameSession( bot = new BloomRLBotV2(), new GreedyBot());
+            g = new GameSession( bot = new BloomRLBotV2(epsilon), new GreedyBot());
 
         int targetIndex = isEven ? 1 : 0;
 
@@ -33,7 +34,7 @@ public class BloomRLBotV2Train {
         int[] oldScores = Arrays.stream(g.players).mapToInt(Player::Score).toArray();
 
         while (!g.gameOver()) {
-            if(g.currentPlayer == targetIndex) {
+            if(train && g.currentPlayer == targetIndex) {
                 updateBotScore(g, bot, targetIndex, oldScores);
                 oldScores = Arrays.stream(g.players).mapToInt(Player::Score).toArray();
             }
@@ -41,17 +42,14 @@ public class BloomRLBotV2Train {
             g.botPlayTurn();
         }
 
-        updateBotScore(g, bot, targetIndex, oldScores);
+        if(train)
+            updateBotScore(g, bot, targetIndex, oldScores);
 
-        if(g.getWinnerChickenDinner()  == targetIndex)
+        if(g.getWinnerChickenDinner() == targetIndex)
             BloomRLBotV2.winsThisSession.incrementAndGet();
     }
 
     private static void updateBotScore(GameSession g, BloomRLBotV2 bot,  int targetIndex,int[] oldScores){
-        // Avoid updating q-table if we aren't training
-        if(!train)
-            return;
-
         int delta = 0;
         for (int i = 0; i < g.players.length; ++i)
             delta += (g.players[i].Score() - oldScores[i]) * (i == targetIndex ? 1 : -1);
@@ -60,6 +58,11 @@ public class BloomRLBotV2Train {
     }
 
     public static class SimulationJob implements Iterator<Runnable> {
+
+        private boolean train;
+        public SimulationJob(boolean train){
+            this.train = train;
+        }
         private int count = 0;
         @Override
         public boolean hasNext() {
@@ -71,14 +74,14 @@ public class BloomRLBotV2Train {
             int c = ++count;
             return () -> {
                 int tmp = c;
-                simulateRun(tmp);
+                simulateRun(tmp, train);
             };
         }
     }
 
-    public static Stream<Runnable> jobStream() {
+    public static Stream<Runnable> jobStream(boolean train) {
         return StreamSupport.stream(
-                Spliterators.spliterator(new SimulationJob(), runs, Spliterator.IMMUTABLE | Spliterator.CONCURRENT), true);
+                Spliterators.spliterator(new SimulationJob(train), runs, Spliterator.IMMUTABLE | Spliterator.CONCURRENT), true);
     }
 
     public static void main(String[] args) throws IOException {
@@ -86,13 +89,13 @@ public class BloomRLBotV2Train {
         BloomRLBotV2.readFromFile("BloomStuffV2s");
         System.out.printf("[%s] READING COMPLETE\n",  new Timestamp(System.currentTimeMillis()));
 
-        if(!train)
-            BloomRLBotV2.epsilon = 0;
 
-        for(int i = 0; i < 10000; ++i) {
+        for(int i = 0; i < 100000; ++i) {
             System.out.println();
             System.out.printf("[%s] STARTING NEW BLOCK\n", new Timestamp(System.currentTimeMillis()));
-            jobStream().forEach(Runnable::run);
+            jobStream(true).forEach(Runnable::run);
+            BloomRLBotV2.winsThisSession.set(0);
+            jobStream(false).forEach(Runnable::run);
             System.out.printf("[%s] Wins percentage this block: %.2f%%\n", new Timestamp(System.currentTimeMillis()), (BloomRLBotV2.winsThisSession.get() * 100 / (float)runs));
 
             // Since the q-table is only updated when training, we can't avoid write overheads

@@ -31,9 +31,37 @@ public class BloomRLBotV2 extends Bot {
         return bestMove;
     }
 
-    private static final float alpha = 0.2f;
-    private static final float gamma = 0.6f;
-    public static float epsilon = 0.1f;
+    // For MCTS
+    private static Card getWorstCard(List<Card> cardOnTable, Card.Suit briscola, List<Card> hand){
+        var dominant = FindDominantCard(cardOnTable, briscola);
+
+        var state = new State(briscola, dominant, new HashSet<>(hand));
+
+        if(!table.containsKey(state))
+            return null;
+
+        Card worstCard = null;
+        float worstScore = Float.POSITIVE_INFINITY;
+
+        var moves = table.get(state);
+
+        for (var card : state.cardsInHand()) {
+            if (moves.get(card) < worstScore) {
+                worstScore = moves.get(card);
+                worstCard = card;
+            }
+        }
+
+        return worstCard;
+    }
+
+    private static final float alpha = 0.00001f;
+    private static final float gamma = 0.9f;
+    public float epsilon = 0.3f;
+
+    public BloomRLBotV2(float epsilon){
+        this.epsilon = epsilon;
+    }
 
     private static ConcurrentHashMap<State, ConcurrentHashMap<Card, Float>> table = new ConcurrentHashMap<>();
 
@@ -137,6 +165,10 @@ public class BloomRLBotV2 extends Bot {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void InitFromFile(){
+        readFromFile("BloomStuffV2s");
     }
 
     public static void readFromFile(String filePath) {
