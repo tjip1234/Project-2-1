@@ -1,1939 +1,333 @@
--1Visit count: 1003 Score: 0.5059820538384845
+IterationCount, UTC constant, Wins
+1, 0.75, 26
+1, 0.5, 28
 
-0Visit count: 494 Score: 0.4757085020242915
+2, 0.75, 32
+2, 0.5, 24
 
- 1Visit count: 277 Score: 0.5595667870036101
+4, 0.75, 27
+4, 0.5, 28
 
-  2Visit count: 276 Score: 0.5615942028985508
+8, 0.75, 28
+8, 0.5, 26
 
-   3Visit count: 98 Score: 0.7704081632653061
+16, 0.5, 37
+16, 0.75, 30
 
-    4Visit count: 97 Score: 0.7680412371134021
+32, 0.5, 34
+32, 0.75, 37
 
-     5Visit count: 96 Score: 0.765625
+64, 0.5, 32
+64, 0.75, 35
 
-      6Visit count: 95 Score: 0.7736842105263158
+128, 0.5, 30
+128, 0.75, 36
 
-       7Visit count: 94 Score: 0.7712765957446809
+256, 0.5, 42
+256, 0.75, 53
 
-        8Visit count: 93 Score: 0.7795698924731183
+512, 0.5, 32
+512, 0.75, 44
 
-         9Visit count: 92 Score: 0.7771739130434783
+1024, 0.5, 36
+1024, 0.75, 36
 
-          10Visit count: 91 Score: 0.7857142857142857
+2048, 0.5, 51
+2048, 0.75, 39
 
-           11Visit count: 90 Score: 0.7833333333333333
+4096, 0.5, 33
+4096, 0.75, 40
 
-            12Visit count: 89 Score: 0.7808988764044944
+1, 0.0, 39
+1, 0.25, 21
+1, 0.5, 32
 
-             13Visit count: 48 Score: 0.90625
+2, 0.0, 24
+2, 0.25, 34
+2, 0.5, 27
 
-              14Visit count: 35 Score: 0.9571428571428572
+4, 0.0, 30
+4, 0.25, 33
+4, 0.5, 41
 
-               15Visit count: 34 Score: 0.9852941176470589
+8, 0.0, 27
+8, 0.25, 30
+8, 0.5, 25
 
-                16Visit count: 33 Score: 1.0
+16, 0.0, 23
+16, 0.25, 31
+16, 0.5, 37
 
-                 17Visit count: 32 Score: 1.0
+32, 0.0, 27
+32, 0.25, 38
+32, 0.5, 39
 
-                  18Visit count: 31 Score: 1.0
+64, 0.0, 30
+64, 0.25, 35
+64, 0.5, 42
 
-                   19Visit count: 19 Score: 1.0
+128, 0.0, 26
+128, 0.25, 36
+128, 0.5, 40
 
-                    20Visit count: 18 Score: 1.0
+256, 0.0, 26
+256, 0.25, 31
+256, 0.5, 48
 
-                     21Visit count: 17 Score: 1.0
+512, 0.0, 34
+512, 0.25, 37
+512, 0.5, 39
 
-                      22Visit count: 16 Score: 1.0
+1024, 0.0, 22
+1024, 0.25, 29
+1024, 0.5, 39
 
-                       23Visit count: 7 Score: 1.0
+2048, 0.0, 34
+2048, 0.25, 32
+2048, 0.5, 35
 
-                        24Visit count: 6 Score: 1.0
+4096, 0.0, 28
+4096, 0.25, 46
+4096, 0.5, 33
 
-                         25Visit count: 5 Score: 1.0
+1, 1.75, 23
+1, 1.5, 26
+1, 2.0, 28
 
-                          26Visit count: 4 Score: 1.0
+2, 1.75, 29
+2, 1.5, 28
+2, 2.0, 23
 
-                           27Visit count: 3 Score: 1.0
+4, 1.75, 32
+4, 1.5, 33
+4, 2.0, 32
 
-                            28Visit count: 2 Score: 1.0
+8, 1.5, 35
+8, 1.75, 33
+8, 2.0, 41
 
-                             29Visit count: 1 Score: 1.0
+16, 2.0, 38
+16, 1.5, 30
+16, 1.75, 35
 
-                       23Visit count: 8 Score: 1.0
+32, 2.0, 31
+32, 1.5, 42
+32, 1.75, 34
 
-                        24Visit count: 7 Score: 1.0
+64, 2.0, 43
+64, 1.5, 35
+64, 1.75, 42
 
-                         25Visit count: 6 Score: 1.0
+128, 2.0, 33
+128, 1.5, 33
+128, 1.75, 48
 
-                          26Visit count: 5 Score: 1.0
+256, 2.0, 48
+256, 1.5, 44
+256, 1.75, 42
 
-                           27Visit count: 4 Score: 1.0
+512, 2.0, 41
+512, 1.5, 45
+512, 1.75, 48
 
-                            28Visit count: 3 Score: 1.0
+1024, 2.0, 45
+1024, 1.5, 48
+1024, 1.75, 33
 
-                             29Visit count: 2 Score: 1.0
+2048, 2.0, 43
+2048, 1.5, 50
+2048, 1.75, 39
 
-                              30Visit count: 1 Score: 1.0
+4096, 2.0, 45
+4096, 1.5, 40
+4096, 1.75, 48
 
-                   19Visit count: 11 Score: 1.0
+1, 1.5, 31
+1, 1.25, 19
+1, 1.0, 28
 
-                    20Visit count: 10 Score: 1.0
+2, 1.5, 26
+2, 1.25, 27
+2, 1.0, 26
 
-                     21Visit count: 9 Score: 1.0
+4, 1.5, 36
+4, 1.25, 17
+4, 1.0, 23
 
-                      22Visit count: 8 Score: 1.0
+8, 1.5, 29
+8, 1.0, 25
+8, 1.25, 30
 
-                       23Visit count: 7 Score: 1.0
+16, 1.0, 36
+16, 1.25, 31
+16, 1.5, 28
 
-                        24Visit count: 6 Score: 1.0
+32, 1.0, 31
+32, 1.25, 36
+32, 1.5, 42
 
-                         25Visit count: 5 Score: 1.0
+64, 1.0, 48
+64, 1.25, 33
+64, 1.5, 40
 
-                          26Visit count: 2 Score: 1.0
+128, 1.0, 36
+128, 1.25, 44
+128, 1.5, 41
 
-                           27Visit count: 1 Score: 1.0
+256, 1.0, 46
+256, 1.25, 51
+256, 1.5, 44
 
-                          26Visit count: 1 Score: 1.0
+512, 1.0, 46
+512, 1.25, 46
+512, 1.5, 33
 
-                          26Visit count: 1 Score: 1.0
+1024, 1.0, 44
+1024, 1.25, 48
+1024, 1.5, 55
 
-              14Visit count: 12 Score: 0.75
+2048, 1.0, 50
+2048, 1.25, 41
+2048, 1.5, 42
 
-               15Visit count: 11 Score: 0.8181818181818182
+4096, 1.0, 48
+4096, 1.25, 45
+4096, 1.5, 41
 
-                16Visit count: 10 Score: 0.9
 
-                 17Visit count: 9 Score: 0.8888888888888888
 
-                  18Visit count: 8 Score: 1.0
+IterationCount, UTC constant, Wins
 
-                   19Visit count: 7 Score: 1.0
+IterationCount, UTC constant, Wins
 
-                    20Visit count: 6 Score: 1.0
+1, 0.0, 266
+1, 0.25, 241
+1, 0.5, 270
 
-                     21Visit count: 5 Score: 1.0
+2, 0.0, 265
+2, 0.25, 293
+2, 0.5, 286
 
-                      22Visit count: 4 Score: 1.0
+4, 0.0, 280
+4, 0.25, 269
+4, 0.5, 280
 
-                       23Visit count: 3 Score: 1.0
+8, 0.0, 306
+8, 0.25, 319
+8, 0.5, 308
 
-                        24Visit count: 2 Score: 1.0
+16, 0.0, 299
+16, 0.25, 315
+16, 0.5, 300
 
-                         25Visit count: 1 Score: 1.0
+32, 0.0, 291
+32, 0.25, 356
+32, 0.5, 345
 
-             13Visit count: 28 Score: 0.6428571428571429
+64, 0.0, 306
+64, 0.25, 379
+64, 0.5, 358
 
-              14Visit count: 27 Score: 0.6296296296296297
+128, 0.0, 338
+128, 0.25, 377
+128, 0.5, 397
 
-               15Visit count: 26 Score: 0.6153846153846154
+256, 0.0, 290
+256, 0.25, 376
+256, 0.5, 413
 
-                16Visit count: 25 Score: 0.64
+512, 0.0, 307
+512, 0.25, 392
+512, 0.5, 407
 
-                 17Visit count: 24 Score: 0.625
+1024, 0.0, 312
+1024, 0.25, 356
+1024, 0.5, 388
 
-                  18Visit count: 23 Score: 0.6086956521739131
+2048, 0.0, 326
+2048, 0.25, 400
+2048, 0.5, 408
 
-                   19Visit count: 22 Score: 0.5909090909090909
 
-                    20Visit count: 21 Score: 0.5714285714285714
 
-                     21Visit count: 20 Score: 0.55
+4096, 0.0, 280
+4096, 0.25, 401
+4096, 0.5, 392
 
-                      22Visit count: 19 Score: 0.5263157894736842
+IterationCount, UTC constant, Wins
 
-                       23Visit count: 18 Score: 0.5
+IterationCount, UTC constant, Wins
 
-                        24Visit count: 17 Score: 0.47058823529411764
 
-                         25Visit count: 16 Score: 0.4375
 
-                          26Visit count: 10 Score: 0.4
 
-                           27Visit count: 9 Score: 0.3333333333333333
 
-                            28Visit count: 8 Score: 0.375
 
-                             29Visit count: 7 Score: 0.2857142857142857
 
-                              30Visit count: 6 Score: 0.16666666666666666
 
-                               31Visit count: 5 Score: 0.0
 
-                                32Visit count: 4 Score: 0.0
 
-                                 33Visit count: 3 Score: 0.0
 
-                                  34Visit count: 2 Score: 0.0
 
-                                   35Visit count: 1 Score: 0.0
 
-                          26Visit count: 5 Score: 0.4
 
-                           27Visit count: 4 Score: 0.25
+IterationCount, UTC constant, Wins
 
-                            28Visit count: 3 Score: 0.3333333333333333
 
-                             29Visit count: 2 Score: 0.5
 
-                              30Visit count: 1 Score: 0.0
 
-             13Visit count: 12 Score: 0.5833333333333334
 
-              14Visit count: 11 Score: 0.5454545454545454
 
-               15Visit count: 10 Score: 0.6
 
-                16Visit count: 9 Score: 0.5555555555555556
 
-                 17Visit count: 8 Score: 0.5
 
-                  18Visit count: 7 Score: 0.5714285714285714
 
-                   19Visit count: 6 Score: 0.5
 
-                    20Visit count: 5 Score: 0.4
 
-                     21Visit count: 4 Score: 0.5
 
-                      22Visit count: 3 Score: 0.6666666666666666
 
-                       23Visit count: 2 Score: 1.0
+IterationCount, UTC constant, Wins
 
-                        24Visit count: 1 Score: 1.0
 
-   3Visit count: 80 Score: 0.375
 
-    4Visit count: 79 Score: 0.379746835443038
 
-     5Visit count: 44 Score: 0.5340909090909091
 
-      6Visit count: 43 Score: 0.5465116279069767
 
-       7Visit count: 42 Score: 0.5595238095238095
 
-        8Visit count: 41 Score: 0.573170731707317
 
-         9Visit count: 21 Score: 0.6666666666666666
 
-          10Visit count: 20 Score: 0.65
 
-           11Visit count: 19 Score: 0.631578947368421
 
-            12Visit count: 18 Score: 0.6666666666666666
 
-             13Visit count: 17 Score: 0.7058823529411765
 
-              14Visit count: 16 Score: 0.75
 
-               15Visit count: 15 Score: 0.8
+IterationCount, UTC constant, Wins
 
-                16Visit count: 14 Score: 0.7857142857142857
 
-                 17Visit count: 13 Score: 0.7692307692307693
 
-                  18Visit count: 12 Score: 0.75
 
-                   19Visit count: 11 Score: 0.7272727272727273
 
-                    20Visit count: 10 Score: 0.8
 
-                     21Visit count: 9 Score: 0.7777777777777778
 
-                      22Visit count: 8 Score: 0.875
 
-                       23Visit count: 7 Score: 0.8571428571428571
 
-                        24Visit count: 6 Score: 0.8333333333333334
 
-                         25Visit count: 5 Score: 1.0
 
-                          26Visit count: 4 Score: 1.0
 
-                           27Visit count: 3 Score: 1.0
 
-                            28Visit count: 2 Score: 1.0
 
-                             29Visit count: 1 Score: 1.0
+IterationCount, UTC constant, Wins
 
-         9Visit count: 19 Score: 0.5
 
-          10Visit count: 18 Score: 0.4722222222222222
 
-           11Visit count: 17 Score: 0.5
 
-            12Visit count: 16 Score: 0.53125
 
-             13Visit count: 15 Score: 0.5
 
-              14Visit count: 14 Score: 0.5357142857142857
 
-               15Visit count: 13 Score: 0.5384615384615384
 
-                16Visit count: 12 Score: 0.5833333333333334
 
-                 17Visit count: 11 Score: 0.6363636363636364
 
-                  18Visit count: 10 Score: 0.6
 
-                   19Visit count: 9 Score: 0.6666666666666666
 
-                    20Visit count: 8 Score: 0.75
 
-                     21Visit count: 7 Score: 0.7142857142857143
 
-                      22Visit count: 6 Score: 0.8333333333333334
-
-                       23Visit count: 5 Score: 1.0
-
-                        24Visit count: 4 Score: 1.0
-
-                         25Visit count: 3 Score: 1.0
-
-                          26Visit count: 2 Score: 1.0
-
-                           27Visit count: 1 Score: 1.0
-
-     5Visit count: 34 Score: 0.19117647058823528
-
-      6Visit count: 33 Score: 0.19696969696969696
-
-       7Visit count: 32 Score: 0.171875
-
-        8Visit count: 31 Score: 0.14516129032258066
-
-         9Visit count: 30 Score: 0.15
-
-          10Visit count: 29 Score: 0.15517241379310345
-
-           11Visit count: 28 Score: 0.16071428571428573
-
-            12Visit count: 27 Score: 0.16666666666666666
-
-             13Visit count: 26 Score: 0.1346153846153846
-
-              14Visit count: 25 Score: 0.14
-
-               15Visit count: 24 Score: 0.10416666666666667
-
-                16Visit count: 15 Score: 0.16666666666666666
-
-                 17Visit count: 14 Score: 0.10714285714285714
-
-                  18Visit count: 13 Score: 0.07692307692307693
-
-                   19Visit count: 12 Score: 0.08333333333333333
-
-                    20Visit count: 11 Score: 0.09090909090909091
-
-                     21Visit count: 10 Score: 0.1
-
-                      22Visit count: 9 Score: 0.0
-
-                       23Visit count: 8 Score: 0.0
-
-                        24Visit count: 7 Score: 0.0
-
-                         25Visit count: 6 Score: 0.0
-
-                          26Visit count: 5 Score: 0.0
-
-                           27Visit count: 4 Score: 0.0
-
-                            28Visit count: 3 Score: 0.0
-
-                             29Visit count: 2 Score: 0.0
-
-                              30Visit count: 1 Score: 0.0
-
-                16Visit count: 8 Score: 0.0
-
-                 17Visit count: 7 Score: 0.0
-
-                  18Visit count: 6 Score: 0.0
-
-                   19Visit count: 5 Score: 0.0
-
-                    20Visit count: 4 Score: 0.0
-
-                     21Visit count: 3 Score: 0.0
-
-                      22Visit count: 2 Score: 0.0
-
-                       23Visit count: 1 Score: 0.0
-
-   3Visit count: 53 Score: 0.27358490566037735
-
-    4Visit count: 52 Score: 0.25961538461538464
-
-     5Visit count: 51 Score: 0.24509803921568626
-
-      6Visit count: 50 Score: 0.23
-
-       7Visit count: 41 Score: 0.15853658536585366
-
-        8Visit count: 40 Score: 0.1375
-
-         9Visit count: 39 Score: 0.14102564102564102
-
-          10Visit count: 38 Score: 0.14473684210526316
-
-           11Visit count: 37 Score: 0.12162162162162163
-
-            12Visit count: 36 Score: 0.125
-
-             13Visit count: 35 Score: 0.12857142857142856
-
-              14Visit count: 34 Score: 0.1323529411764706
-
-               15Visit count: 33 Score: 0.13636363636363635
-
-                16Visit count: 32 Score: 0.140625
-
-                 17Visit count: 31 Score: 0.14516129032258066
-
-                  18Visit count: 30 Score: 0.15
-
-                   19Visit count: 29 Score: 0.15517241379310345
-
-                    20Visit count: 28 Score: 0.16071428571428573
-
-                     21Visit count: 27 Score: 0.16666666666666666
-
-                      22Visit count: 26 Score: 0.17307692307692307
-
-                       23Visit count: 25 Score: 0.16
-
-                        24Visit count: 24 Score: 0.16666666666666666
-
-                         25Visit count: 23 Score: 0.17391304347826086
-
-                          26Visit count: 22 Score: 0.18181818181818182
-
-                           27Visit count: 21 Score: 0.14285714285714285
-
-                            28Visit count: 20 Score: 0.1
-
-                             29Visit count: 13 Score: 0.07692307692307693
-
-                              30Visit count: 12 Score: 0.0
-
-                               31Visit count: 11 Score: 0.0
-
-                                32Visit count: 10 Score: 0.0
-
-                                 33Visit count: 9 Score: 0.0
-
-                                  34Visit count: 8 Score: 0.0
-
-                                   35Visit count: 7 Score: 0.0
-
-                                    36Visit count: 6 Score: 0.0
-
-                                     37Visit count: 5 Score: 0.0
-
-                                      38Visit count: 4 Score: 0.0
-
-                                       39Visit count: 3 Score: 0.0
-
-                             29Visit count: 6 Score: 0.16666666666666666
-
-                              30Visit count: 5 Score: 0.2
-
-                               31Visit count: 4 Score: 0.0
-
-                                32Visit count: 3 Score: 0.0
-
-                                 33Visit count: 2 Score: 0.0
-
-                                  34Visit count: 1 Score: 0.0
-
-       7Visit count: 5 Score: 0.6
-
-        8Visit count: 4 Score: 0.75
-
-         9Visit count: 3 Score: 1.0
-
-          10Visit count: 2 Score: 1.0
-
-           11Visit count: 1 Score: 1.0
-
-       7Visit count: 3 Score: 0.3333333333333333
-
-        8Visit count: 2 Score: 0.0
-
-         9Visit count: 1 Score: 0.0
-
-   3Visit count: 44 Score: 0.7727272727272727
-
-    4Visit count: 43 Score: 0.7674418604651163
-
-     5Visit count: 42 Score: 0.7857142857142857
-
-      6Visit count: 41 Score: 0.8048780487804879
-
-       7Visit count: 40 Score: 0.825
-
-        8Visit count: 39 Score: 0.8205128205128205
-
-         9Visit count: 38 Score: 0.8421052631578947
-
-          10Visit count: 37 Score: 0.8378378378378378
-
-           11Visit count: 21 Score: 0.8095238095238095
-
-            12Visit count: 20 Score: 0.8
-
-             13Visit count: 19 Score: 0.7894736842105263
-
-              14Visit count: 18 Score: 0.7777777777777778
-
-               15Visit count: 17 Score: 0.7647058823529411
-
-                16Visit count: 16 Score: 0.75
-
-                 17Visit count: 15 Score: 0.7333333333333333
-
-                  18Visit count: 14 Score: 0.7142857142857143
-
-                   19Visit count: 13 Score: 0.7692307692307693
-
-                    20Visit count: 12 Score: 0.75
-
-                     21Visit count: 11 Score: 0.7272727272727273
-
-                      22Visit count: 10 Score: 0.7
-
-                       23Visit count: 9 Score: 0.6666666666666666
-
-                        24Visit count: 8 Score: 0.625
-
-                         25Visit count: 7 Score: 0.5714285714285714
-
-                          26Visit count: 6 Score: 0.5
-
-                           27Visit count: 5 Score: 0.4
-
-                            28Visit count: 4 Score: 0.25
-
-                             29Visit count: 3 Score: 0.3333333333333333
-
-                              30Visit count: 2 Score: 0.0
-
-                               31Visit count: 1 Score: 0.0
-
-           11Visit count: 15 Score: 0.8666666666666667
-
-            12Visit count: 14 Score: 0.9285714285714286
-
-             13Visit count: 13 Score: 0.9230769230769231
-
-              14Visit count: 12 Score: 0.9166666666666666
-
-               15Visit count: 11 Score: 1.0
-
-                16Visit count: 10 Score: 1.0
-
-                 17Visit count: 9 Score: 1.0
-
-                  18Visit count: 8 Score: 1.0
-
-                   19Visit count: 7 Score: 1.0
-
-                    20Visit count: 6 Score: 1.0
-
-                     21Visit count: 5 Score: 1.0
-
-                      22Visit count: 4 Score: 1.0
-
-                       23Visit count: 3 Score: 1.0
-
-                        24Visit count: 2 Score: 1.0
-
-                         25Visit count: 1 Score: 1.0
-
- 1Visit count: 109 Score: 0.23394495412844038
-
-  2Visit count: 108 Score: 0.2361111111111111
-
-   3Visit count: 100 Score: 0.225
-
-    4Visit count: 65 Score: 0.1076923076923077
-
-     5Visit count: 64 Score: 0.109375
-
-      6Visit count: 63 Score: 0.1111111111111111
-
-       7Visit count: 62 Score: 0.0967741935483871
-
-        8Visit count: 61 Score: 0.08196721311475409
-
-         9Visit count: 60 Score: 0.08333333333333333
-
-          10Visit count: 59 Score: 0.0847457627118644
-
-           11Visit count: 58 Score: 0.08620689655172414
-
-            12Visit count: 57 Score: 0.07017543859649122
-
-             13Visit count: 56 Score: 0.05357142857142857
-
-              14Visit count: 55 Score: 0.05454545454545454
-
-               15Visit count: 54 Score: 0.05555555555555555
-
-                16Visit count: 53 Score: 0.05660377358490566
-
-                 17Visit count: 52 Score: 0.057692307692307696
-
-                  18Visit count: 51 Score: 0.0392156862745098
-
-                   19Visit count: 50 Score: 0.02
-
-                    20Visit count: 49 Score: 0.02040816326530612
-
-                     21Visit count: 48 Score: 0.020833333333333332
-
-                      22Visit count: 47 Score: 0.02127659574468085
-
-                       23Visit count: 46 Score: 0.0
-
-                        24Visit count: 45 Score: 0.0
-
-                         25Visit count: 35 Score: 0.0
-
-                          26Visit count: 34 Score: 0.0
-
-                           27Visit count: 33 Score: 0.0
-
-                            28Visit count: 22 Score: 0.0
-
-                             29Visit count: 21 Score: 0.0
-
-                              30Visit count: 20 Score: 0.0
-
-                               31Visit count: 19 Score: 0.0
-
-                                32Visit count: 18 Score: 0.0
-
-                                 33Visit count: 17 Score: 0.0
-
-                                  34Visit count: 16 Score: 0.0
-
-                                   35Visit count: 15 Score: 0.0
-
-                                    36Visit count: 14 Score: 0.0
-
-                                     37Visit count: 13 Score: 0.0
-
-                                      38Visit count: 12 Score: 0.0
-
-                                       39Visit count: 11 Score: 0.0
-
-                            28Visit count: 10 Score: 0.0
-
-                             29Visit count: 9 Score: 0.0
-
-                              30Visit count: 8 Score: 0.0
-
-                               31Visit count: 7 Score: 0.0
-
-                                32Visit count: 6 Score: 0.0
-
-                                 33Visit count: 5 Score: 0.0
-
-                                  34Visit count: 4 Score: 0.0
-
-                                   35Visit count: 3 Score: 0.0
-
-                                    36Visit count: 2 Score: 0.0
-
-                                     37Visit count: 1 Score: 0.0
-
-                         25Visit count: 9 Score: 0.0
-
-                          26Visit count: 8 Score: 0.0
-
-                           27Visit count: 7 Score: 0.0
-
-                            28Visit count: 6 Score: 0.0
-
-                             29Visit count: 5 Score: 0.0
-
-                              30Visit count: 4 Score: 0.0
-
-                               31Visit count: 3 Score: 0.0
-
-                                32Visit count: 2 Score: 0.0
-
-                                 33Visit count: 1 Score: 0.0
-
-    4Visit count: 34 Score: 0.4264705882352941
-
-     5Visit count: 33 Score: 0.4393939393939394
-
-      6Visit count: 32 Score: 0.453125
-
-       7Visit count: 31 Score: 0.43548387096774194
-
-        8Visit count: 30 Score: 0.4166666666666667
-
-         9Visit count: 29 Score: 0.39655172413793105
-
-          10Visit count: 14 Score: 0.4642857142857143
-
-           11Visit count: 13 Score: 0.46153846153846156
-
-            12Visit count: 12 Score: 0.4166666666666667
-
-             13Visit count: 11 Score: 0.36363636363636365
-
-              14Visit count: 10 Score: 0.3
-
-               15Visit count: 9 Score: 0.3333333333333333
-
-                16Visit count: 8 Score: 0.25
-
-                 17Visit count: 7 Score: 0.14285714285714285
-
-                  18Visit count: 6 Score: 0.16666666666666666
-
-                   19Visit count: 5 Score: 0.2
-
-                    20Visit count: 4 Score: 0.25
-
-                     21Visit count: 3 Score: 0.3333333333333333
-
-                      22Visit count: 2 Score: 0.5
-
-                       23Visit count: 1 Score: 1.0
-
-          10Visit count: 8 Score: 0.375
-
-           11Visit count: 7 Score: 0.42857142857142855
-
-            12Visit count: 6 Score: 0.5
-
-             13Visit count: 5 Score: 0.6
-
-              14Visit count: 4 Score: 0.5
-
-               15Visit count: 3 Score: 0.3333333333333333
-
-                16Visit count: 2 Score: 0.5
-
-                 17Visit count: 1 Score: 1.0
-
-          10Visit count: 6 Score: 0.16666666666666666
-
-           11Visit count: 5 Score: 0.2
-
-            12Visit count: 4 Score: 0.0
-
-             13Visit count: 3 Score: 0.0
-
-              14Visit count: 2 Score: 0.0
-
-               15Visit count: 1 Score: 0.0
-
-   3Visit count: 7 Score: 0.2857142857142857
-
-    4Visit count: 4 Score: 0.25
-
-     5Visit count: 3 Score: 0.3333333333333333
-
-      6Visit count: 2 Score: 0.5
-
-       7Visit count: 1 Score: 0.0
-
-    4Visit count: 2 Score: 0.5
-
-     5Visit count: 1 Score: 1.0
-
- 1Visit count: 107 Score: 0.5
-
-  2Visit count: 106 Score: 0.49528301886792453
-
-   3Visit count: 101 Score: 0.5099009900990099
-
-    4Visit count: 100 Score: 0.505
-
-     5Visit count: 60 Score: 0.4166666666666667
-
-      6Visit count: 59 Score: 0.4067796610169492
-
-       7Visit count: 44 Score: 0.2727272727272727
-
-        8Visit count: 43 Score: 0.2558139534883721
-
-         9Visit count: 33 Score: 0.15151515151515152
-
-          10Visit count: 32 Score: 0.15625
-
-           11Visit count: 31 Score: 0.12903225806451613
-
-            12Visit count: 25 Score: 0.08
-
-             13Visit count: 24 Score: 0.08333333333333333
-
-              14Visit count: 23 Score: 0.043478260869565216
-
-               15Visit count: 22 Score: 0.045454545454545456
-
-                16Visit count: 21 Score: 0.047619047619047616
-
-                 17Visit count: 20 Score: 0.05
-
-                  18Visit count: 19 Score: 0.05263157894736842
-
-                   19Visit count: 18 Score: 0.05555555555555555
-
-                    20Visit count: 13 Score: 0.0
-
-                     21Visit count: 12 Score: 0.0
-
-                      22Visit count: 11 Score: 0.0
-
-                       23Visit count: 10 Score: 0.0
-
-                        24Visit count: 9 Score: 0.0
-
-                         25Visit count: 8 Score: 0.0
-
-                          26Visit count: 7 Score: 0.0
-
-                           27Visit count: 6 Score: 0.0
-
-                            28Visit count: 5 Score: 0.0
-
-                             29Visit count: 4 Score: 0.0
-
-                              30Visit count: 3 Score: 0.0
-
-                               31Visit count: 2 Score: 0.0
-
-                                32Visit count: 1 Score: 0.0
-
-                    20Visit count: 4 Score: 0.0
-
-                     21Visit count: 3 Score: 0.0
-
-                      22Visit count: 2 Score: 0.0
-
-                       23Visit count: 1 Score: 0.0
-
-            12Visit count: 5 Score: 0.4
-
-             13Visit count: 4 Score: 0.25
-
-              14Visit count: 3 Score: 0.3333333333333333
-
-               15Visit count: 2 Score: 0.5
-
-                16Visit count: 1 Score: 0.0
-
-         9Visit count: 9 Score: 0.5555555555555556
-
-          10Visit count: 8 Score: 0.625
-
-           11Visit count: 7 Score: 0.5714285714285714
-
-            12Visit count: 6 Score: 0.5
-
-             13Visit count: 5 Score: 0.6
-
-              14Visit count: 2 Score: 1.0
-
-               15Visit count: 1 Score: 1.0
-
-              14Visit count: 1 Score: 0.0
-
-              14Visit count: 1 Score: 0.0
-
-       7Visit count: 14 Score: 0.7857142857142857
-
-        8Visit count: 13 Score: 0.7692307692307693
-
-         9Visit count: 12 Score: 0.75
-
-          10Visit count: 11 Score: 0.8181818181818182
-
-           11Visit count: 10 Score: 0.9
-
-            12Visit count: 9 Score: 0.8888888888888888
-
-             13Visit count: 8 Score: 0.875
-
-              14Visit count: 7 Score: 0.8571428571428571
-
-               15Visit count: 6 Score: 1.0
-
-                16Visit count: 5 Score: 1.0
-
-                 17Visit count: 4 Score: 1.0
-
-                  18Visit count: 3 Score: 1.0
-
-                   19Visit count: 2 Score: 1.0
-
-                    20Visit count: 1 Score: 1.0
-
-     5Visit count: 22 Score: 0.5681818181818182
-
-      6Visit count: 21 Score: 0.5476190476190477
-
-       7Visit count: 20 Score: 0.525
-
-        8Visit count: 19 Score: 0.5
-
-         9Visit count: 18 Score: 0.4722222222222222
-
-          10Visit count: 17 Score: 0.5
-
-           11Visit count: 16 Score: 0.46875
-
-            12Visit count: 15 Score: 0.43333333333333335
-
-             13Visit count: 14 Score: 0.39285714285714285
-
-              14Visit count: 11 Score: 0.3181818181818182
-
-               15Visit count: 10 Score: 0.35
-
-                16Visit count: 9 Score: 0.3888888888888889
-
-                 17Visit count: 8 Score: 0.4375
-
-                  18Visit count: 7 Score: 0.5
-
-                   19Visit count: 6 Score: 0.5833333333333334
-
-                    20Visit count: 5 Score: 0.5
-
-                     21Visit count: 4 Score: 0.625
-
-                      22Visit count: 3 Score: 0.5
-
-                       23Visit count: 2 Score: 0.5
-
-                        24Visit count: 1 Score: 0.0
-
-              14Visit count: 2 Score: 0.5
-
-               15Visit count: 1 Score: 1.0
-
-     5Visit count: 17 Score: 0.7058823529411765
-
-      6Visit count: 16 Score: 0.6875
-
-       7Visit count: 15 Score: 0.6666666666666666
-
-        8Visit count: 14 Score: 0.6428571428571429
-
-         9Visit count: 13 Score: 0.6153846153846154
-
-          10Visit count: 12 Score: 0.5833333333333334
-
-           11Visit count: 8 Score: 0.375
-
-            12Visit count: 7 Score: 0.2857142857142857
-
-             13Visit count: 6 Score: 0.16666666666666666
-
-              14Visit count: 5 Score: 0.0
-
-               15Visit count: 4 Score: 0.0
-
-                16Visit count: 3 Score: 0.0
-
-                 17Visit count: 2 Score: 0.0
-
-                  18Visit count: 1 Score: 0.0
-
-           11Visit count: 3 Score: 1.0
-
-            12Visit count: 2 Score: 1.0
-
-             13Visit count: 1 Score: 1.0
-
-   3Visit count: 4 Score: 0.0
-
-    4Visit count: 3 Score: 0.0
-
-     5Visit count: 2 Score: 0.0
-
-      6Visit count: 1 Score: 0.0
-
-0Visit count: 3 Score: 0.16666666666666666
-
- 1Visit count: 2 Score: 0.0
-
-  2Visit count: 1 Score: 0.0
-
-0Visit count: 506 Score: 0.5375494071146245
-
- 1Visit count: 188 Score: 0.6728723404255319
-
-  2Visit count: 187 Score: 0.6711229946524064
-
-   3Visit count: 159 Score: 0.7044025157232704
-
-    4Visit count: 158 Score: 0.7025316455696202
-
-     5Visit count: 73 Score: 0.6095890410958904
-
-      6Visit count: 72 Score: 0.6041666666666666
-
-       7Visit count: 71 Score: 0.5985915492957746
-
-        8Visit count: 70 Score: 0.6071428571428571
-
-         9Visit count: 69 Score: 0.6159420289855072
-
-          10Visit count: 65 Score: 0.5923076923076923
-
-           11Visit count: 64 Score: 0.6015625
-
-            12Visit count: 48 Score: 0.6354166666666666
-
-             13Visit count: 47 Score: 0.6276595744680851
-
-              14Visit count: 46 Score: 0.6304347826086957
-
-               15Visit count: 45 Score: 0.6444444444444445
-
-                16Visit count: 44 Score: 0.6590909090909091
-
-                 17Visit count: 43 Score: 0.6511627906976745
-
-                  18Visit count: 42 Score: 0.6428571428571429
-
-                   19Visit count: 41 Score: 0.6585365853658537
-
-                    20Visit count: 40 Score: 0.675
-
-                     21Visit count: 39 Score: 0.6923076923076923
-
-                      22Visit count: 38 Score: 0.6842105263157895
-
-                       23Visit count: 37 Score: 0.7027027027027027
-
-                        24Visit count: 36 Score: 0.7222222222222222
-
-                         25Visit count: 35 Score: 0.7142857142857143
-
-                          26Visit count: 34 Score: 0.7058823529411765
-
-                           27Visit count: 14 Score: 0.2857142857142857
-
-                            28Visit count: 13 Score: 0.23076923076923078
-
-                             29Visit count: 12 Score: 0.16666666666666666
-
-                              30Visit count: 11 Score: 0.09090909090909091
-
-                               31Visit count: 10 Score: 0.0
-
-                                32Visit count: 9 Score: 0.0
-
-                                 33Visit count: 8 Score: 0.0
-
-                                  34Visit count: 7 Score: 0.0
-
-                                   35Visit count: 6 Score: 0.0
-
-                                    36Visit count: 5 Score: 0.0
-
-                                     37Visit count: 4 Score: 0.0
-
-                                      38Visit count: 3 Score: 0.0
-
-                                       39Visit count: 2 Score: 0.0
-
-                           27Visit count: 17 Score: 1.0
-
-                            28Visit count: 16 Score: 1.0
-
-                             29Visit count: 15 Score: 1.0
-
-                              30Visit count: 14 Score: 1.0
-
-                               31Visit count: 13 Score: 1.0
-
-                                32Visit count: 12 Score: 1.0
-
-                                 33Visit count: 11 Score: 1.0
-
-                                  34Visit count: 10 Score: 1.0
-
-                                   35Visit count: 9 Score: 1.0
-
-                                    36Visit count: 8 Score: 1.0
-
-                                     37Visit count: 7 Score: 1.0
-
-                                      38Visit count: 6 Score: 1.0
-
-                                       39Visit count: 5 Score: 1.0
-
-                           27Visit count: 2 Score: 1.0
-
-                            28Visit count: 1 Score: 1.0
-
-            12Visit count: 15 Score: 0.4666666666666667
-
-             13Visit count: 14 Score: 0.42857142857142855
-
-              14Visit count: 13 Score: 0.46153846153846156
-
-               15Visit count: 12 Score: 0.5
-
-                16Visit count: 11 Score: 0.5454545454545454
-
-                 17Visit count: 10 Score: 0.6
-
-                  18Visit count: 7 Score: 0.7142857142857143
-
-                   19Visit count: 6 Score: 0.6666666666666666
-
-                    20Visit count: 5 Score: 0.6
-
-                     21Visit count: 4 Score: 0.75
-
-                      22Visit count: 3 Score: 1.0
-
-                       23Visit count: 2 Score: 1.0
-
-                        24Visit count: 1 Score: 1.0
-
-                  18Visit count: 2 Score: 0.0
-
-                   19Visit count: 1 Score: 0.0
-
-          10Visit count: 3 Score: 1.0
-
-           11Visit count: 2 Score: 1.0
-
-            12Visit count: 1 Score: 1.0
-
-     5Visit count: 45 Score: 0.9111111111111111
-
-      6Visit count: 44 Score: 0.9318181818181818
-
-       7Visit count: 43 Score: 0.9302325581395349
-
-        8Visit count: 42 Score: 0.9285714285714286
-
-         9Visit count: 41 Score: 0.926829268292683
-
-          10Visit count: 40 Score: 0.925
-
-           11Visit count: 39 Score: 0.9487179487179487
-
-            12Visit count: 38 Score: 0.9473684210526315
-
-             13Visit count: 37 Score: 0.9459459459459459
-
-              14Visit count: 36 Score: 0.9444444444444444
-
-               15Visit count: 35 Score: 0.9714285714285714
-
-                16Visit count: 34 Score: 1.0
-
-                 17Visit count: 33 Score: 1.0
-
-                  18Visit count: 32 Score: 1.0
-
-                   19Visit count: 31 Score: 1.0
-
-                    20Visit count: 30 Score: 1.0
-
-                     21Visit count: 29 Score: 1.0
-
-                      22Visit count: 22 Score: 1.0
-
-                       23Visit count: 21 Score: 1.0
-
-                        24Visit count: 20 Score: 1.0
-
-                         25Visit count: 19 Score: 1.0
-
-                          26Visit count: 18 Score: 1.0
-
-                           27Visit count: 9 Score: 1.0
-
-                            28Visit count: 8 Score: 1.0
-
-                             29Visit count: 7 Score: 1.0
-
-                              30Visit count: 6 Score: 1.0
-
-                               31Visit count: 5 Score: 1.0
-
-                                32Visit count: 4 Score: 1.0
-
-                                 33Visit count: 3 Score: 1.0
-
-                                  34Visit count: 2 Score: 1.0
-
-                                   35Visit count: 1 Score: 1.0
-
-                           27Visit count: 8 Score: 1.0
-
-                            28Visit count: 7 Score: 1.0
-
-                             29Visit count: 6 Score: 1.0
-
-                              30Visit count: 5 Score: 1.0
-
-                               31Visit count: 4 Score: 1.0
-
-                                32Visit count: 3 Score: 1.0
-
-                                 33Visit count: 2 Score: 1.0
-
-                                  34Visit count: 1 Score: 1.0
-
-                      22Visit count: 6 Score: 1.0
-
-                       23Visit count: 5 Score: 1.0
-
-                        24Visit count: 4 Score: 1.0
-
-                         25Visit count: 3 Score: 1.0
-
-                          26Visit count: 2 Score: 1.0
-
-                           27Visit count: 1 Score: 1.0
-
-     5Visit count: 39 Score: 0.6538461538461539
-
-      6Visit count: 38 Score: 0.6447368421052632
-
-       7Visit count: 37 Score: 0.6621621621621622
-
-        8Visit count: 36 Score: 0.6527777777777778
-
-         9Visit count: 35 Score: 0.6428571428571429
-
-          10Visit count: 34 Score: 0.6323529411764706
-
-           11Visit count: 33 Score: 0.6515151515151515
-
-            12Visit count: 27 Score: 0.6296296296296297
-
-             13Visit count: 26 Score: 0.6153846153846154
-
-              14Visit count: 25 Score: 0.6
-
-               15Visit count: 13 Score: 0.6923076923076923
-
-                16Visit count: 12 Score: 0.6666666666666666
-
-                 17Visit count: 11 Score: 0.6363636363636364
-
-                  18Visit count: 10 Score: 0.6
-
-                   19Visit count: 9 Score: 0.5555555555555556
-
-                    20Visit count: 8 Score: 0.5
-
-                     21Visit count: 7 Score: 0.5714285714285714
-
-                      22Visit count: 6 Score: 0.6666666666666666
-
-                       23Visit count: 5 Score: 0.6
-
-                        24Visit count: 4 Score: 0.75
-
-                         25Visit count: 3 Score: 0.6666666666666666
-
-                          26Visit count: 2 Score: 1.0
-
-                           27Visit count: 1 Score: 1.0
-
-               15Visit count: 11 Score: 0.45454545454545453
-
-                16Visit count: 10 Score: 0.5
-
-                 17Visit count: 9 Score: 0.4444444444444444
-
-                  18Visit count: 8 Score: 0.5
-
-                   19Visit count: 7 Score: 0.42857142857142855
-
-                    20Visit count: 6 Score: 0.5
-
-                     21Visit count: 5 Score: 0.6
-
-                      22Visit count: 4 Score: 0.5
-
-                       23Visit count: 3 Score: 0.6666666666666666
-
-                        24Visit count: 2 Score: 0.5
-
-                         25Visit count: 1 Score: 1.0
-
-            12Visit count: 5 Score: 0.7
-
-             13Visit count: 4 Score: 0.875
-
-              14Visit count: 3 Score: 0.8333333333333334
-
-               15Visit count: 2 Score: 1.0
-
-                16Visit count: 1 Score: 1.0
-
-   3Visit count: 14 Score: 0.2857142857142857
-
-    4Visit count: 13 Score: 0.23076923076923078
-
-     5Visit count: 12 Score: 0.16666666666666666
-
-      6Visit count: 11 Score: 0.18181818181818182
-
-       7Visit count: 10 Score: 0.2
-
-        8Visit count: 9 Score: 0.2222222222222222
-
-         9Visit count: 8 Score: 0.25
-
-          10Visit count: 7 Score: 0.2857142857142857
-
-           11Visit count: 6 Score: 0.16666666666666666
-
-            12Visit count: 5 Score: 0.2
-
-             13Visit count: 4 Score: 0.25
-
-              14Visit count: 3 Score: 0.3333333333333333
-
-               15Visit count: 2 Score: 0.5
-
-                16Visit count: 1 Score: 1.0
-
-   3Visit count: 13 Score: 0.6538461538461539
-
-    4Visit count: 12 Score: 0.625
-
-     5Visit count: 11 Score: 0.5909090909090909
-
-      6Visit count: 10 Score: 0.65
-
-       7Visit count: 9 Score: 0.7222222222222222
-
-        8Visit count: 8 Score: 0.6875
-
-         9Visit count: 7 Score: 0.7857142857142857
-
-          10Visit count: 6 Score: 0.75
-
-           11Visit count: 5 Score: 0.7
-
-            12Visit count: 4 Score: 0.625
-
-             13Visit count: 3 Score: 0.8333333333333334
-
-              14Visit count: 2 Score: 0.75
-
-               15Visit count: 1 Score: 1.0
-
- 1Visit count: 141 Score: 0.5957446808510638
-
-  2Visit count: 140 Score: 0.5928571428571429
-
-   3Visit count: 82 Score: 0.6402439024390244
-
-    4Visit count: 81 Score: 0.6358024691358025
-
-     5Visit count: 80 Score: 0.64375
-
-      6Visit count: 79 Score: 0.6518987341772152
-
-       7Visit count: 78 Score: 0.6602564102564102
-
-        8Visit count: 77 Score: 0.6558441558441559
-
-         9Visit count: 76 Score: 0.6644736842105263
-
-          10Visit count: 44 Score: 0.6931818181818182
-
-           11Visit count: 43 Score: 0.686046511627907
-
-            12Visit count: 21 Score: 0.5952380952380952
-
-             13Visit count: 20 Score: 0.575
-
-              14Visit count: 19 Score: 0.6052631578947368
-
-               15Visit count: 18 Score: 0.5833333333333334
-
-                16Visit count: 17 Score: 0.5882352941176471
-
-                 17Visit count: 16 Score: 0.5625
-
-                  18Visit count: 15 Score: 0.6
-
-                   19Visit count: 14 Score: 0.6428571428571429
-
-                    20Visit count: 13 Score: 0.6153846153846154
-
-                     21Visit count: 12 Score: 0.6666666666666666
-
-                      22Visit count: 11 Score: 0.7272727272727273
-
-                       23Visit count: 5 Score: 0.8
-
-                        24Visit count: 4 Score: 1.0
-
-                         25Visit count: 3 Score: 1.0
-
-                          26Visit count: 2 Score: 1.0
-
-                           27Visit count: 1 Score: 1.0
-
-                       23Visit count: 5 Score: 0.6
-
-                        24Visit count: 4 Score: 0.5
-
-                         25Visit count: 3 Score: 0.3333333333333333
-
-                          26Visit count: 2 Score: 0.0
-
-                           27Visit count: 1 Score: 0.0
-
-            12Visit count: 21 Score: 0.7619047619047619
-
-             13Visit count: 20 Score: 0.75
-
-              14Visit count: 19 Score: 0.7894736842105263
-
-               15Visit count: 18 Score: 0.8333333333333334
-
-                16Visit count: 17 Score: 0.8823529411764706
-
-                 17Visit count: 16 Score: 0.875
-
-                  18Visit count: 15 Score: 0.8666666666666667
-
-                   19Visit count: 9 Score: 1.0
-
-                    20Visit count: 8 Score: 1.0
-
-                     21Visit count: 7 Score: 1.0
-
-                      22Visit count: 6 Score: 1.0
-
-                       23Visit count: 5 Score: 1.0
-
-                        24Visit count: 4 Score: 1.0
-
-                         25Visit count: 3 Score: 1.0
-
-                          26Visit count: 2 Score: 1.0
-
-                           27Visit count: 1 Score: 1.0
-
-                   19Visit count: 5 Score: 0.8
-
-                    20Visit count: 4 Score: 0.75
-
-                     21Visit count: 3 Score: 0.6666666666666666
-
-                      22Visit count: 2 Score: 0.5
-
-                       23Visit count: 1 Score: 0.0
-
-          10Visit count: 31 Score: 0.6451612903225806
-
-           11Visit count: 30 Score: 0.6666666666666666
-
-            12Visit count: 29 Score: 0.6896551724137931
-
-             13Visit count: 28 Score: 0.6785714285714286
-
-              14Visit count: 27 Score: 0.6666666666666666
-
-               15Visit count: 26 Score: 0.6538461538461539
-
-                16Visit count: 25 Score: 0.64
-
-                 17Visit count: 24 Score: 0.6666666666666666
-
-                  18Visit count: 23 Score: 0.6956521739130435
-
-                   19Visit count: 22 Score: 0.6818181818181818
-
-                    20Visit count: 21 Score: 0.6666666666666666
-
-                     21Visit count: 20 Score: 0.7
-
-                      22Visit count: 19 Score: 0.7368421052631579
-
-                       23Visit count: 18 Score: 0.7777777777777778
-
-                        24Visit count: 17 Score: 0.8235294117647058
-
-                         25Visit count: 16 Score: 0.8125
-
-                          26Visit count: 15 Score: 0.8
-
-                           27Visit count: 14 Score: 0.7857142857142857
-
-                            28Visit count: 13 Score: 0.7692307692307693
-
-                             29Visit count: 12 Score: 0.8333333333333334
-
-                              30Visit count: 11 Score: 0.9090909090909091
-
-                               31Visit count: 10 Score: 1.0
-
-                                32Visit count: 9 Score: 1.0
-
-                                 33Visit count: 8 Score: 1.0
-
-                                  34Visit count: 7 Score: 1.0
-
-                                   35Visit count: 6 Score: 1.0
-
-                                    36Visit count: 5 Score: 1.0
-
-                                     37Visit count: 4 Score: 1.0
-
-                                      38Visit count: 3 Score: 1.0
-
-                                       39Visit count: 2 Score: 1.0
-
-   3Visit count: 48 Score: 0.625
-
-    4Visit count: 47 Score: 0.6382978723404256
-
-     5Visit count: 46 Score: 0.6304347826086957
-
-      6Visit count: 45 Score: 0.6222222222222222
-
-       7Visit count: 44 Score: 0.6363636363636364
-
-        8Visit count: 43 Score: 0.627906976744186
-
-         9Visit count: 21 Score: 0.8095238095238095
-
-          10Visit count: 20 Score: 0.8
-
-           11Visit count: 19 Score: 0.7894736842105263
-
-            12Visit count: 18 Score: 0.7777777777777778
-
-             13Visit count: 17 Score: 0.7647058823529411
-
-              14Visit count: 16 Score: 0.8125
-
-               15Visit count: 15 Score: 0.8
-
-                16Visit count: 14 Score: 0.8214285714285714
-
-                 17Visit count: 13 Score: 0.8076923076923077
-
-                  18Visit count: 12 Score: 0.7916666666666666
-
-                   19Visit count: 11 Score: 0.7727272727272727
-
-                    20Visit count: 10 Score: 0.75
-
-                     21Visit count: 9 Score: 0.8333333333333334
-
-                      22Visit count: 8 Score: 0.9375
-
-                       23Visit count: 7 Score: 0.9285714285714286
-
-                        24Visit count: 6 Score: 0.9166666666666666
-
-                         25Visit count: 5 Score: 0.9
-
-                          26Visit count: 4 Score: 0.875
-
-                           27Visit count: 3 Score: 1.0
-
-                            28Visit count: 2 Score: 1.0
-
-                             29Visit count: 1 Score: 1.0
-
-         9Visit count: 13 Score: 0.6923076923076923
-
-          10Visit count: 12 Score: 0.75
-
-           11Visit count: 11 Score: 0.7272727272727273
-
-            12Visit count: 10 Score: 0.8
-
-             13Visit count: 9 Score: 0.8888888888888888
-
-              14Visit count: 8 Score: 0.875
-
-               15Visit count: 7 Score: 0.8571428571428571
-
-                16Visit count: 6 Score: 1.0
-
-                 17Visit count: 5 Score: 1.0
-
-                  18Visit count: 4 Score: 1.0
-
-                   19Visit count: 3 Score: 1.0
-
-                    20Visit count: 2 Score: 1.0
-
-                     21Visit count: 1 Score: 1.0
-
-         9Visit count: 8 Score: 0.0
-
-          10Visit count: 7 Score: 0.0
-
-           11Visit count: 6 Score: 0.0
-
-            12Visit count: 5 Score: 0.0
-
-             13Visit count: 4 Score: 0.0
-
-              14Visit count: 3 Score: 0.0
-
-               15Visit count: 2 Score: 0.0
-
-                16Visit count: 1 Score: 0.0
-
-   3Visit count: 7 Score: 0.07142857142857142
-
-    4Visit count: 6 Score: 0.08333333333333333
-
-     5Visit count: 5 Score: 0.1
-
-      6Visit count: 4 Score: 0.125
-
-       7Visit count: 3 Score: 0.16666666666666666
-
-        8Visit count: 2 Score: 0.25
-
-         9Visit count: 1 Score: 0.5
-
-   3Visit count: 2 Score: 0.0
-
-    4Visit count: 1 Score: 0.0
-
- 1Visit count: 106 Score: 0.2971698113207547
-
-  2Visit count: 105 Score: 0.3
-
-   3Visit count: 92 Score: 0.2608695652173913
-
-    4Visit count: 91 Score: 0.25274725274725274
-
-     5Visit count: 81 Score: 0.20987654320987653
-
-      6Visit count: 80 Score: 0.2
-
-       7Visit count: 79 Score: 0.189873417721519
-
-        8Visit count: 78 Score: 0.1794871794871795
-
-         9Visit count: 77 Score: 0.16883116883116883
-
-          10Visit count: 76 Score: 0.15789473684210525
-
-           11Visit count: 75 Score: 0.14666666666666667
-
-            12Visit count: 74 Score: 0.13513513513513514
-
-             13Visit count: 73 Score: 0.136986301369863
-
-              14Visit count: 72 Score: 0.1388888888888889
-
-               15Visit count: 71 Score: 0.14084507042253522
-
-                16Visit count: 70 Score: 0.12857142857142856
-
-                 17Visit count: 69 Score: 0.11594202898550725
-
-                  18Visit count: 68 Score: 0.10294117647058823
-
-                   19Visit count: 67 Score: 0.1044776119402985
-
-                    20Visit count: 66 Score: 0.09090909090909091
-
-                     21Visit count: 65 Score: 0.09230769230769231
-
-                      22Visit count: 64 Score: 0.078125
-
-                       23Visit count: 63 Score: 0.06349206349206349
-
-                        24Visit count: 62 Score: 0.06451612903225806
-
-                         25Visit count: 61 Score: 0.06557377049180328
-
-                          26Visit count: 56 Score: 0.07142857142857142
-
-                           27Visit count: 55 Score: 0.05454545454545454
-
-                            28Visit count: 54 Score: 0.037037037037037035
-
-                             29Visit count: 53 Score: 0.03773584905660377
-
-                              30Visit count: 52 Score: 0.038461538461538464
-
-                               31Visit count: 51 Score: 0.0196078431372549
-
-                                32Visit count: 50 Score: 0.02
-
-                                 33Visit count: 49 Score: 0.0
-
-                                  34Visit count: 20 Score: 0.0
-
-                                   35Visit count: 19 Score: 0.0
-
-                                    36Visit count: 18 Score: 0.0
-
-                                     37Visit count: 17 Score: 0.0
-
-                                      38Visit count: 16 Score: 0.0
-
-                                       39Visit count: 15 Score: 0.0
-
-                                  34Visit count: 28 Score: 0.0
-
-                                   35Visit count: 27 Score: 0.0
-
-                                    36Visit count: 26 Score: 0.0
-
-                                     37Visit count: 25 Score: 0.0
-
-                                      38Visit count: 24 Score: 0.0
-
-                                       39Visit count: 23 Score: 0.0
-
-                          26Visit count: 4 Score: 0.0
-
-                           27Visit count: 3 Score: 0.0
-
-                            28Visit count: 2 Score: 0.0
-
-                             29Visit count: 1 Score: 0.0
-
-     5Visit count: 4 Score: 0.75
-
-      6Visit count: 3 Score: 0.6666666666666666
-
-       7Visit count: 2 Score: 1.0
-
-        8Visit count: 1 Score: 1.0
-
-     5Visit count: 5 Score: 0.4
-
-      6Visit count: 4 Score: 0.5
-
-       7Visit count: 3 Score: 0.6666666666666666
-
-        8Visit count: 2 Score: 0.5
-
-         9Visit count: 1 Score: 0.0
-
-   3Visit count: 12 Score: 0.625
-
-    4Visit count: 11 Score: 0.5909090909090909
-
-     5Visit count: 10 Score: 0.65
-
-      6Visit count: 9 Score: 0.6111111111111112
-
-       7Visit count: 8 Score: 0.6875
-
-        8Visit count: 7 Score: 0.7857142857142857
-
-         9Visit count: 6 Score: 0.9166666666666666
-
-          10Visit count: 5 Score: 0.9
-
-           11Visit count: 4 Score: 0.875
-
-            12Visit count: 3 Score: 0.8333333333333334
-
-             13Visit count: 2 Score: 1.0
-
-              14Visit count: 1 Score: 1.0
-
- 1Visit count: 45 Score: 0.3111111111111111
-
-  2Visit count: 44 Score: 0.29545454545454547
-
-   3Visit count: 43 Score: 0.3023255813953488
-
-    4Visit count: 42 Score: 0.2857142857142857
-
-     5Visit count: 41 Score: 0.2682926829268293
-
-      6Visit count: 24 Score: 0.3333333333333333
-
-       7Visit count: 23 Score: 0.34782608695652173
-
-        8Visit count: 18 Score: 0.4444444444444444
-
-         9Visit count: 17 Score: 0.4117647058823529
-
-          10Visit count: 13 Score: 0.3076923076923077
-
-           11Visit count: 12 Score: 0.3333333333333333
-
-            12Visit count: 11 Score: 0.36363636363636365
-
-             13Visit count: 10 Score: 0.4
-
-              14Visit count: 9 Score: 0.4444444444444444
-
-               15Visit count: 8 Score: 0.5
-
-                16Visit count: 7 Score: 0.5714285714285714
-
-                 17Visit count: 6 Score: 0.6666666666666666
-
-                  18Visit count: 5 Score: 0.6
-
-                   19Visit count: 4 Score: 0.5
-
-                    20Visit count: 3 Score: 0.3333333333333333
-
-                     21Visit count: 2 Score: 0.5
-
-                      22Visit count: 1 Score: 0.0
-
-          10Visit count: 3 Score: 1.0
-
-           11Visit count: 2 Score: 1.0
-
-            12Visit count: 1 Score: 1.0
-
-        8Visit count: 4 Score: 0.0
-
-         9Visit count: 3 Score: 0.0
-
-          10Visit count: 2 Score: 0.0
-
-           11Visit count: 1 Score: 0.0
-
-      6Visit count: 14 Score: 0.07142857142857142
-
-       7Visit count: 13 Score: 0.0
-
-        8Visit count: 12 Score: 0.0
-
-         9Visit count: 11 Score: 0.0
-
-          10Visit count: 10 Score: 0.0
-
-           11Visit count: 9 Score: 0.0
-
-            12Visit count: 8 Score: 0.0
-
-             13Visit count: 7 Score: 0.0
-
-              14Visit count: 6 Score: 0.0
-
-               15Visit count: 5 Score: 0.0
-
-                16Visit count: 4 Score: 0.0
-
-                 17Visit count: 3 Score: 0.0
-
-                  18Visit count: 2 Score: 0.0
-
-                   19Visit count: 1 Score: 0.0
-
-      6Visit count: 2 Score: 1.0
-
-       7Visit count: 1 Score: 1.0
-
- 1Visit count: 19 Score: 0.631578947368421
-
-  2Visit count: 18 Score: 0.6666666666666666
-
-   3Visit count: 17 Score: 0.7058823529411765
-
-    4Visit count: 16 Score: 0.75
-
-     5Visit count: 5 Score: 0.6
-
-      6Visit count: 4 Score: 0.5
-
-       7Visit count: 3 Score: 0.3333333333333333
-
-        8Visit count: 2 Score: 0.5
-
-         9Visit count: 1 Score: 1.0
-
-     5Visit count: 10 Score: 0.8
-
-      6Visit count: 9 Score: 0.7777777777777778
-
-       7Visit count: 8 Score: 0.875
-
-        8Visit count: 7 Score: 0.8571428571428571
-
-         9Visit count: 6 Score: 1.0
-
-          10Visit count: 5 Score: 1.0
-
-           11Visit count: 4 Score: 1.0
-
-            12Visit count: 3 Score: 1.0
-
-             13Visit count: 2 Score: 1.0
-
-              14Visit count: 1 Score: 1.0
-
- 1Visit count: 6 Score: 0.6666666666666666
-
-  2Visit count: 5 Score: 0.8
-
-   3Visit count: 4 Score: 1.0
-
-    4Visit count: 3 Score: 1.0
-
-     5Visit count: 2 Score: 1.0
-
-      6Visit count: 1 Score: 1.0
-
-winRate, time, score
-Bot: GreedyBot
-1.0,9092.0,0.025
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-425.0,5833860.0,-5.954
-winRate, time, score
-Bot: GreedyBot
-winRate, time, score
-Bot: GreedyBot
-427.0,2.8193712E7,-6.227

@@ -17,7 +17,7 @@ import java.util.stream.StreamSupport;
 public class SimulateMcts {
     private record key(int iterationCount, double UTCConstant){};
     private static ConcurrentHashMap<key,AtomicInteger>table = new ConcurrentHashMap<>();
-    public static int runs = 100;
+    public static int runs = 1000;
 
     private static void simulateRun(int c,key key) {
         boolean isEven = c%2 == 0;
@@ -57,22 +57,26 @@ public class SimulateMcts {
     }
 
     public static Stream<Runnable> jobStream(int iterationCount, double UTCConstant) {
+        System.out.println(iterationCount);
         return StreamSupport.stream(
                 Spliterators.spliterator(new SimulateMcts.SimulationJob(iterationCount,UTCConstant), runs, Spliterator.IMMUTABLE | Spliterator.CONCURRENT), true);
     }
 
     public static void main(String[] args) throws IOException {
-        TestSimulate.saveData("IterationCount, UTC constant, Wins\n");
-        for(int iterationCount  = 0; iterationCount<= 12;iterationCount++){
-            for(double UtcConstant = 0; UtcConstant <2.1; UtcConstant+=0.25){
-                jobStream((int)Math.pow(2,iterationCount),UtcConstant).forEach(Runnable::run);
+        TestSimulate.saveData("IterationCount, UTC constant, Wins\n");//Simon 0-3 ME 4-6, Sascha 7-12
+        for (int set = 0; set < 5; set++) {
+            TestSimulate.saveData("Current set is: "+set+1);
+            for (int iterationCount = 0; iterationCount <= 12; iterationCount++) {
+                for (double UtcConstant = 1; UtcConstant < 2.1; UtcConstant += 0.125) {
+                    jobStream(1024 + (int) Math.pow(2, iterationCount) / (3072), UtcConstant).forEach(Runnable::run);
+                }
+                StringBuilder bob = new StringBuilder();
+                for (var key : table.keySet()) {
+                    bob.append(key.iterationCount + ", " + key.UTCConstant + ", " + table.get(key) + "\n");
+                }
+                TestSimulate.saveData(bob.toString());
+                table.clear();
             }
-            StringBuilder bob = new StringBuilder();
-            for(var key : table.keySet()){
-                bob.append(key.iterationCount + ", " + key.UTCConstant + ", " + table.get(key)+"\n");
-            }
-            TestSimulate.saveData(bob.toString());
-            table.clear();
         }
 
 
