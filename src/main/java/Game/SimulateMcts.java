@@ -66,9 +66,10 @@ public class SimulateMcts {
         TestSimulate.saveData("IterationCount, UTC constant, Wins\n");//Simon 0-3 ME 4-6, Sascha 7-12
         for (int set = 0; set < 5; set++) {
             TestSimulate.saveData("Current set is: "+set+1);
+
             for (int iterationCount = 0; iterationCount <= 12; iterationCount++) {
                 for (double UtcConstant = 1; UtcConstant < 2.1; UtcConstant += 0.125) {
-                    jobStream((int)Math.round(1024 +  ((Math.pow(2, iterationCount) / 4096) *  3072)), UtcConstant).forEach(Runnable::run);
+                    jobStream((int)(1024 +  ((Math.pow(2, iterationCount) / 4096) *  3072)), UtcConstant).forEach(Runnable::run);
                 }
                 StringBuilder bob = new StringBuilder();
                 for (var key : table.keySet()) {
