@@ -1,6 +1,7 @@
 package Game.Bots.MCTS;
 
 import Game.Bots.Bot;
+import Game.Bots.ReinforcementLearning.Bloom.BloomRLBotV2;
 import Game.Bots.Trees.Node;
 import Game.Bots.Trees.Tree;
 import Game.Cards.Card;
@@ -11,6 +12,10 @@ import java.util.List;
 import java.util.Random;
 
 public class MCTS3_bot extends Bot {
+
+    static{
+        BloomRLBotV2.InitFromFile();
+    }
     private int round;
     private double UTC_constant;
     private int iterationCount;
@@ -48,17 +53,29 @@ public class MCTS3_bot extends Bot {
      * @param board, an object representing the board
      * @return The tree
      */
-    public Tree initializeTree(GameSession board, int recursionCounter){
+    public Tree initializeTree(GameSession board, int recursionCounter,boolean a) {
+
         Tree tree = new Tree(board, board.currentPlayer);
         tree.getRootNode().getState().createAllPossibleStates();
         int x = tree.getRootNode().getState().getPossibleUncheckedStates().size();
 
         for (int i = 0; i < x; i++) {
             Node node = extensionPhase(tree.getRootNode());
-            backpropagationPhase(node,simulationPhase(node));
-            recursionTreeInitialization(node, recursionCounter-1, 25);
+            backpropagationPhase(node, simulationPhase(node));
+            recursionTreeInitialization(node, recursionCounter - 1, 25);
         }
 
+        if(a) {
+            if (x > 2) {
+                Card remove = BloomRLBotV2.getWorstCard(board.Table, board.deck.getBriscola().suit, board.players[board.currentPlayer].Hand);
+                for (int i = 0; i < x; i++) {
+                    if (tree.getRootNode().getListOfChildren().get(i).getState().getCardPlayed().equals(remove)) {
+                        tree.getRootNode().getListOfChildren().remove(i);
+                        break;
+                    }
+                }
+            }
+        }
         return tree;
     }
 
@@ -70,7 +87,7 @@ public class MCTS3_bot extends Bot {
      */
     private Card findCardToPlay(GameSession board, int iterationCount) throws IOException {
 
-        Tree tree = initializeTree(board,1);
+        Tree tree = initializeTree(board,1,false);
         int maxIteration = iterationCount;
         while(iterationCount!=0){
             Node currentNode = tree.getRootNode();
@@ -237,7 +254,7 @@ public class MCTS3_bot extends Bot {
     }
 
     public Node getRoute(GameSession board, int iterationCount) {
-        Tree tree = initializeTree(board,1 );
+        Tree tree = initializeTree(board,1 ,false);
 
         while(iterationCount!=0){
             Node currentNode = tree.getRootNode();
