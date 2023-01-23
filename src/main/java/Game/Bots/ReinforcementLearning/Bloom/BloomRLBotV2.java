@@ -169,6 +169,8 @@ public class BloomRLBotV2 extends Bot {
         kryo.register(Card.Suit.class);
         kryo.register(Card.Number.class);
         kryo.register(HashSet.class);
+
+        BloomRLBotV2.InitFromFile();
     }
 
     public static void writeTo(String filePath) {
