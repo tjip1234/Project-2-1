@@ -1,15 +1,10 @@
 package Game;
 
 import Game.Bots.GreedyBot;
-//import Game.Bots.MCST.MCST2_bot;
-//import Game.Bots.MCST.MCST_bot;
 import Game.Bots.MCTS.CombieBotV1;
+import Game.Bots.MCTS.CombieBotV2;
 import Game.Bots.MCTS.MCTS3_bot;
 import Game.Bots.RandomBot;
-import Game.Bots.ReinforcementLearning.RL_Modified_bot;
-import Game.Bots.ReinforcementLearning.RL_handonly_bot;
-import Game.Utils.TreeVisualisation;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,23 +16,28 @@ import java.util.stream.StreamSupport;
 public class TestSimulate {
 
     private static final AtomicInteger wins = new AtomicInteger(0);
+    private static final AtomicInteger draws = new AtomicInteger(0);
 
-    public static int runs = 1000;
+
+    public static int runs = 100;
 
     private static void simulateRun(int c) {
         boolean isEven = c%2 == 0;
         GameSession g;
         if(isEven)
-            g = new GameSession(new RandomBot(), new RL_Modified_bot());
+            g = new GameSession(new GreedyBot(), new CombieBotV2(1000,1.41));
         else
-            g = new GameSession(new RL_Modified_bot(), new RandomBot());
+            g = new GameSession(new CombieBotV2(1000,1.41), new GreedyBot());
 
         g.startRound();
         g.simulate();
-        System.out.println("The game is: "+(double)c/10+"% done");
 
-        if (g.getWinnerChickenDinner() == (isEven? 1:0))
+        var results = g.getWinnerChickenDinner();
+
+        if (results == (isEven? 1:0))
             wins.incrementAndGet();
+        else if(results == -1)
+            draws.incrementAndGet();
     }
 
     public static void saveData(String a) throws IOException {
@@ -45,15 +45,24 @@ public class TestSimulate {
         PrintWriter out = new PrintWriter(file);
         out.println(a);
         out.close();
-
-
     }
-    //public static void main(String[] args) throws IOException {
-        //       GameSession game = new GameSession(getGoalPlayer(), getOpponent(1));
-        //      game.startRound();
-        //      TreeVisualisation.visualiseDepthFirst(new MCTS3_bot(5000, 0.2).getRoute(game, 1000),0);
-        //  }
-        public static void main (String[]args) throws IOException {
+
+    public static void main(String... args) throws IOException{
+        FileWriter file = new FileWriter("Combie2 vs Greedy.txt", true);
+        PrintWriter out = new PrintWriter(file);
+        out.println("Wins, Draws");
+        out.flush();
+        for(int i = 0 ; i < 50; ++i){
+            jobStream().forEach(Runnable::run);
+            out.printf("%d, %d \n", wins.get(), draws.get());
+            out.flush();
+            wins.set(0);
+            draws.set(0);
+        }
+    }
+
+    
+        public static void mainOld (String[]args) throws IOException {
             /**
              * for poor people
              */

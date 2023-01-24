@@ -1,11 +1,11 @@
 package GameUI.PlayfieldComponents;
 
 public class Easings {
-    public static float easeOutBack(float t)  {
+    public static float easeOutBack(float t) {
         final float c1 = 1.70158f;
         final float c3 = c1 + 1;
 
-        return (float)(1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2));
+        return (float) (1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2));
     }
 
     public static float easeOutBounce(float t) {
@@ -28,6 +28,6 @@ public class Easings {
     }
 
     public static float easeOutExpo(float t) {
-        return (float)(t == 1 ? 1 : 1 - Math.pow(2, -10 * t));
+        return (float) (t == 1 ? 1 : 1 - Math.pow(2, -10 * t));
     }
 }

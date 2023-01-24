@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.*;
+import javafx.stage.Stage;
 
 public class MainMenu extends Application {
     private static SettingsMenu settings;
@@ -39,7 +39,7 @@ public class MainMenu extends Application {
         primaryStage.show();
     }
 
-    private void createTitle(Group target){
+    private void createTitle(Group target) {
         // Title
         Text title = new Text(250, 200, "Briscola");
         title.setFill(Color.YELLOW);
@@ -54,7 +54,7 @@ public class MainMenu extends Application {
         target.getChildren().add(subtitle);
     }
 
-    private void createButtons(Group target){
+    private void createButtons(Group target) {
         double buttonWidth = 150, buttonHeight = 50;
 
         Button start = new Button("Start");
@@ -86,22 +86,23 @@ public class MainMenu extends Application {
         exit.setOnAction(MainMenu::onExitPressed);
         target.getChildren().add(exit);
     }
-    private void onStartPressed(ActionEvent e){
+
+    private void onStartPressed(ActionEvent e) {
         menuStage.hide();
         new Playfield(menuStage);
     }
 
-    private static void onSettingsPressed(ActionEvent e){
+    private static void onSettingsPressed(ActionEvent e) {
         menuStage.hide();
         settings.showSettings();
     }
 
-    private static void onRulesPressed(ActionEvent e){
+    private static void onRulesPressed(ActionEvent e) {
         menuStage.hide();
         rules.showRules();
     }
 
-    private static void onExitPressed(ActionEvent e){
+    private static void onExitPressed(ActionEvent e) {
         Platform.exit();
         System.exit(0);
     }

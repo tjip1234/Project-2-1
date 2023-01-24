@@ -30,12 +30,12 @@ public class RulesMenu extends Stage {
         setOnCloseRequest(e -> returnControl());
     }
 
-    private void returnControl(){
+    private void returnControl() {
         this.hide();
         menuStage.show();
     }
 
-    public void showRules(){
+    public void showRules() {
         show();
     }
 
@@ -62,7 +62,7 @@ public class RulesMenu extends Stage {
         group.getChildren().add(rules);
     }
 
-    private void createValues(Group group){
+    private void createValues(Group group) {
         Text vtitle = new Text(350, 325, "Card Values");
         vtitle.setFill(Color.WHITE);
         vtitle.setFont(Font.font("verdana", 20));

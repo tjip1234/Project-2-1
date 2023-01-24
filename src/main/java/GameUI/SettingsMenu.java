@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class SettingsMenu extends Stage {
     private final Stage menuStage;
 
-    public SettingsMenu(Stage menuStage){
+    public SettingsMenu(Stage menuStage) {
         this.menuStage = menuStage;
 
         setTitle("Briscola - Settings");
@@ -29,7 +29,7 @@ public class SettingsMenu extends Stage {
         setOnCloseRequest(e -> returnControl());
     }
 
-    public void showSettings(){
+    public void showSettings() {
         numberOfPlayers.getSelectionModel().clearSelection();
         skinChoice.getSelectionModel().clearSelection();
 
@@ -39,7 +39,7 @@ public class SettingsMenu extends Stage {
     private ComboBox<Integer> numberOfPlayers;
     private ComboBox<CardTextureStore.CardSkin> skinChoice;
 
-    private void createSettingEntries(Group target){
+    private void createSettingEntries(Group target) {
         numberOfPlayers = new ComboBox<>();
         numberOfPlayers.setPromptText("Choose the amount of players");
         numberOfPlayers.setPrefSize(220, 50); // w:240
@@ -54,7 +54,7 @@ public class SettingsMenu extends Stage {
         skinChoice = new ComboBox<>();
         skinChoice.setPromptText("Choose a skin");
 
-        for(var skin : CardTextureStore.CardSkin.values())
+        for (var skin : CardTextureStore.CardSkin.values())
             skinChoice.getItems().add(skin);
 
         skinChoice.setPrefSize(220, 50);
@@ -65,7 +65,7 @@ public class SettingsMenu extends Stage {
         target.getChildren().add(skinChoice);
     }
 
-    private void createButtons(Group target){
+    private void createButtons(Group target) {
         Button OkButton = new Button("Ok");
         OkButton.setPrefSize(240, 50);
         OkButton.setLayoutY(90);
@@ -84,29 +84,29 @@ public class SettingsMenu extends Stage {
         target.getChildren().add(cancelButton);
     }
 
-    private void commitChanges(){
-        if(numberOfPlayers.getValue() != null)
+    private void commitChanges() {
+        if (numberOfPlayers.getValue() != null)
             BriscolaConfigs.setPlayerNumber(numberOfPlayers.getValue());
 
-        if(skinChoice.getValue() != null)
+        if (skinChoice.getValue() != null)
             BriscolaConfigs.setSkin(skinChoice.getValue());
     }
 
-    private void returnControl(){
+    private void returnControl() {
         this.hide();
         menuStage.show();
     }
 
-    private static class PromptListCell<T> extends ListCell<T>{
+    private static class PromptListCell<T> extends ListCell<T> {
         private final String prompt;
 
-        public PromptListCell(String promptText){
+        public PromptListCell(String promptText) {
             prompt = promptText;
         }
 
         @Override
         protected void updateItem(T item, boolean empty) {
-            super.updateItem(item, empty) ;
+            super.updateItem(item, empty);
             if (empty || item == null) {
                 setText(prompt);
             } else {
