@@ -67,7 +67,7 @@ public class Playfield extends Stage {
         botText = new Text(250, 20, "Current bot: Random bot");
         botText.setFont(Font.font("verdana", FontWeight.BOLD, 20));
 
-        var botChangeText = new Text(250, 20 + 20, "Change bot with (1, 2, 3)");
+        var botChangeText = new Text(250, 20 + 20, "Change bot with keys (1 - 6)");
         botChangeText.setFont(Font.font("verdana", FontWeight.BOLD, 20));
 
         playfieldElements.getChildren().add(botText);
@@ -193,6 +193,9 @@ public class Playfield extends Stage {
             case DIGIT1 -> updateCurrentBot(1);
             case DIGIT2 -> updateCurrentBot(2);
             case DIGIT3 -> updateCurrentBot(3);
+            case DIGIT4 -> updateCurrentBot(4);
+            case DIGIT5 -> updateCurrentBot(5);
+            case DIGIT6 -> updateCurrentBot(6);
         }
     }
 
@@ -208,6 +211,9 @@ public class Playfield extends Stage {
             botText.setText(String.format("Current bot: %s bot", switch (multiBot.getBotIndex()) {
                 case 2 -> "Greedy";
                 case 3 -> "MCTS";
+                case 4 -> "RL (SARSA)";
+                case 5 -> "MCTS + RL (method 1)";
+                case 6 -> "MCTS + RL (method 2)";
                 default -> "Random";
             }));
         } else
