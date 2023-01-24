@@ -1,6 +1,7 @@
 package Game;
 
 import Game.Bots.GreedyBot;
+import Game.Bots.MCTS.CombieBotV1;
 import Game.Bots.MCTS.MCTS3_bot;
 import Game.Bots.RandomBot;
 import Game.Bots.ReinforcementLearning.RL_Modified_bot;
@@ -23,15 +24,14 @@ public class SimulateMcts {
         boolean isEven = c%2 == 0;
         GameSession g;
         if(isEven)
-            g = new GameSession(new GreedyBot(), new MCTS3_bot(key.iterationCount,key.UTCConstant));
+            g = new GameSession(new GreedyBot(), new CombieBotV1(key.iterationCount,key.UTCConstant));
         else
-            g = new GameSession(new MCTS3_bot(key.iterationCount,key.UTCConstant),new GreedyBot());
+            g = new GameSession(new CombieBotV1(key.iterationCount,key.UTCConstant),new GreedyBot());
 
         g.startRound();
         g.simulate();
-
         if (g.getWinnerChickenDinner() == (isEven? 1:0))
-            table.get(key).incrementAndGet();
+            System.out.println(table.get(key).incrementAndGet());
     }
     public static class SimulationJob implements Iterator<Runnable> {
         private int count = 0;
@@ -62,17 +62,21 @@ public class SimulateMcts {
     }
 
     public static void main(String[] args) throws IOException {
-        TestSimulate.saveData("IterationCount, UTC constant, Wins\n");
-        for(int iterationCount  = 0; iterationCount<= 12;iterationCount++){
-            for(double UtcConstant = 0; UtcConstant <2.1; UtcConstant+=0.25){
-                jobStream((int)Math.pow(2,iterationCount),UtcConstant).forEach(Runnable::run);
+        TestSimulate.saveData("IterationCount, UTC constant, Wins\n");//Simon 0-3 ME 4-6, Sascha 7-12
+        for (int set = 0; set < 5; set++) {
+            TestSimulate.saveData("Current set is: "+set+1);
+
+            for (int iterationCount = 4; iterationCount <= 6; iterationCount++) {
+                for (double UtcConstant = 1; UtcConstant < 2.1; UtcConstant += 0.125) {
+                    jobStream((int)(1024 +  ((Math.pow(2, iterationCount) / 4096) *  3072)), UtcConstant).forEach(Runnable::run);
+                }
+                StringBuilder bob = new StringBuilder();
+                for (var key : table.keySet()) {
+                    bob.append(key.iterationCount + ", " + key.UTCConstant + ", " + table.get(key) + "\n");
+                }
+                TestSimulate.saveData(bob.toString());
+                table.clear();
             }
-            StringBuilder bob = new StringBuilder();
-            for(var key : table.keySet()){
-                bob.append(key.iterationCount + ", " + key.UTCConstant + ", " + table.get(key)+"\n");
-            }
-            TestSimulate.saveData(bob.toString());
-            table.clear();
         }
 
 

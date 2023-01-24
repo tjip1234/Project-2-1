@@ -3,6 +3,7 @@ package Game;
 import Game.Bots.GreedyBot;
 //import Game.Bots.MCST.MCST2_bot;
 //import Game.Bots.MCST.MCST_bot;
+import Game.Bots.MCTS.CombieBotV1;
 import Game.Bots.MCTS.MCTS3_bot;
 import Game.Bots.RandomBot;
 import Game.Bots.ReinforcementLearning.RL_Modified_bot;
@@ -121,7 +122,7 @@ public class TestSimulate {
     }
 
     public static Player getGoalPlayer(){
-        return new MCTS3_bot(5000,0.2);
+        return new CombieBotV1(5000,1.41);
     }
 
     public static Player getOpponent(int set){

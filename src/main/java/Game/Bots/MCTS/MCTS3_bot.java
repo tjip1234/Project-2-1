@@ -1,6 +1,7 @@
 package Game.Bots.MCTS;
 
 import Game.Bots.Bot;
+import Game.Bots.ReinforcementLearning.Bloom.BloomRLBotV2;
 import Game.Bots.Trees.Node;
 import Game.Bots.Trees.Tree;
 import Game.Cards.Card;
@@ -11,36 +12,31 @@ import java.util.List;
 import java.util.Random;
 
 public class MCTS3_bot extends Bot {
-    private int round;
+
+
     private double UTC_constant;
     private int iterationCount;
 
+    /**
+     * Constructor for MCTS
+     * @param iterationCount how many iterations of the algorithm should run
+     * @param UTC_constant UTC constant for UTC algorithm (Higher = more focus on less explored states)
+     */
     public MCTS3_bot(int iterationCount, double UTC_constant){
         this.iterationCount = iterationCount;
         this.UTC_constant = UTC_constant;
     }
 
-
+    /**
+     * Method from interface which all bots share
+     * @param cardsOnTable Table cards from current state
+     * @param Briscola Briscola Suit
+     * @return Card which bot decided on
+     * @throws IOException
+     */
     @Override
     public Card MakeDecision(List<Card> cardsOnTable, Card.Suit Briscola) throws IOException {
         return findCardToPlay(simulationSession.get(), iterationCount);
-    }
-    /**
-     * recursive part of initializing the tree
-     * @param parent, the node for which the process is aplied
-     * @param recursionCounter, how many iterations left
-     */
-    private void recursionTreeInitialization(Node parent, int  recursionCounter, int howManyMax){
-        if(recursionCounter==0){
-            return;
-        }
-        int x = parent.getState().getPossibleUncheckedStates().size();
-        for (int i = 0; (i < x)&&(i < howManyMax); i++) {
-            Node node = extensionPhase(parent);
-            backpropagationPhase(node,simulationPhase(node));
-            recursionTreeInitialization(node, recursionCounter-1, howManyMax);
-        }
-
     }
 
     /**
@@ -48,16 +44,17 @@ public class MCTS3_bot extends Bot {
      * @param board, an object representing the board
      * @return The tree
      */
-    public Tree initializeTree(GameSession board, int recursionCounter){
+    public Tree initializeTree(GameSession board, int recursionCounter) {
+
         Tree tree = new Tree(board, board.currentPlayer);
         tree.getRootNode().getState().createAllPossibleStates();
         int x = tree.getRootNode().getState().getPossibleUncheckedStates().size();
 
         for (int i = 0; i < x; i++) {
             Node node = extensionPhase(tree.getRootNode());
-            backpropagationPhase(node,simulationPhase(node));
-            recursionTreeInitialization(node, recursionCounter-1, 25);
+            backpropagationPhase(node, simulationPhase(node));
         }
+
 
         return tree;
     }
@@ -87,56 +84,28 @@ public class MCTS3_bot extends Bot {
      * @param rootNode the rootnode of the tree
      * @return the node from which we are going to do the next phase
      */
-    private Node selectionPhase(Node rootNode, int iterationCount){
-        // depth =2 all children
-        // depth >2 some heuristic
+    public Node selectionPhase(Node rootNode, int iterationCount){
+
 
         Node currentNode = rootNode;
-
-        int count = 0;
-        //Goes through fully explored layers of the tree
-        //while (currentNode.getState().getPossibleStates().size() <2) {
-        //    Node tempNode = UTC.findPossibleNode(currentNode);
-        //    if(tempNode == null){break;}
-        //    currentNode = tempNode;
-
-
-        //}
-
-        //OG selection with modification
-        // 26.7% on 1000 games with 2000 iteration against RL
-        // while(currentNode.getListOfChildren().size()>0){
-        //  if(((currentNode.getState().getPossibleStates().size()>0)&&(Math.random()<0.005))){
-        //      break;
-        //  }
-        //  Node tempNode = UTC.findPossibleNode(currentNode);
-        //  if(tempNode == null){break;}
-        //  currentNode = tempNode;
-        // }
-
-        //OG selection with modification2
-        // 36.2% on 1000 games with 2000 iteration against RL when ammount = 0.95
-        // 41% on 1000 games with 2000 iteration against RL when ammount = 0.95 with depth 2 tree
-
+        //While the node has is not terminal and has no children
         while(currentNode.getListOfChildren().size()>0){
-            //5% chance to stop here
+            //10% chance to stop here at random (Done to increase the ammount of exploration)
             if(((currentNode.getState().getPossibleUncheckedStates().size()>0)&&(Math.random()<0.1))){
                 break;
             }
 
-            //if Bot turn, choose random
+            //if opponents turn, choose random explored state
             if(currentNode.getState().getBoardState().currentPlayer!=currentNode.getState().rootPlayerNumber){
-
-
                 currentNode = currentNode.getListOfChildren().get((int)(Math.random()*currentNode.getListOfChildren().size()));
-                //System.out.println("RandomNode "+currentNode.getState().getVisitCountForState()+" Its parent "+currentNode.getParentNode().getState().getVisitCountForState());
-
                 continue;
             }
 
-
+            //If it's our turn then use UTC to select the next node
             currentNode = UTC.findPossibleNode(currentNode,UTC_constant);
         }
+
+        //FailSave for when the selected node is terminal and we can not extend it
         if(currentNode.getState().getPossibleUncheckedStates().size()==0){
             return currentNode;
         }
@@ -151,9 +120,12 @@ public class MCTS3_bot extends Bot {
      * @param targetParentNode the Targeted node of the tree from which a child is selected
      * @return the child of targeted node
      */
-    private Node extensionPhase(Node targetParentNode){
+    public Node extensionPhase(Node targetParentNode){
         // Adds one of the child of targetNode
-        State state = null;
+        State state;
+
+        //If the bot started the last trick and the opponent didnt play briscola or the same suit card, then we discard all the cards that
+        //are not of the same suit.
         if(targetParentNode.getParentNode()!=null&&targetParentNode.getParentNode().getState().lastTrick!=null){
             state = targetParentNode.getState().getRandomChildState2(true, targetParentNode.getParentNode().getState().lastTrick[0],targetParentNode.getParentNode().getState().lastTrick[1]);
         }
@@ -172,16 +144,12 @@ public class MCTS3_bot extends Bot {
      * @param targetNode the node from which we simulate the game to the end
      * @return the score based on win, draw or lose 
      */
-    private double simulationPhase(Node targetNode){
-        //simulate one random game
-        //simulate couple and return average
-        //return normalized score in game instead of 1,0,-1
+    public double simulationPhase(Node targetNode){
+        //simulate couple and return average of normalized scores in game instead of (win = 1, draw = 0, lose = 0;
 
         double score = 0 ;
         int simulationCount = 2;
         for (int i = 0; i < simulationCount; i++) {
-
-
             State simulationState = new State(targetNode.getState().getBoardState().clone(), targetNode.getState().getRootPlayerNumber());
             simulationState.createAllPossibleStates();
             while (true) {
@@ -199,7 +167,6 @@ public class MCTS3_bot extends Bot {
                 }
 
             }
-
         }
         return score/simulationCount;
 
@@ -209,7 +176,7 @@ public class MCTS3_bot extends Bot {
      * Backpropagation phase of the four phases of mcts
      * @param targetNode the node from which we backpropagate to the root 
      */
-    private void backpropagationPhase(Node targetNode, double score){
+    public void backpropagationPhase(Node targetNode, double score){
         targetNode.getState().addToVisitCount();
         targetNode.getState().addWinScore(score);
 
@@ -236,20 +203,4 @@ public class MCTS3_bot extends Bot {
         return highestValueNode;
     }
 
-    public Node getRoute(GameSession board, int iterationCount) {
-        Tree tree = initializeTree(board,1 );
-
-        while(iterationCount!=0){
-            Node currentNode = tree.getRootNode();
-            currentNode = selectionPhase(currentNode, iterationCount);
-            backpropagationPhase(currentNode,simulationPhase(currentNode));
-
-            iterationCount--;
-        }
-        return tree.getRootNode();
-    }
-
-
-    
-    
 }

@@ -6,6 +6,7 @@ import Game.GameSession;
 import Game.Player;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -15,6 +16,7 @@ import java.util.function.Supplier;
 // May contain fields for self use.
 public abstract class Bot extends Player {
     public Set<Card> playedCards;
+    public Set<Card> cardsInSession;
 
     public Supplier<GameSession> simulationSession;
 
@@ -28,5 +30,13 @@ public abstract class Bot extends Player {
             return null;
 
         return cardsOnTable.stream().max((lhs, rhs) -> lhs.compareTo(rhs, Briscola, cardsOnTable.get(0).suit)).get();
+    }
+
+    public static int getScoreForTable(Collection<Card> cardsOnTable){
+        int sum = 0;
+        for(Card card : cardsOnTable)
+            sum += card.number.scoreValue;
+
+        return sum;
     }
 }

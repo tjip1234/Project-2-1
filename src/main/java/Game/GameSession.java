@@ -62,10 +62,7 @@ public class GameSession implements Cloneable {
 
     public GameSession(Player... players) {
 
-        for (var player : players) {
-            if (player instanceof Bot bot)
-                bot.simulationSession = this::clone;
-        }
+
         if (players.length == 0)
             throw new UnsupportedOperationException("Games don't work like that. Dumbss.");
         if (players.length == 1)
@@ -94,6 +91,12 @@ public class GameSession implements Cloneable {
 
         totalCycles = deck.getSessionCards().size()/ players.length;
 
+        for (var player : players) {
+            if (player instanceof Bot bot) {
+                bot.simulationSession = this::clone;
+                bot.cardsInSession = deck.getSessionCards();
+            }
+        }
     }
 
     private int currentCycle ;
